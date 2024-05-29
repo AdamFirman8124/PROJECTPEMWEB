@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Seminar; // Pastikan menggunakan model Seminar
 
 class HomeController extends Controller
 {
@@ -23,6 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $seminars = Seminar::all(); // Mengambil semua data seminar
+        return view('home', compact('seminars')); // Mengirim data ke view home
     }
 }
