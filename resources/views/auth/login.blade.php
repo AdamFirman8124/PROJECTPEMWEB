@@ -1,11 +1,41 @@
-@extends('layouts.app')
-
-@section('content')
+<style>
+    .card {
+        width: 290px;
+        height: 354px;
+        border-radius: 50px;
+        background: #e0e0e0;
+        box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Menambahkan tinggi penuh viewport */
+    }
+    .form-control {
+        border-radius: 10px; /* Menambahkan border radius */
+        padding: 10px; /* Menambahkan padding */
+    }
+    .btn-primary {
+        border-radius: 20px; /* Menambahkan border radius */
+        padding: 10px 20px; /* Menambahkan padding */
+        font-size: 16px; /* Menambahkan ukuran font */
+        margin-top: 20px; /* Menambahkan jarak dengan atas */
+    }
+    .form-check-input {
+        margin-top: 6px; /* Menyesuaikan margin atas */
+    }
+    .form-check-label {
+        margin-left: 10px; /* Menambahkan margin kiri */
+    }
+</style>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
@@ -39,18 +69,6 @@
                             </div>
                         </div>
 
-                        <div class="row mb-3">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
@@ -70,4 +88,3 @@
         </div>
     </div>
 </div>
-@endsection

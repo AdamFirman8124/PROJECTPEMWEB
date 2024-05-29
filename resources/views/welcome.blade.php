@@ -15,49 +15,50 @@
             body, html {
                 height: 100%;
                 margin: 0;
-                font-family: Figtree, sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
             .card {
-                background-color: white;
-                box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-                transition: 0.3s;
-                width: 40%;
-                border-radius: 5px;
-                padding: 2rem;
+                width: 290px;
+                height: 354px;
+                border-radius: 50px;
+                background: #e0e0e0;
+                box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+            }
+            .button {
+                display: inline-block; /* Ubah dari block menjadi inline-block agar tombol sebelahan */
+                margin: 10px;
                 text-align: center;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-            }
-            .card:hover {
-                box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-            }
-            a {
+                padding: 15px; /* Perbesar padding */
+                border-radius: 20px;
+                background-color: #f2f2f2;
                 text-decoration: none;
-                font-weight: bold;
                 color: black;
-                padding: 10px 20px;
-                border: 1px solid black;
-                border-radius: 5px;
-                transition: background-color 0.3s, color 0.3s;
             }
-            a:hover {
-                background-color: black;
-                color: white;
+            h2 {
+                font-size: 24px;
+                font-weight: 600;
+                width: 100%;
+                text-align: center;
             }
         </style>
     </head>
     <body>
         <div class="card">
+            <h2>Selamat datang di sistem webinar kami!</h2>
             @if (Route::has('login'))
-                <div>
+                <div class="links">
                     @auth
-                        <a href="{{ url('/dashboard') }}">Dashboard</a>
+                        <a href="{{ url('/dashboard') }}" class="button">Dashboard</a>
                     @else
-                        <a href="{{ route('login') }}">Log in</a>
+                        <a href="{{ route('login') }}" class="button">Log in</a>
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
+                            <a href="{{ route('register') }}" class="button">Register</a>
                         @endif
                     @endauth
                 </div>

@@ -1,6 +1,6 @@
-@extends('layouts.app')
-
-@section('content')
+<style>
+    
+</style>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -15,9 +15,12 @@
                     @endif
 
                     {{ __('You are logged in!') }}
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="btn btn-danger">{{ __('Logout') }}</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-@endsection
