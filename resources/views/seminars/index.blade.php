@@ -1,9 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="container">
     <h1>Daftar Seminar</h1>
-    <table>
-        <thead>
+    <table class="table table-bordered">
+        <thead class="thead-dark">
             <tr>
                 <th>Tanggal Seminar</th>
                 <th>Lokasi Seminar</th>
@@ -19,20 +20,26 @@
         </thead>
         <tbody>
             @foreach ($seminars as $seminar)
-                <tr>
-                    <td>{{ $seminar->tanggal_seminar }}</td>
-                    <td>{{ $seminar->lokasi_seminar }}</td>
-                    <td>{{ $seminar->google_map_link }}</td>
-                    <td>{{ $seminar->gambar_seminar }}</td>
-                    <td>{{ $seminar->is_paid ? 'Ya' : 'Tidak' }}</td>
-                    <td>{{ $seminar->start_registration }}</td>
-                    <td>{{ $seminar->end_registration }}</td>
-                    <td>{{ $seminar->pembicara }}</td>
-                    <td>{{ $seminar->asal_instansi }}</td>
-                    <td>{{ $seminar->topik }}</td>
-                </tr>
+            <tr>
+                <td>{{ $seminar->tanggal_seminar }}</td>
+                <td>{{ $seminar->lokasi_seminar }}</td>
+                <td><a href="{{ $seminar->google_map_link }}" target="_blank">Lihat Lokasi</a></td>
+                <td>
+                    @if($seminar->gambar_seminar)
+                    <img src="{{ asset('storage/' . $seminar->gambar_seminar) }}" alt="Gambar Seminar" style="width: 100px;">
+                    @else
+                    Tidak ada gambar
+                    @endif
+                </td>
+                <td>{{ $seminar->is_paid ? 'Ya' : 'Tidak' }}</td>
+                <td>{{ $seminar->start_registration }}</td>
+                <td>{{ $seminar->end_registration }}</td>
+                <td>{{ $seminar->pembicara }}</td>
+                <td>{{ $seminar->asal_instansi }}</td>
+                <td>{{ $seminar->topik }}</td>
+            </tr>
             @endforeach
         </tbody>
     </table>
+</div>
 @endsection
-
