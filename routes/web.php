@@ -15,3 +15,5 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::post('/seminar/store', [SeminarController::class, 'store'])->name('seminar.store');
 
 Route::get('/seminars', [SeminarController::class, 'index'])->name('seminars.index');
+
+Route::get('/seminar/{id}', [App\Http\Controllers\SeminarController::class, 'show'])->name('seminar.show');

@@ -30,4 +30,10 @@ class SeminarController extends Controller
 
         return redirect()->back()->with('success', 'Seminar berhasil ditambahkan');
     }
+
+    public function show($id)
+    {
+        $seminar = Seminar::findOrFail($id);
+        return response()->json($seminar);
+    }
 }
