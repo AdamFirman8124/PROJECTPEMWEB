@@ -10,7 +10,8 @@
         }
 
         .card {
-            width: 100%;
+            width: 350px;
+            height: 420px;
             max-width: 420px;
             padding: 20px;
             border-radius: 20px;
