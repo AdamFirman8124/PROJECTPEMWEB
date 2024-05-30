@@ -1,7 +1,7 @@
 <style>
     .card {
-        width: 290px;
-        height: 354px;
+        width: 390px; /* Diperbesar dari 390px */
+        height: 454px; /* Diperbesar dari 454px */
         border-radius: 50px;
         background: #e0e0e0;
         box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
@@ -17,12 +17,13 @@
     }
     .form-control {
         border-radius: 10px; /* Menambahkan border radius */
-        padding: 10px; /* Menambahkan padding */
+        padding: 15px; /* Diperbesar dari 10px */
+        font-size: 18px; /* Diperbesar dari default */
     }
     .btn-primary {
         border-radius: 20px; /* Menambahkan border radius */
-        padding: 10px 20px; /* Menambahkan padding */
-        font-size: 16px; /* Menambahkan ukuran font */
+        padding: 15px 30px; /* Diperbesar dari 10px 20px */
+        font-size: 18px; /* Diperbesar dari 16px */
         margin-top: 20px; /* Menambahkan jarak dengan atas */
     }
     .form-check-input {
@@ -74,12 +75,6 @@
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Login') }}
                                 </button>
-
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
                             </div>
                         </div>
                     </form>
