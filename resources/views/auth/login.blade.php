@@ -1,38 +1,88 @@
 <style>
-    .card {
-        width: 390px; /* Diperbesar dari 390px */
-        height: 454px; /* Diperbesar dari 454px */
-        border-radius: 50px;
-        background: #e0e0e0;
-        box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh; /* Menambahkan tinggi penuh viewport */
-    }
-    .form-control {
-        border-radius: 10px; /* Menambahkan border radius */
-        padding: 15px; /* Diperbesar dari 10px */
-        font-size: 18px; /* Diperbesar dari default */
-    }
-    .btn-primary {
-        border-radius: 20px; /* Menambahkan border radius */
-        padding: 15px 30px; /* Diperbesar dari 10px 20px */
-        font-size: 18px; /* Diperbesar dari 16px */
-        margin-top: 20px; /* Menambahkan jarak dengan atas */
-    }
-    .form-check-input {
-        margin-top: 6px; /* Menyesuaikan margin atas */
-    }
-    .form-check-label {
-        margin-left: 10px; /* Menambahkan margin kiri */
-    }
-</style>
+        body {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f0f2f5; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; 
+        }
+
+        .card {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            border-radius: 15px;
+            background: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-body {
+            width: 100%;
+        }
+
+        .form-control {
+            width: 100%;
+            border-radius: 10px; 
+            padding: 10px; 
+            margin-bottom: 15px; 
+            border: 1px solid #ccc;
+        }
+
+        .btn-primary {
+            width: 100%;
+            border-radius: 20px; 
+            padding: 10px 20px; 
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none; 
+            cursor: pointer; 
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3; 
+        }
+
+        .form-check-input {
+            margin-top: 6px; 
+        }
+
+        .form-check-label {
+            margin-left: 10px; 
+        }
+
+        .btn-link {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .btn-link:hover {
+            text-decoration: underline;
+        }
+
+        .invalid-feedback { 
+            display: block;
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">

@@ -20,38 +20,46 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            background-color: #f0f2f5; 
+            font-family: Arial, Helvetica, sans-serif;
         }
 
         .card {
-            width: 290px;
-            height: 354px;
-            border-radius: 50px;
-            background: #e0e0e0;
-            box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
+            width: 320px;
+            padding: 20px;
+            border-radius: 15px;
+            background: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             display: flex;
-            justify-content: center;
-            align-items: center;
             flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .links {
+            display: flex;
+            gap: 10px; 
         }
 
         .button {
-            display: inline-block;
-            /* Ubah dari block menjadi inline-block agar tombol sebelahan */
-            margin: 10px;
-            text-align: center;
-            padding: 15px;
-            /* Perbesar padding */
-            border-radius: 20px;
-            background-color: #f2f2f2;
+            padding: 10px 20px;
+            border-radius: 25px;
+            background-color: #007bff; 
+            color: white;
             text-decoration: none;
-            color: black;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
         }
 
-        h2 {
-            font-size: 24px;
-            font-weight: 600;
-            width: 100%;
-            text-align: center;
+        .button:hover {
+            background-color: #0056b3; 
         }
     </style>
 </head>
