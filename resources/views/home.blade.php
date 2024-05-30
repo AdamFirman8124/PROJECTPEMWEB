@@ -37,15 +37,6 @@
         .form-control-custom {
             margin-bottom: 10px;
         }
-
-        table {
-            width: 100%;
-        }
-
-        table img {
-            width: 100px;
-            height: auto;
-        }
     </style>
 </head>
 
