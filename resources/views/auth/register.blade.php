@@ -1,44 +1,72 @@
 <style>
-    body, html {
-        height: 100%;
-        margin: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .card {
-        width: 390px;
-        height: 454px;
-        border-radius: 50px;
-        background: #e0e0e0;
-        box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .form-control, .form-select {
-        border-radius: 10px;
-        padding: 10px;
-    }
-    .btn-primary {
-        border-radius: 20px;
-        padding: 10px 20px;
-        font-size: 16px;
-        background-color: #4CAF50; /* Warna hijau */
-        color: white;
-        border: none;
-        cursor: pointer;
-        transition: background-color 0.3s;
-        margin-top: 12px; /* Menambahkan jarak dengan atas */
-    }
-    .btn-primary:hover {
-        background-color: #45a049; /* Warna hijau tua */
-    }
-    .error-message {
-        color: red; /* Warna pesan error */
-        display: block; /* Menampilkan pesan error di bawah input */
-    }
-</style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f2f5; 
+        }
+
+        .card {
+            width: 100%;
+            max-width: 420px;
+            padding: 20px;
+            border-radius: 20px;
+            background: #e0e0e0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-body {
+            width: 100%;
+        }
+
+        .form-control, .form-select {
+            width: 100%;
+            border-radius: 10px;
+            padding: 10px; 
+            margin-bottom: 15px; 
+            border: 1px solid #ccc; 
+        }
+
+        .btn-primary {
+            width: 100%;
+            border-radius: 20px; 
+            padding: 10px 20px; 
+            font-size: 16px; 
+            background-color: #4CAF50; 
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 12px; 
+        }
+
+        .btn-primary:hover {
+            background-color: #45a049; 
+        }
+
+        .error-message {
+            color: red; 
+            display: block; 
+            font-size: 14px; 
+            margin-top: 5px; 
+        }
+
+        .form-check-input {
+            margin-top: 6px; 
+        }
+
+        .form-check-label {
+            margin-left: 10px; 
+        }
+    </style>
+
+    
 <div class="container" style="display: flex; justify-content: center; align-items: center; height: 100vh;">
     <div class="card">
         <div class="card-body" style="padding: 20px;">

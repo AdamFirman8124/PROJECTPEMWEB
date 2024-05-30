@@ -32,10 +32,6 @@
     .form-check-label {
         margin-left: 10px; /* Menambahkan margin kiri */
     }
-    .error-message {
-        color: red; /* Warna pesan error */
-        display: block; /* Menampilkan pesan error di bawah input */
-    }
 </style>
 <div class="container">
     <div class="row justify-content-center">
