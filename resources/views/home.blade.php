@@ -95,6 +95,13 @@
         .seminar-card:hover {
             rotate: 8deg;
         }
+
+        .link-overflow {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
     </style>
 </head>
 
@@ -154,7 +161,7 @@
                         <div class="header">
                             <span>Tanggal: {{ $seminar->tanggal_seminar }}</span>
                             <span>Lokasi: {{ $seminar->lokasi_seminar }}</span>
-                            <span>Link: <a href="{{ $seminar->google_map_link }}" target="_blank">{{ $seminar->google_map_link }}</a></span>
+                            <span class="link-overflow">Link: <a href="{{ $seminar->google_map_link }}" target="_blank">{{ $seminar->google_map_link }}</a></span>
                             <span>Gambar: <img src="{{ $seminar->gambar_seminar }}" alt="Gambar Seminar" style="max-width: 100%; height: auto;"></span>
                             <span>Status: {{ $seminar->is_paid ? 'Berbayar' : 'Gratis' }}</span>
                             <span>Mulai Pendaftaran: {{ $seminar->start_registration }}</span>
