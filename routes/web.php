@@ -29,6 +29,6 @@ Route::get('/seminar_materials/{seminar_material}',[SeminarMaterialsController::
 
 Route::get('/seminar_materials/{seminar_material}/edit',[SeminarMaterialsController::class, 'edit'])->name('seminar_materials.edit');
 
-Route::put('/seminar_materials/{seminar_material}',[SeminarMaterialsController::class, 'update'])->name('seminar_materials.update');
+Route::put('/seminar_materials/{seminar_material}',[SeminarMaterialsController::class, 'update'])->name('seminar_materials.update'); 
 
 Route::delete('/seminar_materials/{seminar_material}',[SeminarMaterialsController::class, 'destroy'])->name('seminar_materials.destroy');
