@@ -129,8 +129,8 @@
 
                     <div class="col-md-6">
                         <select id="role" class="form-control form-select" name="role" required>
-                            <option value="PIC Seminar">PIC Seminar</option>
-                            <option value="Webinar">Webinar</option>
+                            <option value="PIC SeminarorWebinar">PIC Seminar/Webinar</option>
+                            <option value="Peserta">Peserta</option>
                         </select>
                     </div>
                 </div>
