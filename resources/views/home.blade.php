@@ -133,20 +133,23 @@
                     <div class="card-body">
                         <form method="POST" action="{{ route('seminar.store') }}">
                             @csrf
-                            <input type="text" name="tanggal_seminar" placeholder="Tanggal Seminar" class="form-control form-control-custom">
-                            <input type="text" name="lokasi_seminar" placeholder="Lokasi Seminar" class="form-control form-control-custom">
-                            <input type="text" name="google_map_link" placeholder="Link Google Map" class="form-control form-control-custom">
-                            <input type="text" name="gambar_seminar" placeholder="URL Gambar Seminar" class="form-control form-control-custom">
+                            <h3>Formulir Pendaftaran Seminar</h3>
+                            <input type="text" name="tanggal_seminar" placeholder="Masukkan tanggal seminar" class="form-control form-control-custom">
+                            <input type="text" name="lokasi_seminar" placeholder="Masukkan lokasi seminar" class="form-control form-control-custom">
+                            <input type="text" name="google_map_link" placeholder="Masukkan link Google Map lokasi seminar" class="form-control form-control-custom">
+                            <input type="text" name="gambar_seminar" placeholder="Masukkan URL gambar seminar" class="form-control form-control-custom">
+                            <label for="start_registration">Tanggal Mulai Pendaftaran:</label>
+                            <input type="date" id="start_registration" name="start_registration" placeholder="Masukkan tanggal mulai pendaftaran" class="form-control form-control-custom">
+                            <label for="end_registration">Tanggal Akhir Pendaftaran:</label>
+                            <input type="date" id="end_registration" name="end_registration" placeholder="Masukkan tanggal akhir pendaftaran" class="form-control form-control-custom">
+                            <input type="text" name="pembicara" placeholder="Masukkan nama pembicara" class="form-control form-control-custom">
+                            <input type="text" name="asal_instansi" placeholder="Masukkan asal instansi pembicara" class="form-control form-control-custom">
+                            <input type="text" name="topik" placeholder="Masukkan topik seminar" class="form-control form-control-custom">
                             <div class="form-check">
                                 <input type="checkbox" name="is_paid" value="1" class="form-check-input" id="isPaidCheck">
-                                <label class="form-check-label" for="isPaidCheck">Seminar Berbayar</label>
+                                <label class="form-check-label" for="isPaidCheck">Centang jika seminar ini berbayar</label>
                             </div>
-                            <input type="date" name="start_registration" placeholder="Tanggal Mulai Pendaftaran" class="form-control form-control-custom">
-                            <input type="date" name="end_registration" placeholder="Tanggal Akhir Pendaftaran" class="form-control form-control-custom">
-                            <input type="text" name="pembicara" placeholder="Nama Pembicara" class="form-control form-control-custom">
-                            <input type="text" name="asal_instansi" placeholder="Asal Instansi Pembicara" class="form-control form-control-custom">
-                            <input type="text" name="topik" placeholder="Topik Pembicara" class="form-control form-control-custom">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary">Kirim</button>
                         </form>
                     </div>
                 </div>
