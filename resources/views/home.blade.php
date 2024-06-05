@@ -162,10 +162,10 @@
                 <div class="seminar-card m-2">
                     <div class="main-content">
                         <div class="header">
+                            <span>Gambar: <img src="{{ $seminar->gambar_seminar }}" alt="Gambar Seminar" style="max-width: 100%; height: auto;"></span>
                             <span>Tanggal: {{ $seminar->tanggal_seminar }}</span>
                             <span>Lokasi: {{ $seminar->lokasi_seminar }}</span>
                             <span class="link-overflow">Link: <a href="{{ $seminar->google_map_link }}" target="_blank">{{ $seminar->google_map_link }}</a></span>
-                            <span>Gambar: <img src="{{ $seminar->gambar_seminar }}" alt="Gambar Seminar" style="max-width: 100%; height: auto;"></span>
                             <span>Status: {{ $seminar->is_paid ? 'Berbayar' : 'Gratis' }}</span>
                             <span>Mulai Pendaftaran: {{ $seminar->start_registration }}</span>
                             <span>Akhir Pendaftaran: {{ $seminar->end_registration }}</span>
