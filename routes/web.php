@@ -53,3 +53,4 @@ Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.de
 
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
+Route::resource('certificates', 'CertificateController');
