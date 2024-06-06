@@ -57,6 +57,7 @@ Route::get('/daftar', [RegistrationController::class, 'create'])->name('registra
 
 Route::post('/daftar', [RegistrationController::class, 'store'])->name('registrations.store');
 
+<<<<<<< HEAD
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Route for registration form and storing registration
@@ -69,3 +70,6 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/registrations', [RegistrationController::class, 'index'])->name('registrations.index');
 });
+=======
+Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
+>>>>>>> dc9f506e8145878843b7eb184f156880c5c49da1
