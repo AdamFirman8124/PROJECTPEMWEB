@@ -15,26 +15,28 @@
 
 <body>
 
-    <!-- Fixed Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-        <a class="navbar-brand" href="#"></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <button type="button" class="btn btn-link nav-link" onclick="window.location.href='{{ route('seminars.rekap-peserta') }}'">Rekap Peserta</button>
-                </li>
-                <li class="nav-item">
-                    <button type="button" class="btn btn-link nav-link" onclick="window.location.href='{{ route('seminar.rekap') }}'">Rekap Seminar</button>
-                </li>
-                <li class="nav-item">
-                    <button type="button" class="btn btn-link nav-link">Data User</button>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    @if (Auth::user()->role == 'PIC SeminarorWebinar')
+        <!-- Fixed Navigation Bar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+            <a class="navbar-brand" href="#"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <button type="button" class="btn btn-link nav-link" onclick="window.location.href='{{ route('seminars.rekap-peserta') }}'">Rekap Peserta</button>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button" class="btn btn-link nav-link" onclick="window.location.href='{{ route('seminar.rekap') }}'">Rekap Seminar</button>
+                    </li>
+                    <li class="nav-item">
+                        <button type="button" class="btn btn-link nav-link">Data User</button>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    @endif
 
     <div class="container fixed-top-spacing">
         @yield('content')

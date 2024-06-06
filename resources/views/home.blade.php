@@ -50,61 +50,32 @@
         }
 
         .seminar-card {
-            width: 320px;
-            height: auto;
-            padding: 20px;
-            color: white;
-            background: linear-gradient(#212121, #212121) padding-box,
-                linear-gradient(145deg, transparent 35%, #e81cff, #40c9ff) border-box;
-            border: 2px solid transparent;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
+            box-sizing: border-box;
+            width: 340px;
+            height: 354px;
+            background: rgba(217, 217, 217, 0.58);
+            border: 1px solid white;
+            box-shadow: 12px 17px 51px rgba(0, 0, 0, 0.22);
+            backdrop-filter: blur(6px);
+            border-radius: 17px;
+            text-align: center;
             cursor: pointer;
-            transform-origin: right bottom;
-            transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
-            margin-bottom: 20px;
-        }
-
-        .seminar-card .main-content {
-            flex: 1;
-        }
-
-        .seminar-card .header span {
-            display: block;
-            font-weight: 600;
-            color: #717171;
-            margin-bottom: 8px;
-        }
-
-        .seminar-card .heading {
-            font-size: 24px;
-            margin: 24px 0 16px;
-            font-weight: 600;
-        }
-
-        .seminar-card .categories {
+            transition: all 0.5s;
             display: flex;
-            gap: 8px;
-        }
-
-        .seminar-card .categories span {
-            background-color: #e81cff;
-            padding: 4px 8px;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 12px;
-            border-radius: 50em;
-        }
-
-        .seminar-card .footer {
-            font-weight: 600;
-            color: #717171;
-            margin-top: 16px;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            font-weight: bolder;
+            color: black;
         }
 
         .seminar-card:hover {
-            rotate: 8deg;
+            border: 1px solid black;
+            transform: scale(1.05);
+        }
+
+        .seminar-card:active {
+            transform: scale(0.95) rotateZ(1.7deg);
         }
 
         .link-overflow {
@@ -213,13 +184,16 @@
         @else
         <div class="d-flex flex-wrap justify-content-center">
             @foreach ($seminars as $seminar)
+            @if (Auth::user()->role == 'Peserta')
+                <a href="{{ route('daftar.create') }}" class="stretched-link">Daftar</a>
+            @endif
             <div class="seminar-card m-2">
                 <div class="main-content">
-                    <h5 class="seminar-title">{{ $seminar->topik }}</h5>
-                    <p class="seminar-date">{{ $seminar->tanggal_seminar }}</p>
-                    <p class="seminar-location">{{ $seminar->lokasi_seminar }}</p>
-                    <p class="seminar-speaker">Pembicara: {{ $seminar->pembicara }}</p>
-                    <p class="seminar-organization">Instansi: {{ $seminar->asal_instansi }}</p>
+                    <h5>{{ $seminar->topik }}</h5>
+                    <p>{{ $seminar->tanggal_seminar }}</p>
+                    <p>{{ $seminar->lokasi_seminar }}</p>
+                    <p>Pembicara: {{ $seminar->pembicara }}</p>
+                    <p>Instansi: {{ $seminar->asal_instansi }}</p>
                     <a href="{{ $seminar->google_map_link }}" target="_blank" class="btn btn-link">Lokasi di Google Maps</a>
                     @if ($seminar->is_paid)
                     <span class="badge badge-success">Berbayar</span>
