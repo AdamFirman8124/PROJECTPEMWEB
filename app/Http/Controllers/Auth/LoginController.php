@@ -32,8 +32,8 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
-        Log::info('Logging out user: ' . Auth::user()->id);
+        Log::info("Attempting to logout user: " . $request->user()->name);
         Auth::logout();
-        return redirect('/welcome');
+        return redirect('/');
     }
 }

@@ -93,7 +93,7 @@
                 <div class="card card-custom text-center">
                     <div class="card-body">
                         <h5 class="card-title">Selamat datang, {{ Auth::user()->name }}</h5>
-                        <form method="POST" action="{{ route('logout') }}" onsubmit="console.log('Logout attempt by user: {{ Auth::user()->name }}'); return true;">
+                        <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit" class="btn btn-logout">{{ __('Logout') }}</button>
                         </form>
@@ -184,23 +184,22 @@
         @else
         <div class="d-flex flex-wrap justify-content-center">
             @foreach ($seminars as $seminar)
-            @if (Auth::user()->role == 'Peserta')
-                <a href="{{ route('daftar.create') }}" class="stretched-link">
-            @endif
             <div class="seminar-card m-2">
-                <div class="main-content">
-                    <h5>{{ $seminar->topik }}</h5>
-                    <p>{{ $seminar->tanggal_seminar }}</p>
-                    <p>{{ $seminar->lokasi_seminar }}</p>
-                    <p>Pembicara: {{ $seminar->pembicara }}</p>
-                    <p>Instansi: {{ $seminar->asal_instansi }}</p>
-                    <a href="{{ $seminar->google_map_link }}" target="_blank" class="btn btn-link">Lokasi di Google Maps</a>
-                    @if ($seminar->is_paid)
-                    <span class="badge badge-success">Berbayar</span>
-                    @else
-                    <span class="badge badge-info">Gratis</span>
-                    @endif
-                </div>
+                <a href="{{ route('daftar.create') }}" class="stretched-link">
+                    <div class="main-content">
+                        <h5>{{ $seminar->topik }}</h5>
+                        <p>{{ $seminar->tanggal_seminar }}</p>
+                        <p>{{ $seminar->lokasi_seminar }}</p>
+                        <p>Pembicara: {{ $seminar->pembicara }}</p>
+                        <p>Instansi: {{ $seminar->asal_instansi }}</p>
+                        <a href="{{ $seminar->google_map_link }}" target="_blank" class="btn btn-link">Lokasi di Google Maps</a>
+                        @if ($seminar->is_paid)
+                        <span class="badge badge-success">Berbayar</span>
+                        @else
+                        <span class="badge badge-info">Gratis</span>
+                        @endif
+                    </div>
+                </a>
                 @if (Auth::user()->role == 'PIC SeminarorWebinar')
                 <a href="{{ route('seminar.edit', $seminar->id) }}" class="btn btn-info">Edit</a>
                 <form action="{{ route('seminar.destroy', $seminar->id) }}" method="POST" style="display:inline;">
@@ -240,7 +239,9 @@
             setInterval(updateTime, 1000);
             updateTime();
         </script>
+        <script>
+            console.log("Logout URL: '{{ route('logout') }}'");
+        </script>
 </body>
-
 </html>
 @endsection

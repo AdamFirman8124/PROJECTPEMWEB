@@ -57,4 +57,4 @@ Route::get('/daftar', [PendaftaranController::class, 'create'])->name('daftar.cr
 
 Route::post('/daftar', [PendaftaranController::class, 'store'])->name('daftar.store');
 
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
