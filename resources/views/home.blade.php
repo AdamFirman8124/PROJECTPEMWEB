@@ -147,7 +147,7 @@
                             <input type="text" name="gambar_seminar" placeholder="Masukkan URL gambar seminar" class="form-control form-control-custom">
                             <label for="start_registration">Tanggal Mulai Pendaftaran:</label>
                             <input type="date" id="start_registration" name="start_registration" class="form-control form-control-custom">
-                            <label for="end_registration">Tanggal Akhir Pendaftaran:</label
+                            <label for="end_registration">Tanggal Akhir Pendaftaran:</label>
                             <input type="date" id="end_registration" name="end_registration" class="form-control form-control-custom">
                             <input type="text" name="pembicara" placeholder="Masukkan nama pembicara" class="form-control form-control-custom">
                             <input type="text" name="asal_instansi" placeholder="Masukkan asal instansi pembicara" class="form-control form-control-custom">
