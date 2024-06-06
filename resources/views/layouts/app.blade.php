@@ -31,7 +31,7 @@
                         <button type="button" class="btn btn-link nav-link" onclick="window.location.href='{{ route('seminar.rekap') }}'">Rekap Seminar</button>
                     </li>
                     <li class="nav-item">
-                        <button type="button" class="btn btn-link nav-link">Data User</button>
+                        <button type="button" class="btn btn-link nav-link" onclick="window.location.href='{{ route('seminars.rekap-peserta') }}'">Rekap Peserta</button>
                     </li>
                 </ul>
             </div>
