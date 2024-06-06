@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <h1 class="my-4 text-center">Data User</h1>
+        <h1 class="my-4 text-center">Rekap Peserta Seminar</h1>
 
         <div class="table-container">
             <table class="table table-striped">
