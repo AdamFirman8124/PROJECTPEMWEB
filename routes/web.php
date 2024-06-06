@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\SeminarController;
 use App\Http\Controllers\SeminarMaterialsController;
+use App\Http\Controllers\RegistrationController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -33,8 +34,6 @@ Route::put('/seminar_materials/{seminar_material}',[SeminarMaterialsController::
 
 Route::delete('/seminar_materials/{seminar_material}',[SeminarMaterialsController::class, 'destroy'])->name('seminar_materials.destroy');
 
-Route::get('/seminar/rekap', [SeminarController::class, 'rekap'])->name('seminar.rekap');
-
 Route::post('/seminar/register', [SeminarController::class, 'register'])->name('seminar.register');
 
 Route::get('/seminar/{seminar}/edit', [SeminarController::class, 'edit'])->name('seminar.edit');
@@ -45,3 +44,18 @@ Route::delete('/seminar/{seminar}', [SeminarController::class, 'destroy'])->name
 
 Route::get('/seminar/{id}', [SeminarController::class, 'show'])->name('seminar.show');
 
+Route::get('/registrations', [RegistrationController::class, 'index'])->name('registrations.rekap');
+
+// Route::get('/seminar/rekap', [SeminarController::class, 'rekap'])->name('seminar.rekap');
+
+// Route::middleware(['auth'])->group(function () {
+//     Route::get('/registrations/create/{seminar}', [RegistrationController::class, 'create'])->name('registrations.create');
+//     Route::post('/registrations/{seminar}', [RegistrationController::class, 'store'])->name('registrations.store');
+// });
+
+// // Rute untuk admin melihat daftar pendaftaran
+// Route::middleware(['auth', 'admin'])->group(function () {
+//     Route::get('/registrations', [RegistrationController::class, 'index'])->name('registrations.index');
+// });
+
+// Route::get('/registrations/rekap/{seminar_id}', [RegistrationController::class, 'rekap'])->name('registrations.rekap');

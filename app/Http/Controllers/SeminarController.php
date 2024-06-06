@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Seminar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log; // Menambahkan use statement untuk Log
+use App\Models\Registration;
 
 class SeminarController extends Controller
 {
@@ -45,20 +46,20 @@ class SeminarController extends Controller
         return redirect()->back()->with('success', 'Pendaftaran seminar berhasil');
     }
 
-    public function rekap()
-    {
-        // Logika untuk mengumpulkan data rekap seminar
-        $seminars = Seminar::select('tanggal_seminar', 'lokasi_seminar', 'pembicara', 'topik')
-                           ->get();
-        $jumlahPeserta = Seminar::sum('jumlah_peserta');
-        $jumlahSeminar = Seminar::count();
-        $dataRekap = [
-            'total_seminar' => $jumlahSeminar,
-            'total_peserta' => $jumlahPeserta,
-            'detail_seminar' => $seminars
-        ];
-        return view('seminar.rekap'); // Pastikan Anda memiliki view yang sesuai
-    }
+    // public function rekap()
+    // {
+    //     // Logika untuk mengumpulkan data rekap seminar
+    //     $seminars = Seminar::select('tanggal_seminar', 'lokasi_seminar', 'pembicara', 'topik')
+    //                        ->get();
+    //     $jumlahPeserta = Seminar::sum('jumlah_peserta');
+    //     $jumlahSeminar = Seminar::count();
+    //     $dataRekap = [
+    //         'total_seminar' => $jumlahSeminar,
+    //         'total_peserta' => $jumlahPeserta,
+    //         'detail_seminar' => $seminars
+    //     ];
+    //     return view('seminar.rekap'); // Pastikan Anda memiliki view yang sesuai
+    // }
 
     public function edit($id)
     {
@@ -80,4 +81,12 @@ class SeminarController extends Controller
         $seminar->delete();
         return redirect()->route('home')->with('success', 'Seminar berhasil dihapus');
     }
+
+    public function rekap($seminarId)
+    {
+
+        $registrations = Registration::where('seminar_id', $seminarId)->get();
+        return view('seminar.rekap', compact('registrations'));
+    }
+
 }
