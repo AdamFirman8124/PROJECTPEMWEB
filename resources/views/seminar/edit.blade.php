@@ -75,7 +75,7 @@
             @method('PUT')
             <div class="form-group">
                 <label for="tanggal_seminar">Tanggal Seminar:</label>
-                <input type="text" class="form-control" id="tanggal_seminar" name="tanggal_seminar" value="{{ $seminar->tanggal_seminar }}" required>
+                <input type="date" class="form-control" id="tanggal_seminar" name="tanggal_seminar" value="{{ $seminar->tanggal_seminar }}" required>
             </div>
             <div class="form-group">
                 <label for="lokasi_seminar">Lokasi Seminar:</label>
