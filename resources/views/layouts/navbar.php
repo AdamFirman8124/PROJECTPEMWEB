@@ -16,7 +16,10 @@
 <body>
     <div id="app">
         <main class="py-4">
-            @yield('content')
+            <button type="button">Rekap</button>
+            <button type="button">Seminar</button>
+            <button type="button">Data User</button>
+            @section('content')
         </main>
     </div>
 </body>
