@@ -57,15 +57,20 @@ Route::get('/daftar', [RegistrationController::class, 'create'])->name('daftar.c
 
 Route::post('/daftar', [RegistrationController::class, 'store'])->name('registrations.store');
 
+Route::get('/registrations', [RegistrationController::class, 'index'])->name('registrations.index');
+
+Route::delete('/registrations/{id}', [RegistrationController::class, 'destroy'])->name('registrations.destroy');
+
+
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Route for registration form and storing registration
-Route::middleware(['auth'])->group(function () {
-    Route::get('/registrations/create', [RegistrationController::class, 'create'])->name('registrations.create');
-    Route::post('/registrations', [RegistrationController::class, 'store'])->name('registrations.store');
-});
+// Route::middleware(['auth'])->group(function () {
+//     Route::get('/registrations/create', [RegistrationController::class, 'create'])->name('registrations.create');
+//     Route::post('/registrations', [RegistrationController::class, 'store'])->name('registrations.store');
+// });
 
-// Route for admin to view registrations
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/registrations', [RegistrationController::class, 'index'])->name('registrations.index');
-});
+// // Route for admin to view registrations
+// Route::middleware(['auth', 'admin'])->group(function () {
+//     Route::get('/registrations', [RegistrationController::class, 'index'])->name('registrations.index');
+// });

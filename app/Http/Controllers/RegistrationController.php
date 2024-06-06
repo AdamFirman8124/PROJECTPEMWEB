@@ -54,11 +54,17 @@ class RegistrationController extends Controller
     {
         $registrations = Registration::with('seminar')->get();
         return view('registrations.index', compact('registrations'));
-    }
+    }    
 
     public function rekap($seminar_id)
     {
         $registrations = Registration::where('seminar_id', $seminar_id)->get();
         return view('registrations.rekap', compact('registrations'));
+    }
+    public function destroy($id)
+    {
+        $registration = Registration::findOrFail($id);
+        $registration->delete();
+        return redirect()->back()->with('success', 'Data berhasil dihapus');
     }
 }

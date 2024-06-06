@@ -25,7 +25,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <button type="button" class="btn btn-link nav-link" onclick="window.location.href='{{ route('seminars.rekap-peserta') }}'">Rekap Peserta</button>
+                        <button type="button" class="btn btn-link nav-link" onclick="window.location.href='{{ route('registrations.index') }}'">Rekap Peserta</button>
                     </li>
                     <li class="nav-item">
                         <button type="button" class="btn btn-link nav-link" onclick="window.location.href='{{ route('seminar.rekap') }}'">Rekap Seminar</button>

@@ -19,5 +19,10 @@ class Registration extends Model
         'instansi',
         'info'
     ];
+    
+    public function seminar()
+    {
+        return $this->belongsTo(Seminar::class, 'seminar_id');
+    }
 }
 
