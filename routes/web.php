@@ -7,7 +7,7 @@ use App\Http\Controllers\SeminarMaterialsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\PendaftaranController;
+use App\Http\Controllers\RegistrationController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -53,8 +53,19 @@ Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.de
 
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
-Route::get('/daftar', [PendaftaranController::class, 'create'])->name('daftar.create');
+Route::get('/daftar', [RegistrationController::class, 'create'])->name('registrations.create');
 
-Route::post('/daftar', [PendaftaranController::class, 'store'])->name('daftar.store');
+Route::post('/daftar', [RegistrationController::class, 'store'])->name('registrations.store');
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+// Route for registration form and storing registration
+Route::middleware(['auth'])->group(function () {
+    Route::get('/registrations/create', [RegistrationController::class, 'create'])->name('registrations.create');
+    Route::post('/registrations', [RegistrationController::class, 'store'])->name('registrations.store');
+});
+
+// Route for admin to view registrations
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/registrations', [RegistrationController::class, 'index'])->name('registrations.index');
+});

@@ -2,27 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class CreateRegistrationsTable extends Migration
+class Registration extends Model
 {
-    public function up()
-    {
-        Schema::create('registrations', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('seminar_id');
-            $table->timestamps();
+    use HasFactory;
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('seminar_id')->references('id')->on('seminars')->onDelete('cascade');
-        });
-    }
-
-    public function down()
-    {
-        Schema::dropIfExists('registrations');
-    }
+    protected $fillable = [
+        'user_id',
+        'seminar_id',
+        'identitas',
+        'name',
+        'email',
+        'phone',
+        'instansi',
+        'info'
+    ];
 }
