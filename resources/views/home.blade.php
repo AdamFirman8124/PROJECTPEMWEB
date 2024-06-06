@@ -1,3 +1,6 @@
+@extends('layouts.app')
+
+@section('content')
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,8 +11,10 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f0f0f0; /* Ubah warna background */
-            font-family: Arial, sans-serif; /* Ubah jenis font */
+            background-color: #f0f0f0;
+            /* Ubah warna background */
+            font-family: Arial, sans-serif;
+            /* Ubah jenis font */
         }
 
         .card-custom {
@@ -52,7 +57,7 @@
             padding: 20px;
             color: white;
             background: linear-gradient(#212121, #212121) padding-box,
-                        linear-gradient(145deg, transparent 35%, #e81cff, #40c9ff) border-box;
+                linear-gradient(145deg, transparent 35%, #e81cff, #40c9ff) border-box;
             border: 2px solid transparent;
             border-radius: 8px;
             display: flex;
@@ -62,24 +67,29 @@
             transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
             margin-bottom: 20px;
         }
+
         .seminar-card .main-content {
             flex: 1;
         }
+
         .seminar-card .header span {
             display: block;
             font-weight: 600;
             color: #717171;
             margin-bottom: 8px;
         }
+
         .seminar-card .heading {
             font-size: 24px;
             margin: 24px 0 16px;
             font-weight: 600;
         }
+
         .seminar-card .categories {
             display: flex;
             gap: 8px;
         }
+
         .seminar-card .categories span {
             background-color: #e81cff;
             padding: 4px 8px;
@@ -88,14 +98,17 @@
             font-size: 12px;
             border-radius: 50em;
         }
+
         .seminar-card .footer {
             font-weight: 600;
             color: #717171;
             margin-top: 16px;
         }
+
         .seminar-card:hover {
             rotate: 8deg;
         }
+
         .link-overflow {
             overflow: hidden;
             text-overflow: ellipsis;
@@ -165,21 +178,21 @@
 
         <h1 class="my-4 text-center">Seminar Terdekat</h1>
         @if (Auth::user()->role == 'PIC SeminarorWebinar')
-    <div class="table-container">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Topik</th>
-                    <th>Tanggal</th>
-                    <th>Lokasi</th>
-                    <th>Pembicara</th>
-                    <th>Instansi</th>
-                    <th>Status</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($seminars as $seminar)
+        <div class="table-container">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Topik</th>
+                        <th>Tanggal</th>
+                        <th>Lokasi</th>
+                        <th>Pembicara</th>
+                        <th>Instansi</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($seminars as $seminar)
                     <tr>
                         <td>{{ $seminar->topik }}</td>
                         <td>{{ $seminar->tanggal_seminar }}</td>
@@ -188,9 +201,9 @@
                         <td>{{ $seminar->asal_instansi }}</td>
                         <td>
                             @if ($seminar->is_paid)
-                                <span class="badge badge-success">Berbayar</span>
+                            <span class="badge badge-success">Berbayar</span>
                             @else
-                                <span class="badge badge-info">Gratis</span>
+                            <span class="badge badge-info">Gratis</span>
                             @endif
                         </td>
                         <td>
@@ -203,13 +216,13 @@
                             <a href="{{ route('seminar.show', $seminar->id) }}" class="btn btn-primary">View Details</a>
                         </td>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-@else
-    <div class="d-flex flex-wrap justify-content-center">
-        @foreach ($seminars as $seminar)
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        @else
+        <div class="d-flex flex-wrap justify-content-center">
+            @foreach ($seminars as $seminar)
             <div class="seminar-card m-2">
                 <div class="main-content">
                     <h5 class="seminar-title">{{ $seminar->topik }}</h5>
@@ -219,42 +232,51 @@
                     <p class="seminar-organization">Instansi: {{ $seminar->asal_instansi }}</p>
                     <a href="{{ $seminar->google_map_link }}" target="_blank" class="btn btn-link">Lokasi di Google Maps</a>
                     @if ($seminar->is_paid)
-                        <span class="badge badge-success">Berbayar</span>
+                    <span class="badge badge-success">Berbayar</span>
                     @else
-                        <span class="badge badge-info">Gratis</span>
+                    <span class="badge badge-info">Gratis</span>
                     @endif
                 </div>
                 @if (Auth::user()->role == 'PIC SeminarorWebinar')
-                    <a href="{{ route('seminar.edit', $seminar->id) }}" class="btn btn-info">Edit</a>
-                    <form action="{{ route('seminar.destroy', $seminar->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
+                <a href="{{ route('seminar.edit', $seminar->id) }}" class="btn btn-info">Edit</a>
+                <form action="{{ route('seminar.destroy', $seminar->id) }}" method="POST" style="display:inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
                 @endif
             </div>
             @if ($loop->iteration % 3 == 0)
-                <div class="w-100"></div> <!-- Break setelah setiap 3 kartu -->
+            <div class="w-100"></div> <!-- Break setelah setiap 3 kartu -->
             @endif
-        @endforeach
-    </div>
-@endif
+            @endforeach
+        </div>
+        @endif
 
-    <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        // Script untuk menampilkan waktu secara real-time
-        function updateTime() {
-            var now = new Date();
-            var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
-            var formattedTime = now.toLocaleDateString('id-ID', options);
-            document.getElementById('liveDateTime').innerText = formattedTime;
-        }
-        setInterval(updateTime, 1000);
-        updateTime();
-    </script>
+        <!-- Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script>
+            // Script untuk menampilkan waktu secara real-time
+            function updateTime() {
+                var now = new Date();
+                var options = {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                };
+                var formattedTime = now.toLocaleDateString('id-ID', options);
+                document.getElementById('liveDateTime').innerText = formattedTime;
+            }
+            setInterval(updateTime, 1000);
+            updateTime();
+        </script>
 </body>
 
 </html>
+@endsection
