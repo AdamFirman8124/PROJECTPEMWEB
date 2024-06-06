@@ -38,70 +38,13 @@
             margin-bottom: 10px;
         }
 
-        .seminar-card {
-            width: 320px;
-            height: auto;
+        .table-container {
+            margin-top: 20px;
             padding: 20px;
-            color: white;
-            background: linear-gradient(#212121, #212121) padding-box,
-                        linear-gradient(145deg, transparent 35%, #e81cff, #40c9ff) border-box;
-            border: 2px solid transparent;
+            background-color: #ffffff;
             border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            cursor: pointer;
-            transform-origin: right bottom;
-            transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
-            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-
-        .seminar-card .main-content {
-            flex: 1;
-        }
-
-        .seminar-card .header span {
-            display: block;
-            font-weight: 600;
-            color: #717171;
-            margin-bottom: 8px;
-        }
-
-        .seminar-card .heading {
-            font-size: 24px;
-            margin: 24px 0 16px;
-            font-weight: 600;
-        }
-
-        .seminar-card .categories {
-            display: flex;
-            gap: 8px;
-        }
-
-        .seminar-card .categories span {
-            background-color: #e81cff;
-            padding: 4px 8px;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 12px;
-            border-radius: 50em;
-        }
-
-        .seminar-card .footer {
-            font-weight: 600;
-            color: #717171;
-            margin-top: 16px;
-        }
-
-        .seminar-card:hover {
-            rotate: 8deg;
-        }
-
-        .link-overflow {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
     </style>
 </head>
 
@@ -141,13 +84,13 @@
                         <form method="POST" action="{{ route('seminar.store') }}">
                             @csrf
                             <h3>Formulir Pendaftaran Seminar</h3>
-                            <input type="text" name="tanggal_seminar" placeholder="Masukkan tanggal seminar" class="form-control form-control-custom">
+                            <input type="date" name="tanggal_seminar" placeholder="Masukkan tanggal seminar" class="form-control form-control-custom">
                             <input type="text" name="lokasi_seminar" placeholder="Masukkan lokasi seminar" class="form-control form-control-custom">
                             <input type="text" name="google_map_link" placeholder="Masukkan link Google Map lokasi seminar" class="form-control form-control-custom">
                             <input type="text" name="gambar_seminar" placeholder="Masukkan URL gambar seminar" class="form-control form-control-custom">
                             <label for="start_registration">Tanggal Mulai Pendaftaran:</label>
                             <input type="date" id="start_registration" name="start_registration" class="form-control form-control-custom">
-                            <label for="end_registration">Tanggal Akhir Pendaftaran:</label
+                            <label for="end_registration">Tanggal Akhir Pendaftaran:</label>
                             <input type="date" id="end_registration" name="end_registration" class="form-control form-control-custom">
                             <input type="text" name="pembicara" placeholder="Masukkan nama pembicara" class="form-control form-control-custom">
                             <input type="text" name="asal_instansi" placeholder="Masukkan asal instansi pembicara" class="form-control form-control-custom">
@@ -165,35 +108,48 @@
         </div>
 
         <h1 class="my-4 text-center">Seminar Terdekat</h1>
-        <div class="d-flex flex-wrap justify-content-center">
-            @foreach ($seminars as $seminar)
-                <div class="seminar-card m-2">
-                    <div class="main-content">
-                        <h5 class="seminar-title">{{ $seminar->topik }}</h5>
-                        <p class="seminar-date">{{ $seminar->tanggal_seminar }}</p>
-                        <p class="seminar-location">{{ $seminar->lokasi_seminar }}</p>
-                        <p class="seminar-speaker">Pembicara: {{ $seminar->pembicara }}</p>
-                        <p class="seminar-organization">Instansi: {{ $seminar->asal_instansi }}</p>
-                        <a href="{{ $seminar->google_map_link }}" target="_blank" class="btn btn-link">Lokasi di Google Maps</a>
-                        @if ($seminar->is_paid)
+        <div class="table-container">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Topik</th>
+                        <th>Tanggal</th>
+                        <th>Lokasi</th>
+                        <th>Pembicara</th>
+                        <th>Instansi</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($seminars as $seminar)
+                    <tr>
+                        <td>{{ $seminar->topik }}</td>
+                        <td>{{ $seminar->tanggal_seminar }}</td>
+                        <td>{{ $seminar->lokasi_seminar }}</td>
+                        <td>{{ $seminar->pembicara }}</td>
+                        <td>{{ $seminar->asal_instansi }}</td>
+                        <td>
+                            @if ($seminar->is_paid)
                             <span class="badge badge-success">Berbayar</span>
-                        @else
+                            @else
                             <span class="badge badge-info">Gratis</span>
-                        @endif
-                    </div>
-                    @if (Auth::user()->role == 'PIC SeminarorWebinar')
-                        <a href="{{ route('seminar.edit', $seminar->id) }}" class="btn btn-info">Edit</a>
-                        <form action="{{ route('seminar.destroy', $seminar->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
-                    @endif
-                </div>
-                @if ($loop->iteration % 3 == 0)
-                    <div class="w-100"></div> <!-- Break setelah setiap 3 kartu -->
-                @endif
-            @endforeach
+                            @endif
+                        </td>
+                        <td>
+                            @if (Auth::user()->role == 'PIC SeminarorWebinar')
+                            <a href="{{ route('seminar.edit', $seminar->id) }}" class="btn btn-info">Edit</a>
+                            <form action="{{ route('seminar.destroy', $seminar->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                            @endif
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
 
     <!-- Bootstrap JS -->
@@ -212,4 +168,5 @@
         updateTime();
     </script>
 </body>
+
 </html>
