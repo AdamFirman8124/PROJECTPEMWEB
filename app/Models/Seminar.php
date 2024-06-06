@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Schema;
 class Seminar extends Model
 {
     protected $fillable = [
-        'tanggal_seminar', 'lokasi_seminar', 'link_google_map', 'gambar_seminar', 'is_paid',
-        'mulai_pendaftaran', 'akhir_pendaftaran', 'pembicara', 'asal_instansi', 'topik'
+        'tanggal_seminar', 'lokasi_seminar', 'google_map_link', 'gambar_seminar', 'is_paid',
+        'start_registration', 'end_registration', 'pembicara', 'asal_instansi', 'topik'
     ];
 
     public function up()

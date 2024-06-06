@@ -125,9 +125,16 @@
                         <div id="liveDateTime"></div>
                     </div>
                 </div>
+                @if(Auth::user()->role == 'PIC SeminarorWebinar')
+                <div class="card card-custom">
+                    <div class="card-body">
+                        <button type="button" class="btn btn-primary" onclick="window.location.href='{{ route('seminar.rekap') }}';">Rekap Seminar</button>
+                    </div>
+                </div>
+                @endif
             </div>
 
-            <!-- Formulir di sebelah kanan -->
+            @if(Auth::user()->role == 'PIC SeminarorWebinar')
             <div class="col-md-8">
                 <div class="card card-custom">
                     <div class="card-body">
@@ -139,9 +146,9 @@
                             <input type="text" name="google_map_link" placeholder="Masukkan link Google Map lokasi seminar" class="form-control form-control-custom">
                             <input type="text" name="gambar_seminar" placeholder="Masukkan URL gambar seminar" class="form-control form-control-custom">
                             <label for="start_registration">Tanggal Mulai Pendaftaran:</label>
-                            <input type="date" id="start_registration" name="start_registration" placeholder="Masukkan tanggal mulai pendaftaran" class="form-control form-control-custom">
-                            <label for="end_registration">Tanggal Akhir Pendaftaran:</label>
-                            <input type="date" id="end_registration" name="end_registration" placeholder="Masukkan tanggal akhir pendaftaran" class="form-control form-control-custom">
+                            <input type="date" id="start_registration" name="start_registration" class="form-control form-control-custom">
+                            <label for="end_registration">Tanggal Akhir Pendaftaran:</label
+                            <input type="date" id="end_registration" name="end_registration" class="form-control form-control-custom">
                             <input type="text" name="pembicara" placeholder="Masukkan nama pembicara" class="form-control form-control-custom">
                             <input type="text" name="asal_instansi" placeholder="Masukkan asal instansi pembicara" class="form-control form-control-custom">
                             <input type="text" name="topik" placeholder="Masukkan topik seminar" class="form-control form-control-custom">
@@ -154,6 +161,7 @@
                     </div>
                 </div>
             </div>
+            @endif
         </div>
 
         <h1 class="my-4 text-center">Seminar Terdekat</h1>
@@ -161,28 +169,26 @@
             @foreach ($seminars as $seminar)
                 <div class="seminar-card m-2">
                     <div class="main-content">
-                        <div class="header">
-                            <span>Gambar: <img src="{{ $seminar->gambar_seminar }}" alt="Gambar Seminar" style="max-width: 100%; height: auto;"></span>
-                            <span>Tanggal: {{ $seminar->tanggal_seminar }}</span>
-                            <span>Lokasi: {{ $seminar->lokasi_seminar }}</span>
-                            <span class="link-overflow">Link: <a href="{{ $seminar->google_map_link }}" target="_blank">{{ $seminar->google_map_link }}</a></span>
-                            <span>Status: {{ $seminar->is_paid ? 'Berbayar' : 'Gratis' }}</span>
-                            <span>Mulai Pendaftaran: {{ $seminar->start_registration }}</span>
-                            <span>Akhir Pendaftaran: {{ $seminar->end_registration }}</span>
-                            <span>Pembicara: {{ $seminar->pembicara }}</span>
-                            <span>Asal Instansi: {{ $seminar->asal_instansi }}</span>
-                        </div>
-                        <div class="heading">{{ $seminar->topik }}</div>
+                        <h5 class="seminar-title">{{ $seminar->topik }}</h5>
+                        <p class="seminar-date">{{ $seminar->tanggal_seminar }}</p>
+                        <p class="seminar-location">{{ $seminar->lokasi_seminar }}</p>
+                        <p class="seminar-speaker">Pembicara: {{ $seminar->pembicara }}</p>
+                        <p class="seminar-organization">Instansi: {{ $seminar->asal_instansi }}</p>
+                        <a href="{{ $seminar->google_map_link }}" target="_blank" class="btn btn-link">Lokasi di Google Maps</a>
+                        @if ($seminar->is_paid)
+                            <span class="badge badge-success">Berbayar</span>
+                        @else
+                            <span class="badge badge-info">Gratis</span>
+                        @endif
                     </div>
-                    <div class="footer">
-                        <a href="{{ route('seminar.show', $seminar->id) }}" class="rounded-md bg-slate-300 hover:bg-slate-600 hover:text-slate-200 duration-300 p-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                    </div>
+                    @if (Auth::user()->role == 'PIC SeminarorWebinar')
+                        <a href="{{ route('seminar.edit', $seminar->id) }}" class="btn btn-info">Edit</a>
+                        <form action="{{ route('seminar.destroy', $seminar->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    @endif
                 </div>
                 @if ($loop->iteration % 3 == 0)
                     <div class="w-100"></div> <!-- Break setelah setiap 3 kartu -->
@@ -206,5 +212,4 @@
         updateTime();
     </script>
 </body>
-</html>
 </html>

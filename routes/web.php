@@ -32,3 +32,13 @@ Route::get('/seminar_materials/{seminar_material}/edit',[SeminarMaterialsControl
 Route::put('/seminar_materials/{seminar_material}',[SeminarMaterialsController::class, 'update'])->name('seminar_materials.update'); 
 
 Route::delete('/seminar_materials/{seminar_material}',[SeminarMaterialsController::class, 'destroy'])->name('seminar_materials.destroy');
+
+Route::get('/seminar/rekap', [SeminarController::class, 'rekap'])->name('seminar.rekap');
+
+Route::post('/seminar/register', [SeminarController::class, 'register'])->name('seminar.register');
+
+Route::get('/seminar/{seminar}/edit', [SeminarController::class, 'edit'])->name('seminar.edit');
+
+Route::put('/seminar/{seminar}', [SeminarController::class, 'update'])->name('seminar.update');
+
+Route::delete('/seminar/{seminar}', [SeminarController::class, 'destroy'])->name('seminar.destroy');
