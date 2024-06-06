@@ -12,9 +12,7 @@
     <style>
         body {
             background-color: #f0f0f0;
-            /* Ubah warna background */
             font-family: Arial, sans-serif;
-            /* Ubah jenis font */
         }
 
         .card-custom {
@@ -120,7 +118,6 @@
 <body>
     <div class="container">
         <div class="row">
-            <!-- Kartu di sebelah kiri -->
             <div class="col-md-4">
                 <div class="card card-custom text-center">
                     <div class="card-body">
