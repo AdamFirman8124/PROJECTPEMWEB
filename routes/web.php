@@ -5,22 +5,23 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\SeminarController;
 use App\Http\Controllers\SeminarMaterialsController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\User;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PendaftaranController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::post('/seminar/store', [SeminarController::class, 'store'])->name('seminar.store');
 
 Route::get('/seminars', [SeminarController::class, 'index'])->name('seminars.index');
 
-Route::get('/seminar/{id}', [App\Http\Controllers\SeminarController::class, 'show'])->name('seminar.show');
+Route::get('/seminar/{id}', [SeminarController::class, 'show'])->name('seminar.show');
 
 Route::get('/seminar_materials',[SeminarMaterialsController::class, 'index'])->name('seminar_materials.index');
 
@@ -46,8 +47,6 @@ Route::put('/seminar/{seminar}', [SeminarController::class, 'update'])->name('se
 
 Route::delete('/seminar/{seminar}', [SeminarController::class, 'destroy'])->name('seminar.destroy');
 
-Route::get('/seminar/{id}', [SeminarController::class, 'show'])->name('seminar.show');
-
 Route::get('/seminars/rekap-peserta', [SeminarController::class, 'rekapPeserta'])->name('seminars.rekap-peserta');
 
 Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
@@ -57,3 +56,5 @@ Route::get('/users', [UserController::class, 'index'])->name('users.index');
 Route::get('/daftar', [PendaftaranController::class, 'create'])->name('daftar.create');
 
 Route::post('/daftar', [PendaftaranController::class, 'store'])->name('daftar.store');
+
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');

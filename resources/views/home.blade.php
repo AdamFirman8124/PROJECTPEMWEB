@@ -93,7 +93,7 @@
                 <div class="card card-custom text-center">
                     <div class="card-body">
                         <h5 class="card-title">Selamat datang, {{ Auth::user()->name }}</h5>
-                        <form method="POST" action="{{ route('logout') }}">
+                        <form method="POST" action="{{ route('logout') }}" onsubmit="console.log('Logout attempt by user: {{ Auth::user()->name }}'); return true;">
                             @csrf
                             <button type="submit" class="btn btn-logout">{{ __('Logout') }}</button>
                         </form>
@@ -185,7 +185,7 @@
         <div class="d-flex flex-wrap justify-content-center">
             @foreach ($seminars as $seminar)
             @if (Auth::user()->role == 'Peserta')
-                <a href="{{ route('daftar.create') }}" class="stretched-link">Daftar</a>
+                <a href="{{ route('daftar.create') }}" class="stretched-link">
             @endif
             <div class="seminar-card m-2">
                 <div class="main-content">
