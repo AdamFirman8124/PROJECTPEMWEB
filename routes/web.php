@@ -6,6 +6,7 @@ use App\Http\Controllers\SeminarController;
 use App\Http\Controllers\SeminarMaterialsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\User;
+use App\Http\Controllers\CertificateController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -53,4 +54,6 @@ Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.de
 
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
-Route::resource('certificates', 'CertificateController');
+Route::resource('certificates', CertificateController::class);
+
+
