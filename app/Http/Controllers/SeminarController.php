@@ -68,4 +68,10 @@ class SeminarController extends Controller
         return redirect()->route('home')->with('success', 'Seminar berhasil diperbarui');
     }
 
+    public function destroy($id)
+    {
+        $seminar = Seminar::findOrFail($id);
+        $seminar->delete();
+        return redirect()->route('home')->with('success', 'Seminar berhasil dihapus');
+    }
 }
