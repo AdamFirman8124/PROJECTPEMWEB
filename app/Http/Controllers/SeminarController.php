@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Seminar;
 use Illuminate\Http\Request;
+use App\Http\Controllers\SeminarMaterialsController;
+use App\Models\User;
 use Illuminate\Support\Facades\Log; // Menambahkan use statement untuk Log
 
 class SeminarController extends Controller
@@ -45,19 +47,11 @@ class SeminarController extends Controller
         return redirect()->back()->with('success', 'Pendaftaran seminar berhasil');
     }
 
-    public function rekap()
+
+    public function rekapPeserta()
     {
-        // Logika untuk mengumpulkan data rekap seminar
-        $seminars = Seminar::select('tanggal_seminar', 'lokasi_seminar', 'pembicara', 'topik')
-                           ->get();
-        $jumlahPeserta = Seminar::sum('jumlah_peserta');
-        $jumlahSeminar = Seminar::count();
-        $dataRekap = [
-            'total_seminar' => $jumlahSeminar,
-            'total_peserta' => $jumlahPeserta,
-            'detail_seminar' => $seminars
-        ];
-        return view('seminar.rekap'); // Pastikan Anda memiliki view yang sesuai
+        $users = User::all(); // Mengambil semua data seminar
+        return view('seminars.rekap-peserta', compact('users')); // Mengirim data ke view
     }
 
     public function edit($id)
@@ -74,10 +68,4 @@ class SeminarController extends Controller
         return redirect()->route('home')->with('success', 'Seminar berhasil diperbarui');
     }
 
-    public function destroy($id)
-    {
-        $seminar = Seminar::findOrFail($id);
-        $seminar->delete();
-        return redirect()->route('home')->with('success', 'Seminar berhasil dihapus');
-    }
 }

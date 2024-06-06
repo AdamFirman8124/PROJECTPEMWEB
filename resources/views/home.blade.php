@@ -130,6 +130,14 @@
                         <button type="button" class="btn btn-primary" onclick="window.location.href='{{ route('seminar.rekap') }}';">Rekap Seminar</button>
                     </div>
                 </div>
+                @if(Auth::user()->role == 'PIC SeminarorWebinar')
+<div class="card card-custom">
+    <div class="card-body">
+        <button type="button" class="btn btn-primary" onclick="window.location.href='{{ route('seminars.rekap-peserta') }}';">Rekap Peserta</button>
+    </div>
+</div>
+@endif
+
                 @endif
             </div>
 

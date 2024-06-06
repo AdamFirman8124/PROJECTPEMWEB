@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\SeminarController;
 use App\Http\Controllers\SeminarMaterialsController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\User;
 
 Route::get('/', function () {
     return view('welcome');
@@ -44,4 +46,10 @@ Route::put('/seminar/{seminar}', [SeminarController::class, 'update'])->name('se
 Route::delete('/seminar/{seminar}', [SeminarController::class, 'destroy'])->name('seminar.destroy');
 
 Route::get('/seminar/{id}', [SeminarController::class, 'show'])->name('seminar.show');
+
+Route::get('/seminars/rekap-peserta', [SeminarController::class, 'rekapPeserta'])->name('seminars.rekap-peserta');
+
+Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
