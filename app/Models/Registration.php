@@ -20,3 +20,4 @@ class Registration extends Model
         'info'
     ];
 }
+
