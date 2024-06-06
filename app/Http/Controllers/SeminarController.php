@@ -35,9 +35,9 @@ class SeminarController extends Controller
     public function show($id)
     {
         $seminar = Seminar::findOrFail($id);
-        return response()->json($seminar);
+        return view('seminar_materials.show', compact('seminar'));
     }
-
+    
     public function register(Request $request)
     {
         $seminar = Seminar::findOrFail($request->seminar_id);

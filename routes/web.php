@@ -42,3 +42,6 @@ Route::get('/seminar/{seminar}/edit', [SeminarController::class, 'edit'])->name(
 Route::put('/seminar/{seminar}', [SeminarController::class, 'update'])->name('seminar.update');
 
 Route::delete('/seminar/{seminar}', [SeminarController::class, 'destroy'])->name('seminar.destroy');
+
+Route::get('/seminar/{id}', [SeminarController::class, 'show'])->name('seminar.show');
+

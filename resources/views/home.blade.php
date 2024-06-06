@@ -144,6 +144,7 @@
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">Delete</button>
                             </form>
+                            <a href="{{ route('seminar.show', $seminar->id) }}" class="btn btn-primary">View Details</a>
                             @endif
                         </td>
                     </tr>
