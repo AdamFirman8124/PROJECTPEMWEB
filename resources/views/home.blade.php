@@ -111,13 +111,13 @@
             <div class="col-md-8">
                 <div class="card card-custom">
                     <div class="card-body">
-                        <form method="POST" action="{{ route('seminar.store') }}">
+                        <form method="POST" action="{{ route('seminar.store') }}" enctype="multipart/form-data">
                             @csrf
                             <h3>Formulir Pendaftaran Seminar</h3>
                             <input type="date" name="tanggal_seminar" placeholder="Masukkan tanggal seminar" class="form-control form-control-custom">
                             <input type="text" name="lokasi_seminar" placeholder="Masukkan lokasi seminar" class="form-control form-control-custom">
-                            <input type="text" name="google_map_link" placeholder="Masukkan link Google Map lokasi seminar" class="form-control form-control-custom">
-                            <input type="text" name="gambar_seminar" placeholder="Masukkan URL gambar seminar" class="form-control form-control-custom">
+                            <input type="url" name="google_map_link" placeholder="Masukkan link Google Map lokasi seminar" class="form-control form-control-custom">
+                            <input type="file" name="gambar_seminar" class="form-control form-control-custom">
                             <label for="start_registration">Tanggal Mulai Pendaftaran:</label>
                             <input type="date" id="start_registration" name="start_registration" class="form-control form-control-custom">
                             <label for="end_registration">Tanggal Akhir Pendaftaran:</label>
@@ -129,6 +129,8 @@
                                 <input type="checkbox" name="is_paid" value="1" class="form-check-input" id="isPaidCheck">
                                 <label class="form-check-label" for="isPaidCheck">Centang jika seminar ini berbayar</label>
                             </div>
+                            <label for="materi">Materi:</label>
+                            <input type="file" id="materi" name="materi" class="form-control form-control-custom">
                             <button type="submit" class="btn btn-primary">Kirim</button>
                         </form>
                     </div>
@@ -185,7 +187,7 @@
         <div class="d-flex flex-wrap justify-content-center">
             @foreach ($seminars as $seminar)
             <div class="seminar-card m-2">
-                <a href="{{ route('daftar.create') }}" class="stretched-link">
+                <a >
                     <div class="main-content">
                         <h5>{{ $seminar->topik }}</h5>
                         <p>{{ $seminar->tanggal_seminar }}</p>
@@ -198,6 +200,7 @@
                         @else
                         <span class="badge badge-info">Gratis</span>
                         @endif
+                        <span>Materi: <a href="{{ asset('storage/materi/' . $seminar->materi) }}" target="_blank">Download Materi</a></span>
                     </div>
                 </a>
                 @if (Auth::user()->role == 'PIC SeminarorWebinar')
@@ -241,6 +244,18 @@
         </script>
         <script>
             console.log("Logout URL: '{{ route('logout') }}'");
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const seminarForm = document.querySelector('form[action="{{ route('seminar.store') }}"]');
+                seminarForm.addEventListener('submit', function(event) {
+
+                    if (!googleMapPattern.test(googleMapLink)) {
+                        alert('Masukkan link Google Map yang valid.');
+                        event.preventDefault(); // Menghentikan pengiriman formulir
+                    }
+                });
+            });
         </script>
 </body>
 </html>

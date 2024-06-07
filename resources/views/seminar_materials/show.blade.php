@@ -46,6 +46,16 @@
                     <th>Gambar</th>
                     <td><img src="{{ $seminar->gambar_seminar }}" alt="Seminar Image" class="img-fluid"></td>
                 </tr>
+                <tr>
+                    <th>Materi Seminar</th>
+                    <td>
+                        @if($seminar->materi)
+                            <a href="{{ asset('storage/materi/' . $seminar->materi) }}" target="_blank">Download Materi</a>
+                        @else
+                            Tidak ada materi yang tersedia
+                        @endif
+                    </td>
+                </tr>
             </table>
             <a href="{{ route('home', $seminar->id) }}" class="btn btn-primary">Kembali ke Daftar Seminar</a>
         </div>

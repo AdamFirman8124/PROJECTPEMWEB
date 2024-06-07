@@ -6,7 +6,8 @@ use App\Models\Seminar;
 use Illuminate\Http\Request;
 use App\Http\Controllers\SeminarMaterialsController;
 use App\Models\User;
-use Illuminate\Support\Facades\Log; // Menambahkan use statement untuk Log
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\storage;
 
 class SeminarController extends Controller
 {
@@ -18,21 +19,41 @@ class SeminarController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'gambar_seminar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'materi' => 'required|file|mimes:pdf,doc,docx,ppt,pptx|max:2048',
+        ]);
+
         $seminar = new Seminar();
+
         $seminar->tanggal_seminar = $request->input('tanggal_seminar');
         $seminar->lokasi_seminar = $request->input('lokasi_seminar');
         $seminar->google_map_link = $request->input('google_map_link');
-        $seminar->gambar_seminar = $request->input('gambar_seminar');
         $seminar->is_paid = $request->input('is_paid');
         $seminar->start_registration = $request->input('start_registration');
         $seminar->end_registration = $request->input('end_registration');
         $seminar->pembicara = $request->input('pembicara');
         $seminar->asal_instansi = $request->input('asal_instansi');
         $seminar->topik = $request->input('topik');
+
+        if ($request->hasFile('gambar_seminar')) {
+            $gambarFile = $request->file('gambar_seminar');
+            $gambarName = time() . '_' . $gambarFile->getClientOriginalName();
+            $gambarPath = $gambarFile->storeAs('public/seminar_images', $gambarName);
+            $seminar->gambar_seminar = $gambarName;
+        }
+
+        if ($request->hasFile('materi')) {
+            $materiFile = $request->file('materi');
+            $materiName = time() . '_' . $materiFile->getClientOriginalName();
+            $materiPath = $materiFile->storeAs('public/materi', $materiName);
+            $seminar->materi = $materiName;
+        }
+
         $seminar->save();
 
-        return redirect()->back()->with('success', 'Seminar berhasil ditambahkan');
-    }
+            return redirect()->back()->with('success', 'Seminar berhasil ditambahkan');
+        }
 
     public function show($id)
     {

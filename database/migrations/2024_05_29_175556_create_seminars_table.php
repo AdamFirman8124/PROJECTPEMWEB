@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('pembicara');
             $table->string('asal_instansi');
             $table->string('topik');
+            $table->string('materi')->nullable();
             $table->timestamps();
         });
     }
