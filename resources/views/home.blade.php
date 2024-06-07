@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
             background-color: #f0f0f0;
@@ -171,11 +172,7 @@
                         </td>
                         <td>
                             <a href="{{ route('seminar.edit', $seminar->id) }}" class="btn btn-info">Edit</a>
-                            <form action="{{ route('seminar.destroy', $seminar->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
+                            <button type="button" class="btn btn-danger" onclick="confirmDeletion({{ $seminar->id }})">Delete</button>
                             <a href="{{ route('seminar.show', $seminar->id) }}" class="btn btn-primary">View Details</a>
                         </td>
                     </tr>
@@ -205,11 +202,7 @@
                 </a>
                 @if (Auth::user()->role == 'PIC SeminarorWebinar')
                 <a href="{{ route('seminar.edit', $seminar->id) }}" class="btn btn-info">Edit</a>
-                <form action="{{ route('seminar.destroy', $seminar->id) }}" method="POST" style="display:inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
+                <button type="button" class="btn btn-danger" onclick="confirmDeletion({{ $seminar->id }})">Delete</button>
                 @endif
             </div>
             @if ($loop->iteration % 3 == 0)
@@ -256,6 +249,43 @@
                     }
                 });
             });
+        </script>
+        <script>
+            var baseUrl = "{{ route('seminar.destroy', ['seminar' => 'tempId']) }}".replace('tempId', '');
+            function confirmDeletion(seminarId) {
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Data ini akan dihapus secara permanen!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, hapus saja!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Membuat form penghapusan dan mengirimkannya
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = baseUrl + seminarId; // Menggunakan baseUrl dan menambahkan seminarId
+                        form.style.display = 'none';
+
+                        const csrf = document.createElement('input');
+                        csrf.type = 'hidden';
+                        csrf.name = '_token';
+                        csrf.value = '{{ csrf_token() }}';
+                        form.appendChild(csrf);
+
+                        const method = document.createElement('input');
+                        method.type = 'hidden';
+                        method.name = '_method';
+                        method.value = 'DELETE';
+                        form.appendChild(method);
+
+                        document.body.appendChild(form);
+                        form.submit();
+                    }
+                })
+            }
         </script>
 </body>
 </html>
