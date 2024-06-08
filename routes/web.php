@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\SpeakerController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -17,7 +18,9 @@ Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::post('/seminar/store', [SeminarController::class, 'store'])->name('seminar.store');
+Route::post('/seminar', [SeminarController::class, 'store'])->name('seminar.store');
+
+Route::get('/seminar', [SeminarController::class, 'index'])->name('seminar.index');
 
 Route::get('/seminars', [SeminarController::class, 'index'])->name('seminars.index');
 
@@ -61,7 +64,6 @@ Route::get('/registrations', [RegistrationController::class, 'index'])->name('re
 
 Route::delete('/registrations/{id}', [RegistrationController::class, 'destroy'])->name('registrations.destroy');
 
-
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Route for registration form and storing registration
@@ -74,3 +76,10 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 // Route::middleware(['auth', 'admin'])->group(function () {
 //     Route::get('/registrations', [RegistrationController::class, 'index'])->name('registrations.index');
 // });
+
+Route::get('/seminars/create', [SeminarController::class, 'create'])->name('seminars.create');
+
+Route::get('/seminars/certificate', [SeminarController::class, 'certificate'])->name('seminars.certificate');
+
+Route::post('/seminar/upload-certificate', [SeminarController::class, 'uploadCertificate'])->name('seminar.uploadCertificate');
+

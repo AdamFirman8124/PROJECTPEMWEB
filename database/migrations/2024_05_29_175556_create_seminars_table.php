@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('seminars', function (Blueprint $table) {
             $table->id();
-            $table->string('tanggal_seminar');
+            $table->string('tanggal_seminar')->default(date('Y-m-d'));
             $table->string('lokasi_seminar');
             $table->string('google_map_link')->nullable();
             $table->string('gambar_seminar')->nullable();

@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+<body style="background-color: #e9ecef;">
+    <div class="container" style="margin-top: 60px;">
         <h1 class="my-4 text-center">Data User</h1>
 
         <div class="table-container">
@@ -24,7 +25,7 @@
                                 <form action="{{ route('users.destroy', $user->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus pengguna ini?')">Delete</button>
+                                    <button type="button" class="btn btn-danger" onclick="confirmDelete(this)">Delete</button>
                                 </form>
                             </td>
                         </tr>
@@ -33,6 +34,23 @@
             </table>
         </div>
         <a href="{{ route('home') }}" class="btn btn-primary">Kembali ke Beranda</a>
-
     </div>
+    <script>
+        function confirmDelete(button) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Anda tidak akan dapat mengembalikan ini!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus saja!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    button.closest('form').submit(); // Submit form jika pengguna mengkonfirmasi
+                }
+            });
+        }
+    </script>
+</body>
 @endsection

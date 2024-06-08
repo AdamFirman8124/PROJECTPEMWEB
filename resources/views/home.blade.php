@@ -12,7 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
-            background-color: #f0f0f0;
+            background-color: #e9ecef;
             font-family: Arial, sans-serif;
         }
 
@@ -22,6 +22,7 @@
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             background-color: #ffffff;
+            margin-top: 5em;
         }
 
         .btn-logout {
@@ -85,12 +86,15 @@
             white-space: nowrap;
         }
     </style>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css' rel='stylesheet' />
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js'></script>
 </head>
 
 <body>
     <div class="container">
-        <div class="row">
-            <div class="col-md-4">
+        <div class="row align-items-center">
+            <div class="col-md-6">
                 <div class="card card-custom text-center">
                     <div class="card-body">
                         <h5 class="card-title">Selamat datang, {{ Auth::user()->name }}</h5>
@@ -100,45 +104,50 @@
                         </form>
                     </div>
                 </div>
-
-                <div class="card card-custom">
-                    <div class="card-body">
-                        <div id="liveDateTime"></div>
-                    </div>
+            </div>
+            <div class="col-md-6">
+                <link href="{{ asset('css/calendar/custom.css') }}" rel="stylesheet">
+                <div class="calendar-card">
+                    @if (Auth::user()->role != 'PIC SeminarorWebinar')
+                        <div class="calendar-card-details">
+                            <p class="calendar-text-title">Arahkan mouse anda kesini untuk melihat daftar seminar yang anda ikuti</p>
+                            <p class="calendar-text-calendar" id="liveDateTime"></p>
+                        </div>
+                        <button id="checkRegistration" class="calendar-card-button" data-toggle="modal" data-target="#registrationModal">Lihat Daftar</button>
+                    @else
+                        <p class="calendar-text-calendar text-center" style="margin-top: 40px;" id="liveDateTime"></p>
+                    @endif
                 </div>
             </div>
-
-            @if(Auth::user()->role == 'PIC SeminarorWebinar')
-            <div class="col-md-8">
-                <div class="card card-custom">
-                    <div class="card-body">
-                        <form method="POST" action="{{ route('seminar.store') }}" enctype="multipart/form-data">
-                            @csrf
-                            <h3>Formulir Pendaftaran Seminar</h3>
-                            <input type="date" name="tanggal_seminar" placeholder="Masukkan tanggal seminar" class="form-control form-control-custom">
-                            <input type="text" name="lokasi_seminar" placeholder="Masukkan lokasi seminar" class="form-control form-control-custom">
-                            <input type="url" name="google_map_link" placeholder="Masukkan link Google Map lokasi seminar" class="form-control form-control-custom">
-                            <input type="file" name="gambar_seminar" class="form-control form-control-custom">
-                            <label for="start_registration">Tanggal Mulai Pendaftaran:</label>
-                            <input type="date" id="start_registration" name="start_registration" class="form-control form-control-custom">
-                            <label for="end_registration">Tanggal Akhir Pendaftaran:</label>
-                            <input type="date" id="end_registration" name="end_registration" class="form-control form-control-custom">
-                            <input type="text" name="pembicara" placeholder="Masukkan nama pembicara" class="form-control form-control-custom">
-                            <input type="text" name="asal_instansi" placeholder="Masukkan asal instansi pembicara" class="form-control form-control-custom">
-                            <input type="text" name="topik" placeholder="Masukkan topik seminar" class="form-control form-control-custom">
-                            <div class="form-check">
-                                <input type="checkbox" name="is_paid" value="1" class="form-check-input" id="isPaidCheck">
-                                <label class="form-check-label" for="isPaidCheck">Centang jika seminar ini berbayar</label>
-                            </div>
-                            <label for="materi">Materi:</label>
-                            <input type="file" id="materi" name="materi" class="form-control form-control-custom">
-                            <button type="submit" class="btn btn-primary">Kirim</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            @endif
         </div>
+        @php
+    $registrations = \App\Models\Registration::where('user_id', auth()->id())->with('seminar')->get();
+@endphp
+
+<!-- Modal -->
+<div class="modal fade" id="registrationModal" tabindex="-1" aria-labelledby="registrationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registrationModalLabel">Daftar Seminar Yang Telah Diikuti</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Tempat untuk menampilkan daftar seminar yang telah diikuti -->
+                <ul>
+                    @foreach($registrations as $registration)
+                    <li>{{ $registration->seminar->topik }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
         <h1 class="my-4 text-center">Seminar Terdekat</h1>
         @if (Auth::user()->role == 'PIC SeminarorWebinar')
@@ -172,7 +181,7 @@
                         </td>
                         <td>
                             <a href="{{ route('seminar.edit', $seminar->id) }}" class="btn btn-info">Edit</a>
-                            <button type="button" class="btn btn-danger" onclick="confirmDeletion({{ $seminar->id }})">Delete</button>
+                            <button type="button" class="btn btn-danger" onclick="confirmDeletion('{{ $seminar->id }}')">Delete</button>
                             <a href="{{ route('seminar.show', $seminar->id) }}" class="btn btn-primary">View Details</a>
                         </td>
                     </tr>
@@ -185,7 +194,7 @@
             @foreach ($seminars as $seminar)
             <div class="seminar-card m-2">
                 <a >
-                    <div class="main-content">
+                    <div class="main-content d-flex flex-column">
                         <h5>{{ $seminar->topik }}</h5>
                         <p>{{ $seminar->tanggal_seminar }}</p>
                         <p>{{ $seminar->lokasi_seminar }}</p>
@@ -197,12 +206,13 @@
                         @else
                         <span class="badge badge-info">Gratis</span>
                         @endif
-                        <span>Materi: <a href="{{ asset('storage/materi/' . $seminar->materi) }}" target="_blank">Download Materi</a></span>
+                        <span><a href="{{ asset('storage/materi/' . $seminar->materi) }}" target="_blank">Download Materi</a></span>
+                        <a href="/daftar" class="btn btn-primary">Daftar Seminar</a>
                     </div>
                 </a>
                 @if (Auth::user()->role == 'PIC SeminarorWebinar')
                 <a href="{{ route('seminar.edit', $seminar->id) }}" class="btn btn-info">Edit</a>
-                <button type="button" class="btn btn-danger" onclick="confirmDeletion({{ $seminar->id }})">Delete</button>
+                <button type="button" class="btn btn-danger" onclick="confirmDeletion('{{ $seminar->id }}')">Delete</button>
                 @endif
             </div>
             @if ($loop->iteration % 3 == 0)
@@ -234,13 +244,11 @@
             }
             setInterval(updateTime, 1000);
             updateTime();
-        </script>
-        <script>
+
             console.log("Logout URL: '{{ route('logout') }}'");
-        </script>
-        <script>
+
             document.addEventListener('DOMContentLoaded', function() {
-                const seminarForm = document.querySelector('form[action="{{ route('seminar.store') }}"]');
+                const seminarForm = document.querySelector('form[action="' + "{{ route('seminar.store') }}" + '"]');
                 seminarForm.addEventListener('submit', function(event) {
 
                     if (!googleMapPattern.test(googleMapLink)) {
@@ -249,8 +257,6 @@
                     }
                 });
             });
-        </script>
-        <script>
             var baseUrl = "{{ route('seminar.destroy', ['seminar' => 'tempId']) }}".replace('tempId', '');
             function confirmDeletion(seminarId) {
                 Swal.fire({
@@ -286,7 +292,23 @@
                     }
                 })
             }
+
+            document.getElementById('checkRegistration').addEventListener('click', function() {
+                // Misalkan Anda memiliki endpoint API untuk memeriksa pendaftaran
+                fetch('/api/check-registration')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.registered) {
+                            alert('Anda sudah terdaftar di seminar.');
+                        } else {
+                            alert('Anda belum terdaftar di seminar.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            });
         </script>
-</body>
+    </body>
 </html>
 @endsection

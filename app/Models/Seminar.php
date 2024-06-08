@@ -10,7 +10,8 @@ class Seminar extends Model
 {
     protected $fillable = [
         'tanggal_seminar', 'lokasi_seminar', 'google_map_link', 'gambar_seminar', 'is_paid',
-        'start_registration', 'end_registration', 'pembicara', 'asal_instansi', 'topik'
+        'start_registration', 'end_registration', 'pembicara', 'asal_instansi', 'topik',
+        'certificate_template'
     ];
 
     public function up()
@@ -27,6 +28,7 @@ class Seminar extends Model
             $table->string('asal_instansi');
             $table->string('topik');
             $table->boolean('is_paid')->default(false);
+            $table->string('certificate_template')->nullable();
             $table->timestamps();
         });
     }

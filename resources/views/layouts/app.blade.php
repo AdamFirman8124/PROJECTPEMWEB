@@ -24,30 +24,34 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                        <button type="button" class="btn btn-link nav-link" onclick="window.location.href='{{ route('home') }}'">Home</button>
+                    <li class="nav-item">
+                        <a class="btn btn-link nav-link" href="{{ route('home') }}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <button type="button" class="btn btn-link nav-link" onclick="window.location.href='{{ route('registrations.index') }}'">Rekap Peserta</button>
+                        <a class="btn btn-link nav-link" href="{{ route('seminars.create') }}">Tambah Seminar</a>
                     </li>
                     <li class="nav-item">
-                        <button type="button" class="btn btn-link nav-link" onclick="window.location.href='{{ route('home') }}'">Rekap Seminar</button>
+                        <a class="btn btn-link nav-link" href="{{ route('registrations.index') }}">Rekap Peserta</a>
                     </li>
                     <li class="nav-item">
-                        <button type="button" class="btn btn-link nav-link" onclick="window.location.href='{{ route('seminars.rekap-peserta') }}'">Data User</button>
+                        <a class="btn btn-link nav-link" href="{{ route('seminars.rekap-peserta') }}">Data User</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-link nav-link" href="{{ route('seminars.certificate') }}">Upload Sertifikat</a>
                     </li>
                 </ul>
             </div>
         </nav>
     @endif
 
-    <div class="container fixed-top-spacing">
+    <div>
         @yield('content')
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>

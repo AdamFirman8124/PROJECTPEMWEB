@@ -67,4 +67,22 @@ class RegistrationController extends Controller
         $registration->delete();
         return redirect()->back()->with('success', 'Data berhasil dihapus');
     }
+    public function checkRegistration()
+    {
+        try {
+            $user = auth()->user();
+            $isRegistered = Registration::where('user_id', $user->id)->exists(); // Memeriksa apakah pengguna sudah terdaftar
+            return response()->json(['registered' => $isRegistered]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+    public function showRegistrations()
+{
+    $user_id = auth()->id();
+    $registrations = Registration::where('user_id', $user_id)->with('seminar')->get();
+    return view('home', compact('registrations'));
 }
+
+}
+
