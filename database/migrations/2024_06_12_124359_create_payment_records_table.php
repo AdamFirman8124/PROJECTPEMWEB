@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('seminars', function (Blueprint $table) {
-            $table->string('certificate_template')->nullable();
+        Schema::create('payment_records', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('registration_id')->constrained()->onDelete('cascade');
+            $table->string('payment_proof_path');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('seminars', function (Blueprint $table) {
-            $table->dropColumn('certificate_template');
-        });
+        Schema::dropIfExists('payment_records');
     }
 };

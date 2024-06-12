@@ -120,6 +120,7 @@
                     <input type="checkbox" name="is_paid" value="1" class="form-check-input" id="isPaidCheck">
                     <label class="form-check-label" for="isPaidCheck">Centang jika seminar ini berbayar</label>
                 </div>
+            
                 
                 <div style="margin-bottom: 15px;">
                     <label for="materi">Materi:</label>

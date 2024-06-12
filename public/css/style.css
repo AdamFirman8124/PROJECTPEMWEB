@@ -1,0 +1,70 @@
+
+        body {
+            background-color: #e9ecef;
+            font-family: Arial, sans-serif;
+        }
+
+        .card-custom {
+            margin: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            margin-top: 5em;
+        }
+
+        .btn-logout {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-logout:hover {
+            background-color: #c82333;
+        }
+
+        .form-control-custom {
+            margin-bottom: 10px;
+        }
+
+        .table-container {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .seminar-card {
+            box-sizing: border-box;
+            width: 350px;
+            height: auto;
+            background: #ffffff;
+            border: 1px solid #ddd;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            font-weight: bold;
+            color: black;
+            margin: 10px;
+        }
+
+        .seminar-card:active {
+            transform: translateY(2px);
+        }
+
+        .link-overflow {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+    }

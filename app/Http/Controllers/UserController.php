@@ -10,7 +10,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('seminars.rekap-peserta', compact('users'));
+        return view('seminar.rekap-peserta', compact('users'));
     }    
 
     public function destroy($id)

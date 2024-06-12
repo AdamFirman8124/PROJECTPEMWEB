@@ -10,39 +10,55 @@
         .fixed-top-spacing {
             margin-top: 60px;
         }
+        /* Menambahkan style untuk navbar transparan */
+        .navbar-transparent {
+            background-color: rgba(255, 255, 255, 0.5) !important; /* Mengurangi tingkat transparansi */
+            border-radius: 0; /* Menghilangkan sisi ujung yang lancip */
+        }
+        /* Mengubah warna teks navbar menjadi hitam */
+        .navbar-light .navbar-nav .nav-link {
+            color: black; /* Warna teks hitam */
+        }
     </style>
 </head>
 
 <body>
 
-    @if (Auth::user()->role == 'PIC SeminarorWebinar')
-        <!-- Fixed Navigation Bar -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-            <a class="navbar-brand" href="#"></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="btn btn-link nav-link" href="{{ route('home') }}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-link nav-link" href="{{ route('seminars.create') }}">Tambah Seminar</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-link nav-link" href="{{ route('registrations.index') }}">Rekap Peserta</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-link nav-link" href="{{ route('seminars.rekap-peserta') }}">Data User</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn btn-link nav-link" href="{{ route('seminars.certificate') }}">Upload Sertifikat</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    @endif
+    <!-- Fixed Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top navbar-transparent">
+        <a class="navbar-brand" href="#"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="btn btn-link nav-link" href="{{ route('home') }}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-link nav-link" href="{{ route('seminar.create') }}">Tambah Seminar</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-link nav-link" href="{{ route('seminar.rekap') }}">Rekap Seminar</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-link nav-link" href="{{ route('registrations.index') }}">Rekap Peserta</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-link nav-link" href="{{ route('seminar.rekap-peserta') }}">Data User</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-link nav-link" href="{{ route('seminar.certificate') }}">Upload Sertifikat</a>
+                </li>
+            </ul>
+            <!-- Menampilkan nama user yang login di bagian kanan navbar -->
+            <span class="navbar-text d-flex align-items-center">
+                @if (Auth::check())
+                    <span class="mr-3">{{ Auth::user()->name }}</span>
+                @endif
+            </span>
+        </div>
+    </nav>
 
     <div>
         @yield('content')
@@ -55,3 +71,4 @@
 </body>
 
 </html>
+

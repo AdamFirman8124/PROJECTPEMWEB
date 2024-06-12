@@ -12,7 +12,7 @@ class SeminarSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             Seminar::create([
                 'tanggal_seminar' => $faker->date(),
                 'lokasi_seminar' => $faker->city,
