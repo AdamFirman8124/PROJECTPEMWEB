@@ -39,12 +39,6 @@
                     @endif
                 </div>
             </div>
-            @if ($seminar->is_paid && $registration->bukti_pembayaran)
-                <div class="mt-4">
-                    <p class="card-text"><strong>Bukti Pembayaran:</strong></p>
-                    <img src="{{ asset('storage/app/public/payment_proofs' . $registration->bukti_pembayaran) }}" alt="Bukti Pembayaran" class="img-fluid">
-                </div>
-            @endif
             <div id="registration_status" class="mt-4">
                 @if($isRegistered)
                     <button class="btn btn-success disabled">Anda sudah mendaftar, mohon tunggu untuk verifikasi</button>
