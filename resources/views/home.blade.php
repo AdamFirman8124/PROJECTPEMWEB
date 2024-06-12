@@ -41,6 +41,7 @@
                 </div>
             </div>
         </div>
+
         @php
             $registrations = \App\Models\Registration::where('user_id', auth()->id())->with('seminar')->get();
         @endphp
@@ -56,16 +57,17 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <!-- Tempat untuk menampilkan daftar seminar yang telah diikuti -->
                         @if($registrations->isEmpty())
                             <p>Belum ada seminar yang kamu ikuti.</p>
                         @else
                             <ul class="list-group">
                                 @foreach($registrations as $registration)
                                     <li class="list-group-item">
-                                        {{ $registration->seminar->topik }}
-                                        <span class="badge badge-primary">{{ \Carbon\Carbon::parse($registration->seminar->tanggal_seminar)->format('d M Y') }}</span>
-
+                                        <h5>{{ $registration->seminar->topik }}</h5>
+                                        <p>Tanggal: <span class="badge badge-primary">{{ \Carbon\Carbon::parse($registration->seminar->tanggal_seminar)->format('d M Y') }}</span></p>
+                                        <p>Lokasi: {{ $registration->seminar->lokasi_seminar }}</p>
+                                        <a href="{{ route('seminar.certificate-detail', $registration->seminar->id) }}" class="btn btn-primary">Lihat Sertifikat</a>
+                                        <a href="{{ route('seminar.detail', $registration->seminar->id) }}" target="_blank" class="btn btn-secondary btn-sm">Lihat Detail</a>
                                     </li>
                                 @endforeach
                             </ul>
@@ -77,6 +79,7 @@
                 </div>
             </div>
         </div>
+
         <h1 class="my-4 text-center">Seminar Terdekat</h1>
         <div class="d-flex flex-wrap justify-content-center">
             @foreach ($seminars as $seminar)
@@ -197,5 +200,3 @@
     </body>
 </html>
 @endsection
-
-
