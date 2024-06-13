@@ -16,6 +16,8 @@
                         <th scope="col">Asal Instansi</th>
                         <th scope="col">Info</th>
                         <th scope="col">Topik Seminar</th>
+                        <th scope="col">Bukti Bayar</th>
+                        <th scope="col">Status</th>
                         <th scope="col">Aksi</th>
                     </tr>
                 </thead>
@@ -30,12 +32,25 @@
                         <td>{{ $registration->info }}</td>
                         <td>{{ $registration->seminar->topik }}</td>
                         <td>
+                            @if($registration->bukti_bayar)
+                                <a href="{{ Storage::url($registration->bukti_bayar) }}" target="_blank">Lihat Bukti</a>
+                            @else
+                                Belum ada bukti bayar
+                            @endif
+                        </td>
+                        <td>{{ $registration->status }}</td>
+                        <td>
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <form action="{{ route('registrations.edit', $registration->id) }}" method="GET">
+                                <button type="submit" class="btn btn-primary btn-sm">Edit</button>
+                            </form>
                             <form action="{{ route('registrations.destroy', $registration->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(this)">Delete</button>
                             </form>
-                        </td>
+                        </div>
+                    </td>
                     </tr>
                     @endforeach
                 </tbody>

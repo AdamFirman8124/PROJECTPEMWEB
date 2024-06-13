@@ -62,11 +62,10 @@
             paymentProofInput.required = false;
         }
     }
-</script>
 
-@if (session('success'))
-    <script>
+    // Script untuk menampilkan alert setelah berhasil daftar
+    @if (session('success'))
         alert('{{ session("success") }}');
-    </script>
-@endif
+    @endif
+</script>
 @endsection

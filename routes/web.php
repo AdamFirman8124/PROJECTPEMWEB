@@ -117,6 +117,10 @@ Route::get('/seminar/create', [SeminarController::class, 'create'])->name('semin
 // Rute untuk membuat pendaftaran
 Route::get('/registrations/create', [RegistrationController::class, 'create'])->name('registrations.create');
 
+// Rute untuk edit data peserta seminar
+Route::get('/registrations/{id}/edit', [RegistrationController::class, 'edit'])->name('registrations.edit');
+Route::put('/registrations/{id}', [RegistrationController::class, 'update'])->name('registrations.update');
+
 // Rute untuk menampilkan detail sertifikat seminar
 Route::get('/seminars/{seminar}/certificate-detail', [SeminarController::class, 'showCertificateDetail'])->name('seminar.certificate-detail');
 
