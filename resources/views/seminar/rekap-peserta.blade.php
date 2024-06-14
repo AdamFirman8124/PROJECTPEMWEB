@@ -2,7 +2,7 @@
 
 @section('content')
 <body style="background-color: #e9ecef;">
-    <div class="container" style="margin-top: 60px;">
+    <div class="container mx-auto" style="margin-top: 60px;">
         <h1 class="my-4 text-center">Data User</h1>
 
         <div class="table-container">
