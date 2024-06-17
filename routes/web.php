@@ -31,25 +31,25 @@ Route::get('/seminar', [SeminarController::class, 'index'])->name('seminar.index
 Route::get('/seminars/{id}', [SeminarController::class, 'show'])->name('seminar.detail');
 
 // Rute untuk menampilkan semua materi seminar
-Route::get('/seminar_materials',[SeminarMaterialsController::class, 'index'])->name('seminar_materials.index');
+Route::get('/seminar_materials', [SeminarMaterialsController::class, 'index'])->name('seminar_materials.index');
 
 // Rute untuk membuat materi seminar
-Route::get('/seminar_materials/create',[SeminarMaterialsController::class, 'create'])->name('seminar_materials.create');
+Route::get('/seminar_materials/create', [SeminarMaterialsController::class, 'create'])->name('seminar_materials.create');
 
 // Rute untuk menyimpan materi seminar
-Route::post('/seminar_materials',[SeminarMaterialsController::class, 'store'])->name('seminar_materials.store');
+Route::post('/seminar_materials', [SeminarMaterialsController::class, 'store'])->name('seminar_materials.store');
 
 // Rute untuk menampilkan detail materi seminar
-Route::get('/seminar_materials/{seminar_material}',[SeminarMaterialsController::class, 'show'])->name('seminar_materials.show');
+Route::get('/seminar_materials/{seminar_material}', [SeminarMaterialsController::class, 'show'])->name('seminar_materials.show');
 
 // Rute untuk mengedit materi seminar
-Route::get('/seminar_materials/{seminar_material}/edit',[SeminarMaterialsController::class, 'edit'])->name('seminar_materials.edit');
+Route::get('/seminar_materials/{seminar_material}/edit', [SeminarMaterialsController::class, 'edit'])->name('seminar_materials.edit');
 
 // Rute untuk memperbarui materi seminar
-Route::put('/seminar_materials/{seminar_material}',[SeminarMaterialsController::class, 'update'])->name('seminar_materials.update'); 
+Route::put('/seminar_materials/{seminar_material}', [SeminarMaterialsController::class, 'update'])->name('seminar_materials.update');
 
 // Rute untuk menghapus materi seminar
-Route::delete('/seminar_materials/{seminar_material}',[SeminarMaterialsController::class, 'destroy'])->name('seminar_materials.destroy');
+Route::delete('/seminar_materials/{seminar_material}', [SeminarMaterialsController::class, 'destroy'])->name('seminar_materials.destroy');
 
 // Rute untuk rekap seminar
 Route::get('/seminar/rekap', [SeminarController::class, 'rekap'])->name('seminar.rekap');
@@ -135,3 +135,7 @@ Route::get('/seminars/{id}/certificate-detail', [SeminarController::class, 'show
 
 // Rute untuk mengunduh sertifikat seminar
 Route::get('/seminars/{seminar}/download-certificate', [SeminarController::class, 'downloadCertificate'])->name('seminar.download-certificate');
+
+// Rute untuk mengedit role pengguna
+Route::get('/users/{id}/edit-role', [UserController::class, 'editRole'])->name('users.edit-role');
+Route::put('/users/{id}/update-role', [UserController::class, 'updateRole'])->name('users.update-role');
