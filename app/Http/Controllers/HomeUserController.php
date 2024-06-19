@@ -64,11 +64,67 @@ class HomeUserController extends Controller
     {
         try {
             $seminar = Seminar::findOrFail($seminar_id);
+            $isPaid = $seminar->is_paid;
             $seminars = Seminar::all();
-            return view('LP.daftarseminar', compact('seminar', 'seminars'));
+            return view('LP.daftarseminar', compact('seminar', 'seminars', 'isPaid'));
         } catch (\Exception $e) {
             Log::error('Error saat mengambil data seminar: ' . $e->getMessage());
             return back()->withErrors('Terjadi kesalahan saat mengambil data seminar.');
+        }
+    }
+    public function pendaftaranseminar(Request $request)
+    {
+        try {
+            // Validasi input
+            $request->validate([
+                'seminar_id' => 'required|exists:seminars,id',
+                'identitas' => 'required',
+                'name' => 'required',
+                'email' => 'required|email',
+                'phone' => 'required',
+                'instansi' => 'required',
+                'info' => 'required',
+                'bukti_bayar' => 'sometimes|nullable|mimes:jpeg,png,pdf|max:2048'
+            ]);
+
+            // Proses upload bukti pembayaran jika ada
+            $buktiBayarPath = null;
+            if ($request->hasFile('bukti_bayar')) {
+                $buktiBayarName = time() . '_' . $request->file('bukti_bayar')->getClientOriginalName();
+                $buktiBayarPath = 'assets/images/bukti-bayar/' . $buktiBayarName;
+                $request->file('bukti_bayar')->move(public_path('assets/images/bukti-bayar'), $buktiBayarName);
+            }
+
+            // Simpan data registrasi
+            Registration::create([
+                'user_id' => Auth::id(),
+                'seminar_id' => $request->seminar_id,
+                'identitas' => $request->identitas,
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'instansi' => $request->instansi,
+                'info' => $request->info,
+                'bukti_bayar' => $buktiBayarPath,
+            ]);
+
+            return redirect()->route('homeuser')->with('success', 'Pendaftaran berhasil.');
+        } catch (\Exception $e) {
+            Log::error('Error saat menyimpan pendaftaran: ' . $e->getMessage());
+            return back()->withErrors('Terjadi kesalahan saat menyimpan pendaftaran.')->withInput();
+        }
+    }
+    public function register(Request $request)
+    {
+        Log::info('Memulai proses pendaftaran seminar dengan ID: ' . $request->seminar_id);
+        try {
+            $seminar = Seminar::findOrFail($request->seminar_id);
+            // Logika untuk menyimpan pendaftaran, misalnya menambahkan data ke tabel pendaftaran
+            Log::info('Berhasil mendaftarkan seminar dengan ID: ' . $request->seminar_id);
+            return redirect()->back()->with('success', 'Pendaftaran seminar berhasil');
+        } catch (\Exception $e) {
+            Log::error('Gagal mendaftarkan seminar: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal mendaftarkan seminar: ' . $e->getMessage());
         }
     }
     

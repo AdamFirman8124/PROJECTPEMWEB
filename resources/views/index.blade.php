@@ -428,7 +428,7 @@
     });
     @else
     // Jika pengguna sudah login, arahkan ke halaman pendaftaran seminar
-    window.location.href = "{{ route('seminar.register', ['id' => $seminar->id]) }}";
+
     @endif
   }
 </script>

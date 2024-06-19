@@ -39,7 +39,7 @@
                 </tbody>
             </table>
         </div>
-        <a href="{{ route('home') }}" class="btn btn-primary">Kembali ke Beranda</a>
+        <a href="{{ route('admin_dashboard') }}" class="btn btn-primary">Kembali ke Beranda</a>
     </div>
     <script>
         function confirmDelete(button) {

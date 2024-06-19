@@ -87,7 +87,7 @@ https://templatemo.com/tm-586-scholar
                         <div class="row">
                             <div class="col-lg-3">
                                 <div class="image">
-                                    <img src="/assets/images/event-01.jpg" alt="">
+                                    <img src="{{ asset($seminar->gambar_seminar) }}" alt="">
                                 </div>
                             </div>
                             <div class="col-lg-9">

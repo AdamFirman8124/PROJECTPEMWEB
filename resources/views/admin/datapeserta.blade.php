@@ -35,7 +35,7 @@
                             @if($registration->bukti_bayar)
                                 <a href="{{ asset($registration->bukti_bayar) }}" target="_blank">Lihat Bukti</a>
                             @else
-                                Belum ada bukti bayar
+                                Seminar ini gratis
                             @endif
                         </td>
                         <td>{{ $registration->status }}</td>

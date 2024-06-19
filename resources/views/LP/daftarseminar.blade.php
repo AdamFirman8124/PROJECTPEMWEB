@@ -5,8 +5,9 @@
     <div class="card shadow-lg p-3 w-50 mb-5 mx-auto bg-white rounded">
         <div class="card-body">
             <h2 class="card-title text-center">Form Pendaftaran</h2>
-            <form id="daftarForm" enctype="multipart/form-data" method="POST" action="{{ route('registrations.store') }}" class="needs-validation" novalidate>
+            <form id="daftarForm" enctype="multipart/form-data" method="POST" action="{{ route('pendaftaranseminar') }}" class="needs-validation" novalidate>
                 @csrf
+                <input type="hidden" name="seminar_id" value="{{ $seminar->id }}">
                 <div class="mb-3">
                     <label for="identitas" class="form-label">No Identitas:</label>
                     <input type="text" class="form-control" id="identitas" name="identitas" required>
@@ -63,24 +64,14 @@
 </div>
 
 <script>
-        document.addEventListener('DOMContentLoaded', function () {
-        const seminarSelect = document.getElementById('seminar_id');
-        const buktiBayarContainer = document.getElementById('buktiBayarContainer');
+    document.addEventListener('DOMContentLoaded', function() {
+        // Assume isPaid is passed to the view as a JavaScript variable
+        var isPaid = @json($isPaid);
 
-        seminarSelect.addEventListener('change', async function () {
-            const seminarId = seminarSelect.value;
-            try {
-                const response = await fetch(`/registration-controller/is-paid/${seminarId}`);
-                const data = await response.json();
-                if (data.is_paid === '1') {
-                    buktiBayarContainer.style.display = 'block';
-                } else {
-                    buktiBayarContainer.style.display = 'none';
-                }
-            } catch (error) {
-                console.error('Error fetching bukti bayar data:', error);
-            }
-        });
+        if (isPaid) {
+            document.getElementById('buktiBayarContainer').style.display = 'block';
+        }
     });
 </script>
+
 @endsection

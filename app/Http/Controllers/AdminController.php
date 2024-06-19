@@ -159,6 +159,19 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'Gagal menampilkan detail seminar: ' . $e->getMessage());
         }
     }
+    public function hapusseminar($id)
+    {
+        Log::info('Memulai proses penghapusan seminar dengan ID: ' . $id);
+        try {
+            $seminar = Seminar::findOrFail($id);
+            $seminar->delete();
+            Log::info('Seminar berhasil dihapus');
+            return redirect()->route('seminars.rekap')->with('success', 'Seminar berhasil dihapus');
+        } catch (\Exception $e) {
+            Log::error('Gagal menghapus seminar: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal menghapus seminar: ' . $e->getMessage());
+        }
+    }
     public function detailseminar($id)
     {
         try {
@@ -261,6 +274,17 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'Gagal mengambil rekap peserta: ' . $e->getMessage());
         }
     }
+    public function hapuspeserta($id)
+    {
+        try {
+            $registration = Registration::findOrFail($id);
+            $registration->delete();
+            return redirect()->back()->with('success', 'Data berhasil dihapus');
+        } catch (\Exception $e) {
+            Log::error('Error deleting registration: ' . $e->getMessage());
+            return back()->withErrors('Terjadi kesalahan saat menghapus data.');
+        }
+    }
     public function certificate()
     {
         Log::info('Memulai pengambilan semua data seminar untuk sertifikat');
@@ -315,5 +339,27 @@ class AdminController extends Controller
             return back()->with('error', 'Gagal mengupload template sertifikat: ' . $e->getMessage());
         }
     }
+    public function updateCertificate(Request $request, $templateId)
+    {
+        $request->validate([
+            'access_time' => 'required|date'
+        ]);
+
+        try {
+            $template = CertificateTemplate::find($templateId);
+            if (!$template) {
+                $template = new CertificateTemplate();
+                $template->seminar_id = $request->seminar_id; // Pastikan Anda mengirim seminar_id dari form
+            }
+            $template->access_time = $request->input('access_time');
+            $template->save();
+
+            return back()->with('success', 'Tanggal akses sertifikat berhasil diupdate.');
+        } catch (\Exception $e) {
+            Log::error('Gagal memperbarui tanggal akses sertifikat: ' . $e->getMessage());
+            return back()->with('error', 'Gagal memperbarui tanggal akses sertifikat: ' . $e->getMessage());
+        }
+    }
+
     
 }
