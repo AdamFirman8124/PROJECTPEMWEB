@@ -17,7 +17,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    // protected $redirectTo = '/home';
 
     /**
      * Create a new controller instance.
@@ -35,5 +35,22 @@ class LoginController extends Controller
         Log::info("Attempting to logout user: " . $request->user()->name);
         Auth::logout();
         return redirect('/');
+    }
+    protected function authenticated(Request $request, $user)
+    {
+        // Session::put('name', $user->name);
+        if ($user->role === 'user') {
+            return redirect('/home-user');
+        } else {
+            return redirect()->route('admin_dashboard');
+        }
+    }
+    protected function redirectTo()
+    {
+        if (Auth::user()->role === 'admin') {
+            return '/admin/dashboard';
+        }
+
+        return '/home';
     }
 }

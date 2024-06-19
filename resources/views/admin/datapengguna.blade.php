@@ -1,11 +1,9 @@
-<!-- rekap-peserta.blade.php -->
-@extends('layouts.app')
+@extends('layouts.appadmin')
 
 @section('content')
-
-<body style="background-color: #e9ecef;">
-    <div class="container mx-auto" style="margin-top: 60px;">
-        <h1 class="my-4 text-center">Data User</h1>
+<body>
+    <div class="container mx-auto" style="margin-top: 120px;">
+        <h1 class="my-4 text-center">Data Pengguna</h1>
 
         <div class="table-container">
             <table class="table table-striped">
@@ -14,7 +12,7 @@
                         <th>Nama</th>
                         <th>Email</th>
                         <th>Role</th>
-                        @if (Auth::user()->role == 'admin' || Auth::user()->role == 'PIC Webinar/Seminar')
+                        @if (Auth::user()->role == 'admin')
                         <th>Aksi</th>
                         @endif
                     </tr>
@@ -24,9 +22,9 @@
                     <tr>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
-                        <td>{{ $user->role == 'admin' ? 'PIC Webinar/Seminar' : 'Peserta' }}</td>
+                        <td>{{ $user->role }}</td>
                         <td>
-                            @if (Auth::user()->role == 'admin' || Auth::user()->role == 'PIC Webinar/Seminar')
+                            @if (Auth::user()->role == 'admin')
                             <a href="{{ route('users.edit-role', $user->id) }}" class="btn btn-warning">Edit Role</a>
 
                             <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display: inline-block;">

@@ -8,18 +8,60 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\LPController;
+use App\Http\Controllers\HomeUserController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SpeakerController;
 
 // Rute untuk halaman utama
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
-
+// Route::get('/', function () {
+//     return view('index');
+// })->name('welcome');
+Route::get('/', [LPController::class, 'landingpage'])->name('landingpage');
+Route::get('/home-user', [HomeUserController::class, 'index'])->name('homeuser');
+Route::get('/daftar-seminar/{seminar_id}', [HomeUserController::class, 'daftarseminar'])->name('daftarseminar');
+Route::get('/showseminar/{id}', [HomeUserController::class, 'show'])->name('detailseminaruser');
 // Rute untuk autentikasi
 Auth::routes();
 
+Route::prefix('admin')->group(function () {
+    Route::prefix('dashboard')->group(function () {
+        Route::get('', [AdminController::class, 'index'])->name('admin_dashboard');
+        Route::get('/admin-dashboard/{filter}', [AdminController::class, 'filter'])->name('admin_dashboard_filter');
+        // Rute untuk membuat seminar
+        Route::get('/tambah-seminar', [AdminController::class, 'create'])->name('tambahseminar');
+        Route::post('/tambah', [AdminController::class, 'store'])->name('admin.tambahseminar');
+        Route::get('/detail-seminar/{id}', [AdminController::class, 'show'])->name('detailseminar');
+      
+    });
+    Route::prefix('rekap-seminar')->group(function () {
+        Route::get('', [AdminController::class, 'rekap'])->name('admin.rekap');
+        // Rute untuk mengedit seminar
+        Route::get('/seminar/{seminar}/edit', [AdminController::class, 'edit'])->name('admin.seminar.edit');
+        // Rute untuk memperbarui seminar
+        Route::put('/seminar/{seminar}', [AdminController::class, 'update'])->name('admin.seminar.update');
+    });
+    Route::prefix('rekap-peserta')->group(function () {
+        Route::get('', [AdminController::class, 'datapeserta'])->name('rekap_peserta');
+        Route::get('/edit/{id}', [AdminController::class, 'editpeserta'])->name('admin.registrations.edit');
+        Route::put('/registrations/{id}', [AdminController::class, 'updatepeserta'])->name('admin.registrations.update');
+    });
+    Route::prefix('rekap-pengguna')->group(function () {
+        Route::get('', [AdminController::class, 'rekapPeserta'])->name('data_pengguna');
+    });
+    Route::prefix('upload-sertifikat')->group(function () {
+        // Rute untuk sertifikat seminar
+        Route::get('', [AdminController::class, 'certificate'])->name('admin.certificate');
+
+        // Rute untuk mengunggah sertifikat seminar
+        Route::post('/seminars/{seminar}/uploadCertificate', [AdminController::class, 'uploadCertificate'])->name('admin.uploadCertificate');
+    });
+});
+
 // Rute untuk halaman beranda
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+Route::get('/detailseminar/{id}', [LPController::class, 'detailseminar'])->name('detailseminar');
 
 // Rute untuk menyimpan seminar
 Route::post('/seminar', [SeminarController::class, 'store'])->name('seminar.store');
@@ -139,3 +181,10 @@ Route::get('/seminars/{seminar}/download-certificate', [SeminarController::class
 // Rute untuk mengedit role pengguna
 Route::get('/users/{id}/edit-role', [UserController::class, 'editRole'])->name('users.edit-role');
 Route::put('/users/{id}/update-role', [UserController::class, 'updateRole'])->name('users.update-role');
+
+Route::get('/refresh', function () {
+    Artisan::call('config:clear');
+    Artisan::call('cache:clear');
+    Artisan::call('route:clear');
+    return 'Done bg';
+});

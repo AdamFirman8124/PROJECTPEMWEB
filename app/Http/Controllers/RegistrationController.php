@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Registration;
 use App\Models\Seminar;
-use Illuminate\Support\Facades\Log;
 use App\Models\PaymentRecord;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Storage; // Pastikan untuk menambahkan ini jika belum ada
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class RegistrationController extends Controller
 {
@@ -23,72 +23,56 @@ class RegistrationController extends Controller
             $seminars = Seminar::all();
             return view('registrations.create', compact('seminars'));
         } catch (\Exception $e) {
-            Log::error('Error saat mengambil data seminar: ' . $e->getMessage());
+            Log::error('Error fetching seminars: ' . $e->getMessage());
             return back()->withErrors('Terjadi kesalahan saat mengambil data seminar.');
         }
     }
+
     public function store(Request $request)
     {
-        try {
-            $validator = Validator::make($request->all(), [
-                'identitas' => 'required',
-                'name' => 'required',
-                'email' => 'required|email',
-                'phone' => 'required',
-                'instansi' => 'required',
-                'info' => 'required',
-                'seminar' => [
-                    'required',
-                    function ($attribute, $value, $fail) use ($request) {
-                        $seminar = Seminar::find($value);
-                        Log::info('Seminar ID: ' . $value . ' is_paid status: ' . $seminar->is_paid);
-                        if (!$seminar) {
-                            $fail('Seminar yang dipilih tidak valid.');
-                        } elseif ($seminar->is_paid === 1 && !$request->hasFile('payment_proof')) {
-                            $fail('Bukti pembayaran diperlukan untuk seminar yang dipilih.');
-                        }
-                    },
-                ],
-                'payment_proof' => 'required_if:seminar.is_paid,1|mimes:jpeg,png,pdf',
-            ]);
-            
-            if ($validator->fails()) {
-                Log::error('Validasi data gagal dengan error: ' . json_encode($validator->errors()));
-                return back()->withErrors($validator)->withInput();
-            }
-    
-            $paymentProofPath = null;
-    
-            if ($request->hasFile('payment_proof')) {
-                $paymentProofPath = $request->file('payment_proof')->store('public/payment_proofs');
-            }
-    
-            $registration = Registration::create([
-                'user_id' => auth()->id(),
-                'seminar_id' => $request->seminar,
-                'identitas' => $request->identitas,
-                'name' => $request->name,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'instansi' => $request->instansi,
-                'info' => $request->info,
-                'bukti_bayar' => $paymentProofPath,
-                'status' => 'Menunggu Konfirmasi'
-            ]);
-    
-            if ($paymentProofPath) {
-                PaymentRecord::create([
-                    'registration_id' => $registration->id,
-                    'payment_proof_path' => $paymentProofPath
-                ]);
-            }
-    
-            return redirect()->route('home')->with('success', 'Berhasil Daftar');
-        } catch (\Exception $e) {
-            Log::error('Error saat menyimpan registrasi: ' . $e->getMessage());
-            return back()->withErrors('Terjadi kesalahan saat menyimpan data.')->withInput();
+        Log::info('Data received: ', $request->all());
+
+        $request->validate([
+            'seminar_id' => 'required|exists:seminars,id',
+            'user_id' => 'required|exists:users,id',
+            'identitas' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:15',
+            'instansi' => 'required|string|max:255',
+            'info' => 'required|string|max:255',
+            'bukti_bayar' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+        ]);
+
+        if ($request->hasFile('bukti_bayar')) {
+            $file = $request->file('bukti_bayar');
+            $path = $file->store('public/bukti-bayar');
+            $filename = basename($path);
+        } else {
+            $filename = null;
         }
-    }    
+
+        $registration = new Registration();
+        $registration->seminar_id = $request->input('seminar_id');
+        $registration->user_id = $request->input('user_id');
+        $registration->identitas = $request->input('identitas');
+        $registration->name = $request->input('name');
+        $registration->email = $request->input('email');
+        $registration->phone = $request->input('phone');
+        $registration->instansi = $request->input('instansi');
+        $registration->info = $request->input('info');
+        $registration->bukti_bayar = $filename;
+
+        try {
+            $registration->save();
+            Log::info('Data saved successfully');
+        } catch (\Exception $e) {
+            Log::error('Error saving data: ' . $e->getMessage());
+            return back()->withErrors('Terjadi kesalahan saat menyimpan data.');
+        }
+
+        return redirect()->route('home-user')->with('success', 'Pendaftaran berhasil!');
+    }
 
     public function index()
     {
@@ -96,7 +80,7 @@ class RegistrationController extends Controller
             $registrations = Registration::with('seminar')->get();
             return view('registrations.index', compact('registrations'));
         } catch (\Exception $e) {
-            Log::error('Error saat menampilkan registrasi: ' . $e->getMessage());
+            Log::error('Error displaying registrations: ' . $e->getMessage());
             return back()->withErrors('Terjadi kesalahan saat menampilkan data.');
         }
     }
@@ -107,7 +91,7 @@ class RegistrationController extends Controller
             $registrations = Registration::where('seminar_id', $seminar_id)->get();
             return view('registrations.rekap', compact('registrations'));
         } catch (\Exception $e) {
-            Log::error('Error saat menampilkan rekap registrasi: ' . $e->getMessage());
+            Log::error('Error displaying recap data: ' . $e->getMessage());
             return back()->withErrors('Terjadi kesalahan saat menampilkan rekap data.');
         }
     }
@@ -119,7 +103,7 @@ class RegistrationController extends Controller
             $registration->delete();
             return redirect()->back()->with('success', 'Data berhasil dihapus');
         } catch (\Exception $e) {
-            Log::error('Error saat menghapus registrasi: ' . $e->getMessage());
+            Log::error('Error deleting registration: ' . $e->getMessage());
             return back()->withErrors('Terjadi kesalahan saat menghapus data.');
         }
     }
@@ -131,7 +115,7 @@ class RegistrationController extends Controller
             $isRegistered = Registration::where('user_id', $user->id)->exists();
             return response()->json(['registered' => $isRegistered]);
         } catch (\Exception $e) {
-            Log::error('Error saat memeriksa registrasi: ' . $e->getMessage());
+            Log::error('Error checking registration: ' . $e->getMessage());
             return response()->json(['error' => 'Terjadi kesalahan saat memeriksa registrasi.'], 500);
         }
     }
@@ -143,7 +127,7 @@ class RegistrationController extends Controller
             $registrations = Registration::where('user_id', $user_id)->with('seminar')->get();
             return view('home', compact('registrations'));
         } catch (\Exception $e) {
-            Log::error('Error saat menampilkan registrasi: ' . $e->getMessage());
+            Log::error('Error showing registrations: ' . $e->getMessage());
             return back()->withErrors('Terjadi kesalahan saat menampilkan data.');
         }
     }
@@ -155,11 +139,10 @@ class RegistrationController extends Controller
             $seminars = Seminar::all();
             return view('registrations.edit', compact('registration', 'seminars'));
         } catch (\Exception $e) {
-            Log::error('Error saat mengambil data registrasi untuk edit: ' . $e->getMessage());
+            Log::error('Error fetching registration data: ' . $e->getMessage());
             return back()->withErrors('Terjadi kesalahan saat mengambil data registrasi.');
         }
     }
-
 
     public function update(Request $request, $id)
     {
@@ -199,9 +182,8 @@ class RegistrationController extends Controller
 
             return redirect()->route('registrations.index')->with('success', 'Data registrasi berhasil diperbarui.');
         } catch (\Exception $e) {
-            Log::error('Error saat menyimpan perubahan registrasi: ' . $e->getMessage());
+            Log::error('Error updating registration: ' . $e->getMessage());
             return back()->withErrors('Terjadi kesalahan saat menyimpan perubahan data.')->withInput();
         }
     }
-
 }

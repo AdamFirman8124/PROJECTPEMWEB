@@ -1,7 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.appuser')
 
 @section('content')
-<div class="container mt-5">
+<div style="margin-top: 120px;" class="container">
     <div class="card shadow-lg p-3 w-50 mb-5 mx-auto bg-white rounded">
         <div class="card-body">
             <h2 class="card-title text-center">Form Pendaftaran</h2>
@@ -49,17 +49,12 @@
                         Mohon masukkan informasi ini.
                     </div>
                 </div>
-                <div class="mb-3">
-                    <label for="seminar" class="form-label">Mau mendaftar di topik seminar apa?</label>
-                    <select class="form-control" id="seminar" name="seminar" onchange="togglePaymentProof(this)">
-                        @foreach ($seminars as $seminar)
-                            <option value="{{ $seminar->id }}" data-is-paid="{{ $seminar->is_paid }}">{{ $seminar->topik }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="mb-3" id="paymentProofSection" style="display: none;">
-                    <label for="payment_proof">Bukti Pembayaran:</label>
-                    <input type="file" class="form-control" id="payment_proof" name="payment_proof">
+                <div class="mb-3" id="buktiBayarContainer" style="display: none;">
+                    <label for="bukti_bayar" class="form-label">Upload Bukti Pembayaran:</label>
+                    <input type="file" class="form-control" id="bukti_bayar" name="bukti_bayar">
+                    <div class="invalid-feedback">
+                        Mohon upload bukti pembayaran.
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Daftar</button>
             </form>
@@ -68,23 +63,24 @@
 </div>
 
 <script>
-    function togglePaymentProof(select) {
-        var isPaid = select.options[select.selectedIndex].dataset.isPaid === '1'; // Pastikan perbandingan ini benar
-        var paymentProofSection = document.getElementById('paymentProofSection');
-        var paymentProofInput = document.getElementById('payment_proof');
-        if (isPaid) { // Periksa dengan benar jika isPaid adalah true
-            paymentProofSection.style.display = '';
-            paymentProofInput.required = true;
-        } else {
-            paymentProofSection.style.display = 'none';
-            paymentProofInput.required = false;
-        }
-    }
+        document.addEventListener('DOMContentLoaded', function () {
+        const seminarSelect = document.getElementById('seminar_id');
+        const buktiBayarContainer = document.getElementById('buktiBayarContainer');
 
-    // Script untuk menampilkan alert setelah berhasil daftar
-    @if (session('success'))
-        alert('{{ session("success") }}');
-    @endif
+        seminarSelect.addEventListener('change', async function () {
+            const seminarId = seminarSelect.value;
+            try {
+                const response = await fetch(`/registration-controller/is-paid/${seminarId}`);
+                const data = await response.json();
+                if (data.is_paid === '1') {
+                    buktiBayarContainer.style.display = 'block';
+                } else {
+                    buktiBayarContainer.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error fetching bukti bayar data:', error);
+            }
+        });
+    });
 </script>
 @endsection
-

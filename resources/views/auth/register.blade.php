@@ -1,77 +1,67 @@
-<style>
-        body, html {
-            height: 100%;
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f0f2f5; 
-        }
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-        .card {
-            width: 350px;
-            height: 420px;
-            max-width: 420px;
-            padding: 20px;
-            border-radius: 20px;
-            background: #e0e0e0;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .card-body {
-            width: 100%;
-        }
-
-        .form-control, .form-select {
-            width: 100%;
-            border-radius: 10px;
-            padding: 10px; 
-            margin-bottom: 15px; 
-            border: 1px solid #ccc; 
-        }
-
-        .btn-primary {
-            width: 100%;
-            border-radius: 20px; 
-            padding: 10px 20px; 
-            font-size: 16px; 
-            background-color: #4CAF50; 
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-top: 12px; 
-        }
-
-        .btn-primary:hover {
-            background-color: #45a049; 
-        }
-
-        .error-message {
-            color: red; 
-            display: block; 
-            font-size: 14px; 
-            margin-top: 5px; 
-        }
-
-        .form-check-input {
-            margin-top: 6px; 
-        }
-
-        .form-check-label {
-            margin-left: 10px; 
-        }
-    </style>
-
-    
-<div class="container" style="display: flex; justify-content: center; align-items: center; height: 100vh;">
-    <div class="card">
-        <div class="card-body" style="padding: 20px;">
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card shadow" style="width: 100%; max-width: 480px;">
+        <div class="card-header bg-primary text-white">
+            <h5 class="card-title">Daftar Akun</h5>
+        </div>
+        <div class="card-body">
             <form method="POST" action="{{ route('register') }}">
+                @csrf
+
+                <div class="mb-3">
+                    <label for="name" class="form-label">{{ __('Name') }}</label>
+                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                    @error('name')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">{{ __('Email Address') }}</label>
+                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+                    @error('email')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">{{ __('Password') }}</label>
+                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                    @error('password')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="password-confirm" class="form-label">{{ __('Confirm Password') }}</label>
+                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                </div>
+
+                <div class="mb-3">
+                    <label for="role" class="form-label">{{ __('Role') }}</label>
+                    <select id="role" class="form-select" name="role" required>
+                        <option value="admin">Admin PIC Seminar/Webinar</option>
+                        <option value="user">Peserta</option>
+                    </select>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-success">
+                        {{ __('Register') }}
+                    </button>
+                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 @csrf
 
                 <div class="row mb-3">
@@ -146,3 +136,4 @@
         </div>
     </div>
 </div>
+

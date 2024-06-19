@@ -7,32 +7,37 @@ use Illuminate\Http\Request;
 use App\Models\Seminar; 
 use Illuminate\Support\Facades\Log;// Pastikan menggunakan model Seminar
 
-class HomeController extends Controller
+class LPController extends Controller
 {
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+
 
     /**
      * Show the application dashboard.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function landingpage()
     {
         $seminars = Seminar::all(); // Mengambil semua data seminar
-        if (auth()->user()->role === 'admin') {
-            return redirect('/admin/dashboard');
-        } else if (auth()->user()->role === 'user') {
-            return redirect('/home-user');
+        return view('index', compact('seminars')); // Mengirim data ke view home
+    }
+    public function filter($filter)
+    {
+        if ($filter == 'gratis') {
+            $seminars = Seminar::where('is_paid', false)->get();
+        } elseif ($filter == 'berbayar') {
+            $seminars = Seminar::where('is_paid', true)->get();
+        } else {
+            // Handle invalid filter case, for example redirect to default view
+            return redirect()->route('admin_dashboard');
         }
-        return view('/', compact('seminars')); // Mengirim data ke view home
+
+        return view('admin.index', compact('seminars'));
     }
     public function show($id)
     {
@@ -54,10 +59,11 @@ class HomeController extends Controller
             $user_id = auth()->id();
             $isRegistered = Registration::where('user_id', $user_id)->where('seminar_id', $id)->exists();
         
-            return view('LP.detailseminar', compact('seminar', 'isRegistered'));
+            return view('detailseminar', compact('seminar', 'isRegistered'));
         } catch (\Exception $e) {
             Log::error('Gagal menampilkan detail seminar: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Gagal menampilkan detail seminar: ' . $e->getMessage());
         }
     }
+    
 }

@@ -54,14 +54,14 @@ return [
 
         'stack' => [
             'driver' => 'stack',
-            'channels' => explode(',', env('LOG_STACK', 'single')),
+            'channels' => ['single', 'slack'],
             'ignore_exceptions' => false,
         ],
 
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
-            'level' => env('LOG_LEVEL', 'debug'),
+            'level' => 'debug',
             'replace_placeholders' => true,
         ],
 
@@ -75,10 +75,10 @@ return [
 
         'slack' => [
             'driver' => 'slack',
-            'url' => env('LOG_SLACK_WEBHOOK_URL'),
-            'username' => env('LOG_SLACK_USERNAME', 'Laravel Log'),
-            'emoji' => env('LOG_SLACK_EMOJI', ':boom:'),
-            'level' => env('LOG_LEVEL', 'critical'),
+            'url' => env('SLACK_WEBHOOK_URL'),
+            'username' => 'Laravel Log',
+            'emoji' => ':boom:',
+            'level' => 'critical',
             'replace_placeholders' => true,
         ],
 
