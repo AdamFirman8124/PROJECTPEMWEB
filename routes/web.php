@@ -63,7 +63,10 @@ Route::prefix('admin')->group(function () {
         // Rute untuk mengunggah sertifikat seminar
         Route::post('/seminars/{seminar}/uploadCertificate', [AdminController::class, 'uploadCertificate'])->name('admin.uploadCertificate');
         Route::put('/seminars/certificate/{template}', [AdminController::class, 'updateCertificate'])->name('seminar.updateCertificate');
+        
     });
+
+    Route::get('certificate/export',[AdminController::class, 'export']);
 });
 // Rute untuk logout
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');

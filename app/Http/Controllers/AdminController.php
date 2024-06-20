@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Exports\CertificateExport;
 use App\Models\CertificateTemplate;
 use App\Models\Registration;
 use Illuminate\Http\Request;
@@ -9,6 +11,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;// Pastikan menggunakan model Seminar
+use Maatwebsite\Excel\Facades\Excel;
 
 class AdminController extends Controller
 {
@@ -359,6 +362,12 @@ class AdminController extends Controller
             Log::error('Gagal memperbarui tanggal akses sertifikat: ' . $e->getMessage());
             return back()->with('error', 'Gagal memperbarui tanggal akses sertifikat: ' . $e->getMessage());
         }
+    }
+
+
+    public function export() 
+    {
+        return Excel::download(new CertificateExport, 'certificate.xlsx');
     }
 
     

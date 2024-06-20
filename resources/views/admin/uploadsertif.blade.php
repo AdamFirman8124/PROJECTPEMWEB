@@ -19,6 +19,8 @@
                             @method('PUT')
                             <input type="datetime-local" name="access_time" class="form-control mb-2" value="{{ \Carbon\Carbon::parse($seminar->certificateTemplate->access_time)->format('Y-m-d\TH:i') }}" required>
                             <button type="submit" class="btn btn-primary">Update Tanggal Akses</button>
+                            <a href="/admin/certificate/export" class="btn btn-success">Export Sertifikat</a>    
+
                         </form>
                     @else
                         <!-- Form untuk mengatur tanggal akses jika belum ada -->
@@ -28,6 +30,7 @@
                             <input type="datetime-local" name="access_time" class="form-control mb-2" value="{{ $seminar->certificateTemplate ? \Carbon\Carbon::parse($seminar->certificateTemplate->access_time)->format('Y-m-d\TH:i') : '' }}" required>
                             <button type="submit" class="btn btn-primary">Upload Template Sertifikat</button>
                         </form>
+                        <a href="/admin/certificate/export" class="btn btn-success">Export Sertifikat</a>    
                     @endif
                 </div>
             </div>
