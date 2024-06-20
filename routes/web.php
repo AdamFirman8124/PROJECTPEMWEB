@@ -71,10 +71,6 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 // Rute untuk mengedit role pengguna
 Route::get('/users/{id}/edit-role', [UserController::class, 'editRole'])->name('users.edit-role');
 Route::put('/users/{id}/update-role', [UserController::class, 'updateRole'])->name('users.update-role');
-
-Route::get('/refresh', function () {
-    Artisan::call('config:clear');
-    Artisan::call('cache:clear');
-    Artisan::call('route:clear');
-    return 'Done bg';
-});
+Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::post('/seminar/store', 'SeminarController@store')->name('seminar.store');

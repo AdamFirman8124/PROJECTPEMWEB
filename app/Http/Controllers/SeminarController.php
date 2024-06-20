@@ -232,7 +232,7 @@ class SeminarController extends Controller
     {
         Log::info('Memulai pengambilan semua data seminar untuk rekap');
         try {
-            $seminars = Seminar::all(); // Atau logika lain untuk mendapatkan data seminar yang relevan
+            $seminars = Seminar::all();
             Log::info('Berhasil mengambil semua data seminar untuk rekap');
             return view('seminar.rekap', compact('seminars'));
         } catch (\Exception $e) {

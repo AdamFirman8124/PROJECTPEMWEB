@@ -14,7 +14,7 @@
                         <th>Nama</th>
                         <th>Email</th>
                         <th>Role</th>
-                        @if (Auth::user()->role == 'admin' || Auth::user()->role == 'PIC Webinar/Seminar')
+                        @if (Auth::user()->role == 'admin' || Auth::user()->role == 'PIC WebinarorSeminar')
                         <th>Aksi</th>
                         @endif
                     </tr>
@@ -24,9 +24,9 @@
                     <tr>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
-                        <td>{{ $user->role == 'admin' ? 'PIC Webinar/Seminar' : 'Peserta' }}</td>
+                        <td>{{ $user->role == 'admin' ? 'PIC WebinarorSeminar' : 'Peserta' }}</td>
                         <td>
-                            @if (Auth::user()->role == 'admin' || Auth::user()->role == 'PIC Webinar/Seminar')
+                            @if (Auth::user()->role == 'admin' || Auth::user()->role == 'PIC WebinarorSeminar')
                             <a href="{{ route('users.edit-role', $user->id) }}" class="btn btn-warning">Edit Role</a>
 
                             <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display: inline-block;">
@@ -41,7 +41,7 @@
                 </tbody>
             </table>
         </div>
-        <a href="{{ route('home') }}" class="btn btn-primary">Kembali ke Beranda</a>
+        <a href="{{ route('landingpage') }}" class="btn btn-primary">Kembali ke Beranda</a>
     </div>
     <script>
         function confirmDelete(button) {

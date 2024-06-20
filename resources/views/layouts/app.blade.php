@@ -39,22 +39,22 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="btn btn-link nav-link" href="{{ route('home') }}">Home</a>
+                    <a class="btn btn-link nav-link" href="{{ route('landingpage') }}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-link nav-link" href="{{ route('seminar.create') }}">Tambah Seminar</a>
+                    <a class="btn btn-link nav-link" href="{{ route('tambahseminar') }}">Tambah Seminar</a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-link nav-link" href="{{ route('seminar.rekap') }}">Rekap Seminar</a>
+                    <a class="btn btn-link nav-link" href="{{ route('admin.rekap') }}">Rekap Seminar</a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-link nav-link" href="{{ route('registrations.index') }}">Rekap Peserta</a>
+                    <a class="btn btn-link nav-link" href="{{ route('rekap_peserta') }}">Rekap Peserta</a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-link nav-link" href="{{ route('seminar.rekap-peserta') }}">Data User</a>
+                    <a class="btn btn-link nav-link" href="{{ route('data_pengguna') }}">Data User</a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-link nav-link" href="{{ route('seminar.certificate') }}">Upload Sertifikat</a>
+                    <a class="btn btn-link nav-link" href="{{ route('admin.certificate') }}">Upload Sertifikat</a>
                 </li>
             </ul>
             <!-- Menampilkan nama user yang login di bagian kanan navbar -->
