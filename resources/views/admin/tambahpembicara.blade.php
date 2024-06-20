@@ -18,6 +18,7 @@
             <input type="text" class="form-control" id="asal_instansi" name="asal_instansi" required>
         </div>
         <button type="submit" class="btn btn-primary">Simpan</button>
+        <a href="{{ route('admin.exportPembicara') }}" class="btn btn-secondary">Ekspor Data Pembicara</a>
     </form>
 </div>
 @endsection

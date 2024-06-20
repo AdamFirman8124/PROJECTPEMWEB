@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;// Pastikan menggunakan model Seminar
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Pembicara;
+use App\Exports\PembicaraExport;
 
 class AdminController extends Controller
 {
@@ -365,7 +366,7 @@ class AdminController extends Controller
 
     public function export() 
     {
-        return Excel::download(new CertificateExport, 'certificate.xlsx');
+        return Excel::download(new PembicaraExport, 'pembicara.xlsx');
     }
 
     public function tambahPembicara()

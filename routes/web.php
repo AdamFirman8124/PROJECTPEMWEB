@@ -71,6 +71,7 @@ Route::prefix('admin')->group(function () {
     //Rute untuk tambah pembicara
     Route::get('/tambah-pembicara', [AdminController::class, 'tambahPembicara'])->name('admin.tambahPembicara');
     Route::post('/simpan-pembicara', [AdminController::class, 'simpanPembicara'])->name('admin.simpanPembicara');
+    Route::get('pembicara/export', [AdminController::class, 'export'])->name('admin.exportPembicara');
 });
 // Rute untuk logout
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
