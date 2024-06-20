@@ -13,6 +13,7 @@
             @endphp
             <!-- Tombol unduh di bawah ini -->
             <a href="{{ route('seminar.download-certificate', $seminar->id) }}" class="btn btn-success">Unduh Sertifikat</a>
+           
         </div>
     @else
         <div class="text-center">
