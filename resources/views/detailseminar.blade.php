@@ -128,6 +128,8 @@ https://templatemo.com/tm-586-scholar
                 
                 @if($isRegistered)
                 <a href="{{ asset($certificate->file_path) }}" target="_blank" class="btn btn-success">Unduhss Sertifikat</a>
+                <!-- tombol download sertifikat -->
+                <a href="/admin/certificate/export" class="btn btn-success">Export Sertifikat</a>    
                 @else
                     <!-- If not registered, show a disabled link -->
                     <button class="btn btn-success" disabled>Unduh Sertifikat</button>
