@@ -54,7 +54,7 @@
                 @else
                     Tidak ada materi yang tersedia
                 @endif
-                <a href="{{ route('seminar.certificate-detail', $seminar->id) }}" class="btn btn-success">Unduh Sertifikat</a>
+                <a href="{{ route('detailseminar', $seminar->id) }}" class="btn btn-success">Unduh Sertifikat</a>
                
             </p>
                 <!-- <div class="map-container">
