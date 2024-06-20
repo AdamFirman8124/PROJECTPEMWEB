@@ -38,11 +38,7 @@ class SeminarController extends Controller
             'is_paid' => 'nullable|boolean',
             'start_registration' => 'required|date',
             'end_registration' => 'required|date',
-            'pembicara' => 'required|string|max:255',
-            'asal_instansi' => 'required|string|max:255',
-            'topik' => 'required|string|max:255',
             'gambar_seminar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'materi' => 'nullable|file|mimes:pdf,doc,docx,ppt,pptx|max:2048'
         ]);
         Log::info('Validasi data seminar berhasil');
 
@@ -55,9 +51,6 @@ class SeminarController extends Controller
             $seminar->is_paid = $request->input('is_paid');
             $seminar->start_registration = $request->input('start_registration');
             $seminar->end_registration = $request->input('end_registration');
-            $seminar->pembicara = $request->input('pembicara');
-            $seminar->asal_instansi = $request->input('asal_instansi');
-            $seminar->topik = $request->input('topik');
 
             if ($request->hasFile('gambar_seminar')) {
                 Log::info('Memulai proses penyimpanan gambar seminar');
@@ -66,15 +59,6 @@ class SeminarController extends Controller
                 $gambarPath = $gambarFile->storeAs('public/seminar_images', $gambarName);
                 $seminar->gambar_seminar = $gambarName;
                 Log::info('Gambar seminar berhasil disimpan');
-            }
-
-            if ($request->hasFile('materi')) {
-                Log::info('Memulai proses penyimpanan materi seminar');
-                $materiFile = $request->file('materi');
-                $materiName = time() . '_' . $materiFile->getClientOriginalName();
-                $materiPath = $materiFile->storeAs('public/materi', $materiName);
-                $seminar->materi = $materiName;
-                Log::info('Materi seminar berhasil disimpan');
             }
 
             $seminar->save();

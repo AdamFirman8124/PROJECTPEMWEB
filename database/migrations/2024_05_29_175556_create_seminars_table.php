@@ -8,8 +8,19 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('seminars', function (Blueprint $table) {
+        Schema::disableForeignKeyConstraints();
+        Schema::create('pembicaras', function (Blueprint $table) {
             $table->id();
+            $table->string('nama_pembicara');
+            $table->string('topik');
+            $table->string('asal_instansi');
+            $table->timestamps();
+        });
+        Schema::enableForeignKeyConstraints();
+
+        Schema::create('seminars', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('nama_seminar');
             $table->string('tanggal_seminar')->default(date('Y-m-d'));
             $table->string('lokasi_seminar');
             $table->string('google_map_link')->nullable();
@@ -17,16 +28,20 @@ return new class extends Migration
             $table->boolean('is_paid')->nullable()->default(null);
             $table->date('start_registration');
             $table->date('end_registration');
-            $table->string('pembicara');
-            $table->string('asal_instansi');
-            $table->string('topik');
-            $table->string('materi')->nullable();
+            $table->unsignedBigInteger('pembicara_id');
+            $table->foreign('pembicara_id')->references('id')->on('pembicaras');
             $table->timestamps();
         });
     }
 
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
+        // Memastikan tabel 'seminars' dihapus terlebih dahulu karena memiliki foreign key.
         Schema::dropIfExists('seminars');
+        // Kemudian hapus tabel 'pembicaras'.
+        Schema::dropIfExists('pembicaras');
+        Schema::enableForeignKeyConstraints();
     }
 };
+

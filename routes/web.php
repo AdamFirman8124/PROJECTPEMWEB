@@ -67,6 +67,10 @@ Route::prefix('admin')->group(function () {
     });
     //Rute untuk men download sertifikat
     Route::get('certificate/export',[AdminController::class, 'export']);  
+
+    //Rute untuk tambah pembicara
+    Route::get('/tambah-pembicara', [AdminController::class, 'tambahPembicara'])->name('admin.tambahPembicara');
+    Route::post('/simpan-pembicara', [AdminController::class, 'simpanPembicara'])->name('admin.simpanPembicara');
 });
 // Rute untuk logout
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -77,3 +81,6 @@ Route::put('/users/{id}/update-role', [UserController::class, 'updateRole'])->na
 Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 Route::post('/seminar/store', 'SeminarController@store')->name('seminar.store');
+
+// Rute untuk tambah pembicara
+Route::get('/admin/tambahpembicara', 'AdminController@index');

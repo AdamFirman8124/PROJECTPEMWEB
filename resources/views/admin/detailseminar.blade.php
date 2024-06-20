@@ -7,7 +7,7 @@
                 <div class="col-lg-12 text-center">
                     <div class="section-heading">
                         <h6>Detail Seminar</h6>
-                        <h2>{{ $seminar->topik }}</h2>
+                        <h2>{{ $seminar->nama_seminar }}</h2>
                     </div>
                 </div>
                 <div class="col-lg-12 col-md-6">
@@ -26,7 +26,7 @@
                                         @else
                                         <span class="category">Gratis</span>
                                         @endif
-                                        <h4>{{ $seminar->topik }}</h4>
+                                        <h4>{{ $seminar->nama_seminar }}</h4>
                                     </li>
                                     <li>
                                         <span>Tanggal Pelaksanaan:</span>
@@ -55,13 +55,7 @@
                     Tidak ada materi yang tersedia
                 @endif
                 <a href="{{ route('detailseminar', $seminar->id) }}" class="btn btn-success">Unduh Sertifikat</a>
-               
             </p>
-                <!-- <div class="map-container">
-                                        <iframe width="100%" height="300" frameborder="0" style="border:0"
-                                            src="{{ $seminar->google_map_link }}" allowfullscreen></iframe>
-                                    </div> -->
-
             </div>
         </div>
     </div>

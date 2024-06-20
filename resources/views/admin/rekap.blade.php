@@ -8,7 +8,7 @@
             <thead class="thead-dark">
                 <tr>
                     <th>No</th>
-                    <th>Topik Seminar</th>
+                    <th>Nama Seminar</th>
                     <th>Tanggal Seminar</th>
                     <th>Lokasi</th>
                     <th>Pembicara</th>
@@ -21,11 +21,11 @@
                 @foreach ($seminars as $index => $seminar)
                 <tr>
                     <td>{{ $index + 1 }}</td>
-                    <td>{{ $seminar->topik }}</td>
+                    <td>{{ $seminar->nama_seminar }}</td>
                     <td>{{ $seminar->tanggal_seminar }}</td>
                     <td>{{ $seminar->lokasi_seminar }}</td>
-                    <td>{{ $seminar->pembicara }}</td>
-                    <td>{{ $seminar->asal_instansi }}</td>
+                    <td>{{ $seminar->pembicara ? $seminar->pembicara->nama_pembicara : 'Tidak ada pembicara' }}</td>
+                    <td>{{ $seminar->pembicara ? $seminar->pembicara->asal_instansi : 'Tidak ada instansi' }}</td>
                     <td>
                         @if($seminar->gambar_seminar)
                         <img src="{{ asset($seminar->gambar_seminar) }}" alt="Gambar Seminar" class="img-thumbnail" style="width: 100px; height: 70px; background-size: contain;">

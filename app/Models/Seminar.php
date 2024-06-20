@@ -22,6 +22,11 @@ class Seminar extends Model
         return $this->hasOne(CertificateTemplate::class);
     }
 
+    public function pembicara()
+    {
+        return $this->belongsTo(Pembicara::class, 'pembicara_id');
+    }
+
     public function up()
     {
         Schema::create('seminars', function (Blueprint $table) {

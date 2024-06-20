@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;// Pastikan menggunakan model Seminar
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\Pembicara;
 
 class AdminController extends Controller
 {
@@ -40,9 +41,9 @@ class AdminController extends Controller
     public function filter($filter)
     {
         if ($filter == 'gratis') {
-            $seminars = Seminar::where('is_paid', false)->get();
+            $seminars = Seminar::with('pembicara')->where('is_paid', false)->get();
         } elseif ($filter == 'berbayar') {
-            $seminars = Seminar::where('is_paid', true)->get();
+            $seminars = Seminar::with('pembicara')->where('is_paid', true)->get();
         } else {
             // Handle invalid filter case, for example redirect to default view
             return redirect()->route('admin_dashboard');
@@ -54,7 +55,7 @@ class AdminController extends Controller
     {
         Log::info('Memulai pengambilan semua data seminar untuk rekap');
         try {
-            $seminars = Seminar::all(); // Atau logika lain untuk mendapatkan data seminar yang relevan
+            $seminars = Seminar::with('pembicara')->get(); // Atau logika lain untuk mendapatkan data seminar yang relevan
             Log::info('Berhasil mengambil semua data seminar untuk rekap');
             return view('admin.rekap', compact('seminars'));
         } catch (\Exception $e) {
@@ -64,48 +65,38 @@ class AdminController extends Controller
     }
     public function create()
     {
-        return view('admin.tambahseminar');
+        $pembicaras = Pembicara::all();
+        return view('admin.tambahseminar', compact('pembicaras'));
     }
     public function store(Request $request)
     {
         $request->validate([
-            'pembicara' => 'required|string|max:255',
-            'asal_instansi' => 'required|string|max:255',
-            'topik' => 'required|string|max:255',
+            'nama_seminar' => 'required|string|max:255',
             'tanggal_seminar' => 'required|date',
             'lokasi_seminar' => 'required|string|max:255',
             'google_map_link' => ['required', 'url', 'regex:/^https:\/\/maps\.app\.goo\.gl/'],
             'gambar_seminar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'start_registration' => 'required|date',
             'end_registration' => 'required|date|after_or_equal:start_registration',
-            'materi' => 'nullable|file|mimes:pdf,doc,docx,ppt,pptx|max:2048'
+            'pembicara_id' => 'required|exists:pembicaras,id', // Pastikan ini validasi ada
         ]);
     
         try {
             $seminar = new Seminar();
-            $seminar->pembicara = $request->input('pembicara');
-            $seminar->asal_instansi = $request->input('asal_instansi');
-            $seminar->topik = $request->input('topik');
+            $seminar->nama_seminar = $request->input('nama_seminar');
             $seminar->tanggal_seminar = $request->input('tanggal_seminar');
             $seminar->lokasi_seminar = $request->input('lokasi_seminar');
             $seminar->google_map_link = $request->input('google_map_link');
             $seminar->start_registration = $request->input('start_registration');
             $seminar->end_registration = $request->input('end_registration');
-            
-            // Handle checkbox value
             $seminar->is_paid = $request->has('is_paid');
+            $seminar->pembicara_id = $request->input('pembicara_id'); // Tambahkan ini
     
             // Upload gambar seminar
             if ($request->hasFile('gambar_seminar')) {
                 $imageName = time() . '.' . $request->file('gambar_seminar')->extension();
                 $request->file('gambar_seminar')->move(public_path('assets/images/gambar-seminar'), $imageName);
                 $seminar->gambar_seminar = 'assets/images/gambar-seminar/' . $imageName;
-            }
-    
-            if ($request->hasFile('materi')) {
-                $materiName = time() . '_' . $request->file('materi')->getClientOriginalName();
-                $request->file('materi')->move(public_path('assets/images/materi-seminar'), $materiName);
-                $seminar->materi = 'assets/images/materi-seminar/' . $materiName;
             }
     
             $seminar->save();
@@ -118,30 +109,38 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'Gagal menyimpan data: ' . $e->getMessage());
         }
     }
+
     public function edit($id)
     {
         try {
-            $seminar = Seminar::findOrFail($id);
+            $seminar = Seminar::with('pembicara')->findOrFail($id);
             $seminar->tanggal_seminar = \Carbon\Carbon::parse($seminar->tanggal_seminar);
-            return view('admin.editseminar', compact('seminar'));
+            $pembicaras = Pembicara::all();
+            return view('admin.editseminar', compact('seminar', 'pembicaras'));
         } catch (\Exception $e) {
             Log::error('Gagal mengedit seminar: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Gagal mengedit seminar: ' . $e->getMessage());
         }
     }
+
     public function update(Request $request, $id)
     {
         $request->validate([
-            'topik' => 'required|string|max:255',
+            'nama_seminar' => 'required|string|max:255|unique:seminars,nama_seminar,' . $id,
             'tanggal_seminar' => 'required|date',
             'lokasi_seminar' => 'required|string|max:255',
-            'pembicara' => 'required|string|max:255',
-            'asal_instansi' => 'required|string|max:255'
+            'is_paid' => 'required|boolean',
+            'pembicara_id' => 'required|exists:pembicaras,id',
         ]);
 
         try {
-            $seminar = Seminar::findOrFail($id);
-            $seminar->update($request->all());
+            $seminar = Seminar::with('pembicara')->findOrFail($id);
+            $seminar->nama_seminar = $request->input('nama_seminar');
+            $seminar->tanggal_seminar = $request->input('tanggal_seminar');
+            $seminar->lokasi_seminar = $request->input('lokasi_seminar');
+            $seminar->is_paid = $request->input('is_paid');
+            $seminar->pembicara_id = $request->input('pembicara_id');
+            $seminar->save();
 
             return redirect()->route('admin.rekap')->with('success', 'Seminar berhasil diperbarui.');
         } catch (\Exception $e) {
@@ -150,11 +149,10 @@ class AdminController extends Controller
         }
     }
 
-    
     public function show($id)
     {
         try {
-            $seminar = Seminar::findOrFail($id);
+            $seminar = Seminar::with('pembicara')->findOrFail($id);
     
             return view('admin.detailseminar', compact('seminar'));
         } catch (\Exception $e) {
@@ -166,7 +164,7 @@ class AdminController extends Controller
     {
         Log::info('Memulai proses penghapusan seminar dengan ID: ' . $id);
         try {
-            $seminar = Seminar::findOrFail($id);
+            $seminar = Seminar::with('pembicara')->findOrFail($id);
             $seminar->delete();
             Log::info('Seminar berhasil dihapus');
             return redirect()->route('seminars.rekap')->with('success', 'Seminar berhasil dihapus');
@@ -178,7 +176,7 @@ class AdminController extends Controller
     public function detailseminar($id)
     {
         try {
-            $seminar = Seminar::findOrFail($id);
+            $seminar = Seminar::with('pembicara')->findOrFail($id);
             $user_id = auth()->id();
             $isRegistered = Registration::where('user_id', $user_id)->where('seminar_id', $id)->exists();
         
@@ -191,8 +189,8 @@ class AdminController extends Controller
     public function daftarseminar($seminar_id)
     {
         try {
-            $seminar = Seminar::findOrFail($seminar_id);
-            $seminars = Seminar::all();
+            $seminar = Seminar::with('pembicara')->findOrFail($seminar_id);
+            $seminars = Seminar::with('pembicara')->all();
             return view('LP.daftarseminar', compact('seminar', 'seminars'));
         } catch (\Exception $e) {
             Log::error('Error saat mengambil data seminar: ' . $e->getMessage());
@@ -202,7 +200,7 @@ class AdminController extends Controller
     public function datapeserta()
     {
         try {
-            $registrations = Registration::with('seminar')->get();
+            $registrations = Registration::with('seminar.pembicara')->get();
             return view('admin.datapeserta', compact('registrations'));
         } catch (\Exception $e) {
             Log::error('Error saat menampilkan registrasi: ' . $e->getMessage());
@@ -212,7 +210,7 @@ class AdminController extends Controller
     {
         try {
             $registration = Registration::findOrFail($id);
-            $seminars = Seminar::all();
+            $seminars = Seminar::with('pembicara')->all();
             return view('admin.editdatapeserta', compact('registration', 'seminars'));
         } catch (\Exception $e) {
             Log::error('Error saat mengambil data registrasi untuk edit: ' . $e->getMessage());
@@ -292,7 +290,7 @@ class AdminController extends Controller
     {
         Log::info('Memulai pengambilan semua data seminar untuk sertifikat');
         try {
-            $seminars = Seminar::all(); // Mengambil semua data seminar
+            $seminars = Seminar::with('pembicara')->get(); // Mengambil semua data seminar
             Log::info('Berhasil mengambil semua data seminar untuk sertifikat');
             return view('admin.uploadsertif', compact('seminars'));
         } catch (\Exception $e) {
@@ -370,5 +368,28 @@ class AdminController extends Controller
         return Excel::download(new CertificateExport, 'certificate.xlsx');
     }
 
-    
+    public function tambahPembicara()
+    {
+        $seminars = Seminar::all(); // Pastikan Anda telah mengambil data seminar dari database
+        return view('admin.tambahpembicara', compact('seminars'));
+    }
+
+    public function simpanPembicara(Request $request)
+    {
+        $request->validate([
+            'nama_pembicara' => 'required|string|max:255',
+            'topik' => 'required|string|max:255',
+            'asal_instansi' => 'required|string|max:255',
+        ]);
+
+        $pembicara = new Pembicara([
+            'nama_pembicara' => $request->nama_pembicara,
+            'topik' => $request->topik,
+            'asal_instansi' => $request->asal_instansi,
+        ]);
+
+        $pembicara->save();
+
+        return redirect()->route('admin_dashboard')->with('success', 'Pembicara berhasil ditambahkan');
+    }
 }

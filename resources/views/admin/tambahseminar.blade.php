@@ -77,18 +77,9 @@
             <form method="POST" action="{{ route('admin.tambahseminar') }}" enctype="multipart/form-data">
                 @csrf
                 <div style="margin-bottom: 15px;">
-                    <label for="pembicara">Nama Pembicara:</label>
-                    <input type="text" id="pembicara" name="pembicara" placeholder="Masukkan nama pembicara" class="form-control form-control-custom">
+                    <label for="nama_seminar">Nama Seminar:</label>
+                    <input type="text" id="nama_seminar" name="nama_seminar" required placeholder="Masukkan nama seminar" class="form-control form-control-custom">
                 </div>
-                <div style="margin-bottom: 15px;">
-                    <label for="asal_instansi">Asal Instansi Pembicara:</label>
-                    <input type="text" id="asal_instansi" name="asal_instansi" placeholder="Masukkan asal instansi pembicara" class="form-control form-control-custom">
-                </div>
-                <div style="margin-bottom: 15px;">
-                    <label for="topik">Topik Seminar:</label>
-                    <input type="text" id="topik" name="topik" placeholder="Masukkan topik seminar" class="form-control form-control-custom">
-                </div>
-                
                 <div style="margin-bottom: 15px;">
                     <label for="tanggal_seminar">Tanggal Seminar:</label>
                     <input type="date" id="tanggal_seminar" name="tanggal_seminar" required placeholder="Masukkan tanggal seminar" class="form-control form-control-custom">
@@ -120,13 +111,14 @@
                     <input type="checkbox" name="is_paid" value="1" class="form-check-input" id="isPaidCheck">
                     <label class="form-check-label" for="isPaidCheck">Centang jika seminar ini berbayar</label>
                 </div>
-            
-                
                 <div style="margin-bottom: 15px;">
-                    <label for="materi">Materi:</label>
-                    <input type="file" id="materi" name="materi" class="form-control form-control-custom">
+                    <label for="pembicara_id">Pembicara:</label>
+                    <select id="pembicara_id" name="pembicara_id" class="form-control form-control-custom" required>
+                        @foreach ($pembicaras as $pembicara)
+                            <option value="{{ $pembicara->id }}">{{ $pembicara->nama_pembicara }}</option>
+                        @endforeach
+                    </select>
                 </div>
-                
                 <button type="submit" class="btn btn-kirim" style="width: 100%;">Kirim</button>
                 <a href="{{ route('admin_dashboard') }}" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Kembali ke Beranda</a>
             </form>

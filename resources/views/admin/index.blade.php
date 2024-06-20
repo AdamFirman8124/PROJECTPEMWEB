@@ -45,7 +45,7 @@
                             <span class="category">{{ $seminar->is_paid ? 'Berbayar' : 'Gratis' }}</span>
                         </div>
                         <div class="down-content">
-                            <span class="author">{{ $seminar->pembicara }}</span>
+                            <span class="author">{{ $seminar->nama_seminar }}</span>
                             <h4>{{ $seminar->topik }}</h4>
                             
                             <span class="author">{{ $seminar->tanggal_seminar }}</span> <br>

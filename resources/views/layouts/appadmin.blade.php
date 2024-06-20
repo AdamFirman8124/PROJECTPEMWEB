@@ -42,7 +42,7 @@ https://templatemo.com/tm-586-scholar
     </div>
   </div> -->
   <header class="header-area header-sticky background-header">
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 <nav class="main-nav">
@@ -57,11 +57,13 @@ https://templatemo.com/tm-586-scholar
                       <li class="scroll-to-section"><a href="{{ route('rekap_peserta')}}">Data Peserta</a></li>
                       <li class="scroll-to-section"><a href="{{ route('data_pengguna')}}">Data Pengguna</a></li>
                       <li class="scroll-to-section"><a href="{{ route('admin.certificate')}}">Upload Sertifikat</a></li>
+                      <li class="scroll-to-section"><a href="{{ route('admin.tambahPembicara') }}">Tambah Pembicara</a></li>
+                      <li class="scroll-to-section"><a href="">Tambah Materi</a></li>
                       <!-- <li class="scroll-to-section"><a href="#team">Team</a></li> -->
                       <!-- <li class="scroll-to-section"><a href="#about-us">FAQ</a></li> -->
                       <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit" class="btn btn-logout">{{ __('Logout') }}</button>
+                            <button type="submit" class="btn btn-logout" style="background-color: red;">{{ __('Logout') }}</button>
                         </form>
                   </ul>   
                     <a class='menu-trigger'>
