@@ -443,11 +443,15 @@ class AdminController extends Controller
 
     public function exportMateri()
     {
-        return Excel::download(new MateriExport, 'seminar.xlsx');
+        return Excel::download(new MateriExport, 'materi.xlsx');
     }
 
     public function exportSeminar()
     {
         return Excel::download(new SeminarExport, 'seminar.xlsx');
+    }
+    public function exportCertificate()
+    {
+        return Excel::download(new CertificateExport, 'certificate.xlsx');
     }
 }

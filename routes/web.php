@@ -84,6 +84,9 @@ Route::prefix('admin')->group(function () {
 
     //Rute untuk export materi
     Route::get('/export-materi', [AdminController::class, 'exportMateri'])->name('admin.exportMateri');
+
+    //Rute untuk export sertifikat
+    Route::get('/export-certificate', [AdminController::class, 'exportCertificate'])->name('admin.exportCertificate');
 });
 // Rute untuk logout
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');

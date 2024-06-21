@@ -39,7 +39,7 @@
             </div>
         </div>
         @endforeach
-        <a href="/admin/certificate/export" class="btn btn-success">Export Sertifikat</a> 
+        <a href="{{ route('admin.exportCertificate') }}" class="btn btn-success">Export Sertifikat</a> 
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function () {

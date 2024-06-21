@@ -3,6 +3,8 @@
 @section('content')
 <div style="margin-top: 120px;" class="container">
     <h1 class="mb-4 text-center">Rekapitulasi Seminar</h1>
+    
+    <a href="{{ route('admin.exportSeminar') }}" class="btn btn-success mb-3">Unduh Data Seminar</a>
     <div class="table-responsive">
         <table class="table table-striped table-hover">
             <thead class="thead-dark">

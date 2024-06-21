@@ -286,11 +286,11 @@ https://templatemo.com/tm-586-scholar
                 <div class="col-lg-4 col-md-6 align-self-center mb-30 event_outer col-md-6 {{ $seminar->is_paid ? 'berbayar' : 'gratis' }}">
                     <div class="events_item">
                         <div class="gambar-container">
-                            <a href="#"><img src="{{ asset($seminar->gambar_seminar) }}" alt="{{ $seminar->topik }}"></a>
+                            <a href="#"><img src="{{ asset($seminar->gambar_seminar) }}" alt="{{ $seminar->nama_seminar }}"></a>
                         </div>
                         <div class="down-content">
-                            <span class="author">{{ $seminar->pembicara }}</span>
-                            <h4>{{ $seminar->topik }}</h4>
+                            <span class="author">{{ $seminar->pembicara->nama_pembicara }}</span>
+                            <h4>{{ $seminar->nama_seminar}}</h4>
                             
                             <span class="author">{{ $seminar->tanggal_seminar }}</span> <br>
                             <span class="category">{{ $seminar->is_paid ? 'Berbayar' : 'Gratis' }}</span>
