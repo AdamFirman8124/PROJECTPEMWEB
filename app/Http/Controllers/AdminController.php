@@ -16,6 +16,8 @@ use App\Models\Pembicara;
 use App\Exports\PembicaraExport;
 use App\Models\Materi;
 use App\Exports\SeminarExport;
+use App\Exports\MateriExport;
+
 
 class AdminController extends Controller
 {
@@ -439,8 +441,8 @@ class AdminController extends Controller
         return redirect()->route('admin_dashboard')->with('success', 'Materi berhasil ditambahkan');
     }
 
-    public function exportSeminar()
+    public function exportMateri()
     {
-        return Excel::download(new SeminarExport, 'seminar.xlsx');
+        return Excel::download(new MateriExport, 'seminar.xlsx');
     }
 }

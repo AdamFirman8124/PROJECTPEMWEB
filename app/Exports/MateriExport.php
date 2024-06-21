@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use App\Models\Materi;
 
-class SeminarExport implements FromCollection, WithHeadings, WithStyles
+class MateriExport implements FromCollection, WithHeadings, WithStyles
 {
     /**
     * @return \Illuminate\Support\Collection

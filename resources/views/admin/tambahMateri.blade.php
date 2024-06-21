@@ -22,7 +22,7 @@
             <input type="file" class="form-control" id="file_materi" name="file_materi[]" multiple required>
         </div>
         <button type="submit" class="btn btn-primary">Simpan</button>
-        <a class="btn btn-secondary" href="{{ route('admin.exportSeminar') }}">Unduh Data Seminar</a>
+        <a class="btn btn-secondary" href="{{ route('admin.exportMateri') }}">Unduh Data Seminar</a>
     </form>
 </div>
 @endsection
