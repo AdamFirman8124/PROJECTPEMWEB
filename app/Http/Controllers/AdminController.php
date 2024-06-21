@@ -445,4 +445,9 @@ class AdminController extends Controller
     {
         return Excel::download(new MateriExport, 'seminar.xlsx');
     }
+
+    public function exportSeminar()
+    {
+        return Excel::download(new SeminarExport, 'seminar.xlsx');
+    }
 }

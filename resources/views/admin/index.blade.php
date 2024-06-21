@@ -35,6 +35,7 @@
 
 
         <a href="{{ route('tambahseminar') }}" class="btn btn-success mb-3">Tambah Seminar</a>
+        <a href="{{ route('admin.exportSeminar') }}" class="btn btn-success mb-3">Unduh Data Seminar</a>
 
         <div class="row event_box">
             @foreach ($seminars as $seminar)

@@ -80,6 +80,9 @@ Route::prefix('admin')->group(function () {
     Route::post('/admin/simpan-materi', [AdminController::class, 'simpanMateri'])->name('admin.simpanMateri');
 
     // Rute untuk export seminar
+    Route::get('/export-seminar', [AdminController::class, 'exportSeminar'])->name('admin.exportSeminar');
+
+    //Rute untuk export materi
     Route::get('/export-materi', [AdminController::class, 'exportMateri'])->name('admin.exportMateri');
 });
 // Rute untuk logout
