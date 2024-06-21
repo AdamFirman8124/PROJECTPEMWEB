@@ -112,7 +112,7 @@
                     <label class="form-check-label" for="isPaidCheck">Centang jika seminar ini berbayar</label>
                 </div>
                 <div style="margin-bottom: 15px;">
-                    <label for="pembicara_id">Pembicara:</label>
+                    <label for="pembicara_id">Pembicara: (Silahkan menambahkan pembicara terlebih dahulu baru mendaftar seminar</label>
                     <select id="pembicara_id" name="pembicara_id" class="form-control form-control-custom" required>
                         @foreach ($pembicaras as $pembicara)
                             <option value="{{ $pembicara->id }}">{{ $pembicara->nama_pembicara }}</option>

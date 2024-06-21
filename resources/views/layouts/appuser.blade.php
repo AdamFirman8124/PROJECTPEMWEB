@@ -68,7 +68,7 @@ https://templatemo.com/tm-586-scholar
                       <!-- <li class="scroll-to-section"><a href="#about-us">FAQ</a></li> -->
                       <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit" class="btn btn-logout">{{ __('Logout') }}</button>
+                            <button type="submit" class="btn btn-logout" style="background-color: red; color: white;">{{ __('Logout') }}</button>
                         </form>
                   </ul>   
                     <a class='menu-trigger'>

@@ -142,7 +142,6 @@ class AdminController extends Controller
             'tanggal_seminar' => 'required|date',
             'lokasi_seminar' => 'required|string|max:255',
             'is_paid' => 'required|boolean',
-            'pembicara_id' => 'required|exists:pembicaras,id',
         ]);
 
         try {
@@ -151,7 +150,6 @@ class AdminController extends Controller
             $seminar->tanggal_seminar = $request->input('tanggal_seminar');
             $seminar->lokasi_seminar = $request->input('lokasi_seminar');
             $seminar->is_paid = $request->input('is_paid');
-            $seminar->pembicara_id = $request->input('pembicara_id');
             $seminar->save();
 
             return redirect()->route('admin.rekap')->with('success', 'Seminar berhasil diperbarui.');
