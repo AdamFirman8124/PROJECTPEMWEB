@@ -58,7 +58,7 @@ https://templatemo.com/tm-586-scholar
                       <li class="scroll-to-section"><a href="{{ route('data_pengguna')}}">Data Pengguna</a></li>
                       <li class="scroll-to-section"><a href="{{ route('admin.certificate')}}">Upload Sertifikat</a></li>
                       <li class="scroll-to-section"><a href="{{ route('admin.tambahPembicara') }}">Tambah Pembicara</a></li>
-                      <li class="scroll-to-section"><a href="">Tambah Materi</a></li>
+                      <li class="scroll-to-section"><a href="{{ route('admin.tambahMateri') }}">Tambah Materi</a></li>
                       <!-- <li class="scroll-to-section"><a href="#team">Team</a></li> -->
                       <!-- <li class="scroll-to-section"><a href="#about-us">FAQ</a></li> -->
                       <form method="POST" action="{{ route('logout') }}">

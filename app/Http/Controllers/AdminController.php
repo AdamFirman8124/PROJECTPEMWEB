@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Storage;// Pastikan menggunakan model Seminar
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Pembicara;
 use App\Exports\PembicaraExport;
+use App\Models\Materi;
+use App\Exports\SeminarExport;
 
 class AdminController extends Controller
 {
@@ -25,6 +27,7 @@ class AdminController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        Log::info('AdminController instantiated.');
     }
 
     /**
@@ -34,6 +37,7 @@ class AdminController extends Controller
      */
     public function index()
     {
+        Log::info('Loading all seminars for the admin dashboard.');
         $seminars = Seminar::all();
 
         return view('admin.index', compact('seminars'));
@@ -41,12 +45,13 @@ class AdminController extends Controller
 
     public function filter($filter)
     {
+        Log::info('Applying filter: ' . $filter);
         if ($filter == 'gratis') {
             $seminars = Seminar::with('pembicara')->where('is_paid', false)->get();
         } elseif ($filter == 'berbayar') {
             $seminars = Seminar::with('pembicara')->where('is_paid', true)->get();
         } else {
-            // Handle invalid filter case, for example redirect to default view
+            Log::error('Invalid filter provided: ' . $filter);
             return redirect()->route('admin_dashboard');
         }
 
@@ -66,11 +71,13 @@ class AdminController extends Controller
     }
     public function create()
     {
+        Log::info('Loading all speakers for creating a new seminar.');
         $pembicaras = Pembicara::all();
         return view('admin.tambahseminar', compact('pembicaras'));
     }
     public function store(Request $request)
     {
+        Log::info('Storing new seminar data.');
         $request->validate([
             'nama_seminar' => 'required|string|max:255',
             'tanggal_seminar' => 'required|date',
@@ -113,6 +120,7 @@ class AdminController extends Controller
 
     public function edit($id)
     {
+        Log::info('Editing seminar with ID: ' . $id);
         try {
             $seminar = Seminar::with('pembicara')->findOrFail($id);
             $seminar->tanggal_seminar = \Carbon\Carbon::parse($seminar->tanggal_seminar);
@@ -126,6 +134,7 @@ class AdminController extends Controller
 
     public function update(Request $request, $id)
     {
+        Log::info('Updating seminar with ID: ' . $id);
         $request->validate([
             'nama_seminar' => 'required|string|max:255|unique:seminars,nama_seminar,' . $id,
             'tanggal_seminar' => 'required|date',
@@ -152,6 +161,7 @@ class AdminController extends Controller
 
     public function show($id)
     {
+        Log::info('Showing details for seminar with ID: ' . $id);
         try {
             $seminar = Seminar::with('pembicara')->findOrFail($id);
     
@@ -176,6 +186,7 @@ class AdminController extends Controller
     }
     public function detailseminar($id)
     {
+        Log::info('Fetching details for seminar with ID: ' . $id);
         try {
             $seminar = Seminar::with('pembicara')->findOrFail($id);
             $user_id = auth()->id();
@@ -189,6 +200,7 @@ class AdminController extends Controller
     }
     public function daftarseminar($seminar_id)
     {
+        Log::info('Registering for seminar with ID: ' . $seminar_id);
         try {
             $seminar = Seminar::with('pembicara')->findOrFail($seminar_id);
             $seminars = Seminar::with('pembicara')->all();
@@ -200,6 +212,7 @@ class AdminController extends Controller
     }
     public function datapeserta()
     {
+        Log::info('Fetching all participant data.');
         try {
             $registrations = Registration::with('seminar.pembicara')->get();
             return view('admin.datapeserta', compact('registrations'));
@@ -209,6 +222,7 @@ class AdminController extends Controller
         }
     }    public function editpeserta($id)
     {
+        Log::info('Editing participant data for ID: ' . $id);
         try {
             $registration = Registration::findOrFail($id);
             $seminars = Seminar::with('pembicara')->all();
@@ -220,6 +234,7 @@ class AdminController extends Controller
     }
     public function updatepeserta(Request $request, $id)
     {
+        Log::info('Updating participant data for ID: ' . $id);
         try {
             $registration = Registration::findOrFail($id);
     
@@ -268,6 +283,7 @@ class AdminController extends Controller
     
     public function rekapPeserta()
     {
+        Log::info('Rekapitulating participant data.');
         try {
             $users = User::all();
             return view('admin.datapengguna', compact('users'));
@@ -278,6 +294,7 @@ class AdminController extends Controller
     }
     public function hapuspeserta($id)
     {
+        Log::info('Deleting participant data for ID: ' . $id);
         try {
             $registration = Registration::findOrFail($id);
             $registration->delete();
@@ -343,6 +360,7 @@ class AdminController extends Controller
     }
     public function updateCertificate(Request $request, $templateId)
     {
+        Log::info('Updating certificate access time for template ID: ' . $templateId);
         $request->validate([
             'access_time' => 'required|date'
         ]);
@@ -371,7 +389,7 @@ class AdminController extends Controller
 
     public function tambahPembicara()
     {
-        $seminars = Seminar::all(); // Pastikan Anda telah mengambil data seminar dari database
+        $seminars = Seminar::all();
         return view('admin.tambahpembicara', compact('seminars'));
     }
 
@@ -392,5 +410,37 @@ class AdminController extends Controller
         $pembicara->save();
 
         return redirect()->route('admin_dashboard')->with('success', 'Pembicara berhasil ditambahkan');
+    }
+
+    public function tambahMateri()
+    {
+        $seminars = Seminar::all();
+        return view('admin.tambahMateri', compact('seminars'));
+    }
+
+    public function simpanMateri(Request $request)
+    {
+        $request->validate([
+            'seminar_id' => 'required|exists:seminars,id',
+            'judul_materi' => 'required|string|max:255',
+            'file_materi.*' => 'required|file' // Validasi untuk multiple files
+        ]);
+
+        foreach ($request->file('file_materi') as $file) {
+            $path = $file->store('public/materi');
+
+            Materi::create([
+                'seminar_id' => $request->seminar_id,
+                'judul_materi' => $request->judul_materi,
+                'file_path' => $path
+            ]);
+        }
+
+        return redirect()->route('admin_dashboard')->with('success', 'Materi berhasil ditambahkan');
+    }
+
+    public function exportSeminar()
+    {
+        return Excel::download(new SeminarExport, 'seminar.xlsx');
     }
 }
