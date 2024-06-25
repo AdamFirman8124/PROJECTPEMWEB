@@ -38,7 +38,7 @@ class SeminarController extends Controller
             'is_paid' => 'nullable|boolean',
             'start_registration' => 'required|date',
             'end_registration' => 'required|date',
-            'gambar_seminar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'gambar_seminar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
         ]);
         Log::info('Validasi data seminar berhasil');
 
@@ -76,14 +76,14 @@ class SeminarController extends Controller
             $seminar = Seminar::findOrFail($id);
             $user_id = auth()->id();
             $isRegistered = Registration::where('user_id', $user_id)->where('seminar_id', $id)->exists();
-        
+
             return view('seminar.detail', compact('seminar', 'isRegistered'));
         } catch (\Exception $e) {
             Log::error('Gagal menampilkan detail seminar: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Gagal menampilkan detail seminar: ' . $e->getMessage());
         }
     }
-    
+
     public function register(Request $request)
     {
         Log::info('Memulai proses pendaftaran seminar dengan ID: ' . $request->seminar_id);

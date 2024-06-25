@@ -93,20 +93,20 @@
                     <input type="url" id="google_map_link" name="google_map_link" placeholder="Masukkan link Google Map lokasi seminar" class="form-control form-control-custom">
                 </div>
                 <div style="margin-bottom: 15px;">
-                    <label for="gambar_seminar">Gambar Seminar:</label>
+                    <label for="gambar_seminar">Gambar Seminar: (Dilarang Melebihi 2048kb)</label>
                     <input type="file" id="gambar_seminar" name="gambar_seminar" class="form-control form-control-custom">
                 </div>
-                
+
                 <div style="margin-bottom: 15px;">
                     <label for="start_registration">Tanggal Mulai Pendaftaran:</label>
                     <input type="date" id="start_registration" name="start_registration" class="form-control form-control-custom">
                 </div>
-                
+
                 <div style="margin-bottom: 15px;">
                     <label for="end_registration">Tanggal Akhir Pendaftaran:</label>
                     <input type="date" id="end_registration" name="end_registration" class="form-control form-control-custom" required>
                 </div>
-                
+
                 <div class="form-check" style="margin-bottom: 20px;">
                     <input type="checkbox" name="is_paid" value="1" class="form-check-input" id="isPaidCheck">
                     <label class="form-check-label" for="isPaidCheck">Centang jika seminar ini berbayar</label>
@@ -126,4 +126,15 @@
     </div>
 </div>
 </body>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    @if(session('error'))
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '{{ session('error') }}',
+        });
+    @endif
+</script>
 @endsection
