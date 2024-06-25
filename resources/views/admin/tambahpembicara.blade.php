@@ -1,6 +1,7 @@
 @extends('layouts.appadmin')
 
 @section('content')
+<section class="vh-100">
 <div class="container" style="margin-top: 7em;">
     <h2>Tambah Pembicara</h2>
     <form method="POST" action="{{ route('admin.simpanPembicara') }}">
@@ -21,4 +22,5 @@
         <a href="{{ route('admin.exportPembicara') }}" class="btn btn-secondary">Ekspor Data Pembicara</a>
     </form>
 </div>
+</section>
 @endsection

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DownloadSertifController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\SeminarController;
@@ -56,10 +57,14 @@ Route::prefix('admin')->group(function () {
     Route::prefix('rekap-pengguna')->group(function () {
         Route::get('', [AdminController::class, 'rekapPeserta'])->name('data_pengguna');
     });
+    Route::prefix('tambah-materi')->group(function () {
+    //Rute untuk tambah materi
+    Route::get('', [AdminController::class, 'tambahMateri'])->name('admin.tambahMateri');
+    Route::post('/admin/simpan-materi', [AdminController::class, 'simpanMateri'])->name('admin.simpanMateri');
+    });
     Route::prefix('upload-sertifikat')->group(function () {
         // Rute untuk sertifikat seminar
         Route::get('', [AdminController::class, 'certificate'])->name('admin.certificate');
-
         // Rute untuk mengunggah sertifikat seminar
         Route::post('/seminars/{seminar}/uploadCertificate', [AdminController::class, 'uploadCertificate'])->name('admin.uploadCertificate');
         Route::put('/seminars/certificate/{template}', [AdminController::class, 'updateCertificate'])->name('seminar.updateCertificate');
@@ -75,9 +80,7 @@ Route::prefix('admin')->group(function () {
     //Rute untuk export data pembicara
     Route::get('pembicara/export', [AdminController::class, 'export'])->name('admin.exportPembicara');
 
-    //Rute untuk tambah materi
-    Route::get('/admin/tambah-materi', [AdminController::class, 'tambahMateri'])->name('admin.tambahMateri');
-    Route::post('/admin/simpan-materi', [AdminController::class, 'simpanMateri'])->name('admin.simpanMateri');
+    
 
     // Rute untuk export seminar
     Route::get('/export-seminar', [AdminController::class, 'exportSeminar'])->name('admin.exportSeminar');
@@ -101,3 +104,12 @@ Route::post('/seminar/store', 'SeminarController@store')->name('seminar.store');
 // Rute untuk tambah pembicara
 Route::get('/admin/tambahpembicara', 'AdminController@index');
 
+Route::get('/download-certificate/{seminarId}', [DownloadSertifController::class, 'downloadCertificate'])
+    ->name('downloadCertificate');
+
+    Route::get('/refresh', function () {
+        Artisan::call('config:clear');
+        Artisan::call('cache:clear');
+        Artisan::call('route:clear');
+        return 'Done bg';
+    });

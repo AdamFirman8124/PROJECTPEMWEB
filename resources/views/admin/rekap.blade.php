@@ -1,6 +1,7 @@
 @extends('layouts.appadmin')
 
 @section('content')
+<section class="vh-100">
 <div style="margin-top: 120px;" class="container">
     <h1 class="mb-4 text-center">Rekapitulasi Seminar</h1>
     
@@ -50,6 +51,6 @@
         </table>
     </div>
 </div>
-
+</section>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 @endsection

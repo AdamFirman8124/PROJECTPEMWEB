@@ -11,7 +11,10 @@
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.5",
-        "maatwebsite/excel": "^3.1"
+        "maatwebsite/excel": "^3.1",
+        "setasign/fpdi": "^2.6",
+        "setasign/fpdi-tcpdf": "^2.3",
+        "tecnickcom/tcpdf": "^6.7"
     },
     "require-dev": {
         "laravel/pint": "^1.13",
@@ -67,6 +70,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }

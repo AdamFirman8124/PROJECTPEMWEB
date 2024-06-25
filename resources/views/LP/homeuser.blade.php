@@ -13,6 +13,21 @@ TemplateMo 586 Scholar
 https://templatemo.com/tm-586-scholar
 
 -->
+<style>
+  .gambar-container {
+    width: 100%; /* Lebar container sesuai kebutuhan */
+    height: 200px; /* Tinggi container sesuai kebutuhan */
+    overflow: hidden; /* Mengatur agar gambar yang lebih besar dari container tidak keluar */
+    border: 1px solid #ccc; /* Opsi: Menambahkan border untuk memisahkan gambar */
+}
+
+.gambar-container img {
+    width: 100%; /* Menyesuaikan lebar gambar agar sesuai dengan container */
+    height: auto; /* Menjaga aspek ratio gambar */
+    display: block; /* Memastikan gambar ditampilkan sebagai block element */
+}
+
+</style>
 </head>
 
 <body>

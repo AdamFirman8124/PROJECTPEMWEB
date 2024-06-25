@@ -8,6 +8,21 @@
   rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
 <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.22/dist/sweetalert2.min.css" rel="stylesheet"> <!-- TemplateMo
   586 Scholar https://templatemo.com/tm-586-scholar -->
+  <style>
+  .gambar-container {
+    width: 100%; /* Lebar container sesuai kebutuhan */
+    height: 200px; /* Tinggi container sesuai kebutuhan */
+    overflow: hidden; /* Mengatur agar gambar yang lebih besar dari container tidak keluar */
+    border: 1px solid #ccc; /* Opsi: Menambahkan border untuk memisahkan gambar */
+}
+
+.gambar-container img {
+    width: 100%; /* Menyesuaikan lebar gambar agar sesuai dengan container */
+    height: auto; /* Menjaga aspek ratio gambar */
+    display: block; /* Memastikan gambar ditampilkan sebagai block element */
+}
+
+</style>
 </head> <body>
 
 <!-- ***** Preloader Start ***** -->
@@ -276,7 +291,7 @@
                
                         </div>
                         <div class="down-content">
-                            <span class="author">{{ $seminar->pembicara }}</span>
+                        <span class="author">{{ $seminar->pembicara->nama_pembicara }}</span>
                             <h4>{{ $seminar->topik }}</h4>
                             
                             <span class="author">{{ $seminar->tanggal_seminar }}</span> <br>

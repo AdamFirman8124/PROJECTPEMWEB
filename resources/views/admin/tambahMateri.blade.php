@@ -1,6 +1,7 @@
 @extends('layouts.appadmin')
 
 @section('content')
+<section class="vh-100">
 <div class="container" style="margin-top: 7em;">
     <h2>Tambah Materi Seminar</h2>
     <form method="POST" action="{{ route('admin.simpanMateri') }}" enctype="multipart/form-data">
@@ -25,4 +26,5 @@
         <a class="btn btn-secondary" href="{{ route('admin.exportMateri') }}">Unduh Data Seminar</a>
     </form>
 </div>
+</section>
 @endsection

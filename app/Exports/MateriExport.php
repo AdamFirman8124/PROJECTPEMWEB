@@ -16,7 +16,7 @@ class MateriExport implements FromCollection, WithHeadings, WithStyles
     */
     public function collection()
     {
-        return Materi::select('id', 'judul_materi', 'created_at', 'updated_at')->get();
+        return Materi::select('id', 'judul_materi', 'created_at', 'updated_at', 'file_path')->get();
     }
 
     /**
@@ -24,7 +24,7 @@ class MateriExport implements FromCollection, WithHeadings, WithStyles
      */
     public function headings(): array
     {
-        return ['ID', 'Judul Materi', 'Dibuat Pada', 'Diperbarui Pada'];
+        return ['ID', 'Judul Materi', 'Dibuat Pada', 'Diperbarui Pada', 'File Path'];
     }
 
     /**

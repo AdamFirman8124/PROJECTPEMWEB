@@ -28,3 +28,9 @@ class SeminarMaterials extends Model
        // return $this->belongsTo(Seminar::class, 'seminar_id');
    // }
 }
+
+$seminarMaterials = SeminarMaterials::all();
+
+foreach ($seminarMaterials as $material) {
+    echo $material->file_path;
+}

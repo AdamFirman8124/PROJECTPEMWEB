@@ -163,14 +163,16 @@ class AdminController extends Controller
     {
         Log::info('Showing details for seminar with ID: ' . $id);
         try {
-            $seminar = Seminar::with('pembicara')->findOrFail($id);
+            $certificate = CertificateTemplate::where('seminar_id', $id)->first();
+            $seminar = Seminar::with('pembicara', 'materi')->findOrFail($id);
     
-            return view('admin.detailseminar', compact('seminar'));
+            return view('admin.detailseminar', compact('seminar', 'certificate'));
         } catch (\Exception $e) {
             Log::error('Gagal menampilkan detail seminar: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Gagal menampilkan detail seminar: ' . $e->getMessage());
         }
     }
+    
     public function hapusseminar($id)
     {
         Log::info('Memulai proses penghapusan seminar dengan ID: ' . $id);
@@ -186,6 +188,7 @@ class AdminController extends Controller
     }
     public function detailseminar($id)
     {
+        $certificate = CertificateTemplate::where('seminar_id', $id)->first();
         Log::info('Fetching details for seminar with ID: ' . $id);
         try {
             $seminar = Seminar::with('pembicara')->findOrFail($id);
@@ -316,48 +319,49 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'Gagal mengambil data seminar untuk sertifikat: ' . $e->getMessage());
         }
     }
-    public function uploadCertificate(Request $request, $seminarId)
-    {
-        Log::info('Memulai validasi data untuk upload template sertifikat');
-        $request->validate([
-            'certificate_template' => 'required|file|mimes:jpeg,png,pdf|max:2048',
-            'access_time' => 'required|date' // Validasi input tanggal
-        ]);
-    
-        Log::info('Validasi selesai, mencari template sertifikat yang ada');
-        try {
-            // Cek apakah sudah ada template sertifikat untuk seminar ini
-            $existingTemplate = CertificateTemplate::where('seminar_id', $seminarId)->first();
-            if ($existingTemplate) {
-                Log::warning('Template sertifikat sudah ada untuk seminar ini');
-                return back()->with('error', 'Template sertifikat sudah diupload untuk seminar ini.');
-            }
-    
-            Log::info('Tidak ada template yang ada, memproses file upload');
-            if ($request->hasFile('certificate_template')) {
-                $certificateName = time() . '_' . $request->file('certificate_template')->getClientOriginalName();
-                $request->file('certificate_template')->move(public_path('assets/images/sertif-seminar'), $certificateName);
-                $path = 'assets/images/sertif-seminar/' . $certificateName;
-    
-                Log::info('File berhasil diupload, menyimpan data template baru');
-                $template = new CertificateTemplate();
-                $template->name = $certificateName;
-                $template->file_path = $path;
-                $template->seminar_id = $seminarId;
-                $template->access_time = $request->input('access_time');
-                $template->save();
-    
-                Log::info('Template sertifikat baru berhasil disimpan');
-                return back()->with('success', 'Template sertifikat berhasil diupload.');
-            } else {
-                Log::warning('Tidak ada file yang diupload');
-                return back()->with('error', 'Tidak ada file yang diupload.');
-            }
-        } catch (\Exception $e) {
-            Log::error('Gagal mengupload template sertifikat: ' . $e->getMessage());
-            return back()->with('error', 'Gagal mengupload template sertifikat: ' . $e->getMessage());
+ public function uploadCertificate(Request $request, $seminarId)
+{
+    Log::info('Memulai validasi data untuk upload template sertifikat');
+    $request->validate([
+        'certificate_template' => 'required|file|mimes:jpeg,png,pdf|max:2048',
+        'access_time' => 'required|date' // Validasi input tanggal
+    ]);
+
+    Log::info('Validasi selesai, mencari template sertifikat yang ada');
+    try {
+        // Cek apakah sudah ada template sertifikat untuk seminar ini
+        $existingTemplate = CertificateTemplate::where('seminar_id', $seminarId)->first();
+        if ($existingTemplate) {
+            Log::warning('Template sertifikat sudah ada untuk seminar ini');
+            return back()->with('error', 'Template sertifikat sudah diupload untuk seminar ini.');
         }
+
+        Log::info('Tidak ada template yang ada, memproses file upload');
+        if ($request->hasFile('certificate_template')) {
+            $certificateName = time() . '_' . $request->file('certificate_template')->getClientOriginalName();
+            $request->file('certificate_template')->move(public_path('assets/images/sertif-seminar'), $certificateName);
+            $path = 'assets/images/sertif-seminar/' . $certificateName;
+
+            Log::info('File berhasil diupload, menyimpan data template baru');
+            $template = new CertificateTemplate();
+            $template->name = $certificateName;
+            $template->file_path = $path;
+            $template->seminar_id = $seminarId;
+            $template->access_time = $request->input('access_time');
+            $template->save();
+
+            Log::info('Template sertifikat baru berhasil disimpan');
+            return back()->with('success', 'Template sertifikat berhasil diupload.');
+        } else {
+            Log::warning('Tidak ada file yang diupload');
+            return back()->with('error', 'Tidak ada file yang diupload.');
+        }
+    } catch (\Exception $e) {
+        Log::error('Gagal mengupload template sertifikat: ' . $e->getMessage());
+        return back()->with('error', 'Gagal mengupload template sertifikat: ' . $e->getMessage());
     }
+}
+
     public function updateCertificate(Request $request, $templateId)
     {
         Log::info('Updating certificate access time for template ID: ' . $templateId);
@@ -420,24 +424,46 @@ class AdminController extends Controller
 
     public function simpanMateri(Request $request)
     {
-        $request->validate([
+        Log::info('Memulai validasi data materi');
+        $validatedData = $request->validate([
             'seminar_id' => 'required|exists:seminars,id',
             'judul_materi' => 'required|string|max:255',
-            'file_materi.*' => 'required|file' // Validasi untuk multiple files
+            'file_materi.*' => 'required|file'
         ]);
-
-        foreach ($request->file('file_materi') as $file) {
-            $path = $file->store('public/materi');
-
-            Materi::create([
-                'seminar_id' => $request->seminar_id,
-                'judul_materi' => $request->judul_materi,
-                'file_path' => $path
-            ]);
+        Log::info('Validasi data materi berhasil');
+    
+        $seminar = Seminar::find($validatedData['seminar_id']);
+    
+        $filePaths = [];
+        
+        if ($request->hasFile('file_materi')) {
+            foreach ($request->file('file_materi') as $file) {
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $file->move(public_path('assets/images/materi-seminar'), $fileName);
+                $filePaths[] = 'assets/images/materi-seminar/' . $fileName;
+            }
         }
-
+    
+        // Simpan data materi dengan file paths yang sudah disiapkan
+        foreach ($filePaths as $filePath) {
+            $materi = Materi::create([
+                'seminar_id' => $validatedData['seminar_id'],
+                'judul_materi' => $validatedData['judul_materi'],
+                'file_path' => $filePath
+            ]);
+    
+            if ($materi) {
+                Log::info('Materi berhasil disimpan dengan ID: ' . $materi->id);
+            } else {
+                Log::error('Gagal menyimpan materi');
+            }
+        }
+    
+        Log::info('Proses penyimpanan materi selesai');
         return redirect()->route('admin_dashboard')->with('success', 'Materi berhasil ditambahkan');
     }
+    
+    
 
     public function exportMateri()
     {

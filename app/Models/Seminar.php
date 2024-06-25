@@ -27,6 +27,11 @@ class Seminar extends Model
         return $this->belongsTo(Pembicara::class, 'pembicara_id');
     }
 
+    public function materi()
+    {
+        return $this->hasMany(Materi::class, 'seminar_id');
+    }
+
     public function up()
     {
         Schema::create('seminars', function (Blueprint $table) {

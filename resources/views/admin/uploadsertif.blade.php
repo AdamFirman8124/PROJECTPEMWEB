@@ -1,7 +1,7 @@
 @extends('layouts.appadmin')
 
 @section('content')
-<body>
+<section class="vh-100">
 <div class="container"  style="margin-top: 120px;" >
     <h1 class="text-center mb-4">Silahkan pilih seminar mana yang akan diberikan sertifikat</h1>
     <div class="row justify-content-center">
@@ -19,10 +19,6 @@
                             @method('PUT')
                             <input type="datetime-local" name="access_time" class="form-control mb-2" value="{{ \Carbon\Carbon::parse($seminar->certificateTemplate->access_time)->format('Y-m-d\TH:i') }}" required>
                             <button type="submit" class="btn btn-primary">Update Tanggal Akses</button>
-
-                            <!-- tombol download sertifikat -->
-                            <!-- <a href="/admin/certificate/export" class="btn btn-success">Export Sertifikat</a>     -->
-
                         </form>
                     @else
                         <!-- Form untuk mengatur tanggal akses jika belum ada -->
@@ -41,6 +37,7 @@
         @endforeach
         <a href="{{ route('admin.exportCertificate') }}" class="btn btn-success">Export Sertifikat</a> 
     </div>
+</section>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const form = document.querySelector('form');

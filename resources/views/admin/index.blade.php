@@ -55,7 +55,6 @@
                             <div class="main-button text-right m-2">
                                 <a href="{{ route('detailseminar', $seminar->id) }}">Detail</a>
                             </div>
-                           
                         </div>
                     </div>
                 </div>

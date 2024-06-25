@@ -1,7 +1,7 @@
 @extends('layouts.appadmin')
 
 @section('content')
-<body>
+<section class="vh-100">
     <div class="container" style="margin-top: 120px;">
         <h1 class="my-4 text-center">Rekap Peserta Seminar</h1>
 
@@ -30,7 +30,7 @@
                         <td>{{ $registration->phone }}</td>
                         <td>{{ $registration->instansi }}</td>
                         <td>{{ $registration->info }}</td>
-                        <td>{{ $registration->seminar->topik }}</td>
+                        <td>{{ $registration->seminar->topik }}</td> <!-- Pastikan menangani jika seminar tidak ada -->
                         <td>
                             @if($registration->bukti_bayar)
                                 <a href="{{ asset($registration->bukti_bayar) }}" target="_blank">Lihat Bukti</a>
@@ -58,6 +58,7 @@
         </div>
         <a href="{{ route('admin_dashboard') }}" type="button" class="btn btn-danger btn-sm">Kembali ke Beranda</a>
     </div>
+</section>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function confirmDelete(button) {
@@ -76,5 +77,4 @@
             });
         }
     </script>
-</body>
 @endsection

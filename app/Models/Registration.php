@@ -27,4 +27,5 @@ class Registration extends Model
         return $this->belongsTo(Seminar::class, 'seminar_id');
     }
 
+
 }

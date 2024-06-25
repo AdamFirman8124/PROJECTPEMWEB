@@ -1,6 +1,35 @@
 @extends('layouts.appadmin')
 
 @section('content')
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="modal fade" id="downloadModal" tabindex="-1" role="dialog" aria-labelledby="downloadModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="downloadModalLabel">Download Materi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Pilih materi yang ingin diunduh:</p>
+                <ul>
+                    <!-- Iterate through $seminar->materi and generate download links -->
+                    @foreach($seminar->materi as $materi)
+                        <li>
+                            <a href="{{ asset($materi->file_path) }}" target="_blank">{{ $materi->judul_materi }}</a>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="section events" id="events">
         <div class="container">
             <div class="row">
@@ -50,13 +79,40 @@
                 </div>
                 <p class="card-text" id="materi_seminar">
                 @if($seminar->materi)
-                    <a href="{{ asset($seminar->materi) }}" target="_blank" class="btn btn-primary">Lihat Materi</a>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#downloadModal">Download Materi</button>
+
                 @else
                     Tidak ada materi yang tersedia
                 @endif
-                <a href="{{ route('detailseminar', $seminar->id) }}" class="btn btn-success">Unduh Sertifikat</a>
+                
+                @if($certificate)
+                <a href="{{ asset($certificate->file_path) }}" target="_blank" class="btn btn-success">Lihat Sertifikat</a>
+    @else
+    <div class="text-center">
+        <p class="text-danger">Sertifikat belum tersedia.</p>
+    </div>
+    @endif
             </p>
             </div>
         </div>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var showMateriBtn = document.getElementById('showMateriBtn');
+        var materiList = document.getElementById('materiList');
+
+        showMateriBtn.addEventListener('click', function() {
+            if (materiList.style.display === 'none') {
+                materiList.style.display = 'block';
+            } else {
+                materiList.style.display = 'none';
+            }
+        });
+    });
+</script>
 @endsection
