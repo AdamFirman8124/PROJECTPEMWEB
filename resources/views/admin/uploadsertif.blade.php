@@ -3,7 +3,7 @@
 @section('content')
 <section class="vh-100">
 <div class="container"  style="margin-top: 120px;" >
-    <h1 class="text-center mb-4">Silahkan pilih seminar mana yang akan diberikan sertifikat</h1>
+    <h1 class="text-center mb-4">Silahkan pilih seminar mana yang akan diberikan sertifikat (PASTIKAN FORMAT SERTIFIKAT PDF)</h1>
     <div class="row justify-content-center">
     @foreach ($seminars as $seminar)
         <div class="col-md-4 mb-4">
@@ -35,7 +35,7 @@
             </div>
         </div>
         @endforeach
-        <a href="{{ route('admin.exportCertificate') }}" class="btn btn-success">Export Sertifikat</a> 
+        <a href="{{ route('admin.exportCertificate') }}" class="btn btn-success">Export Sertifikat</a>
     </div>
 </section>
     <script>
