@@ -47,10 +47,10 @@ https://templatemo.com/tm-586-scholar
             <div class="col-12">
                 <nav class="main-nav">
                     <!-- ***** Logo Start ***** -->
-                    <a href="index.html" class="logo w-10">
+                    <a href="{{ route('admin_dashboard')}}" class="logo w-10">
                         <h1>Admin</h1>
                     </a>
-                   
+
                     <ul class="nav">
                       <li class="scroll-to-section"><a href="{{ route('admin_dashboard')}}">Beranda</a></li>
                       <li class="scroll-to-section"><a href="{{ route('admin.rekap')}}">Rekap Seminar</a></li>
@@ -65,7 +65,7 @@ https://templatemo.com/tm-586-scholar
                             @csrf
                             <button type="submit" class="btn btn-logout" style="background-color: red; color: white;">{{ __('Logout') }}</button>
                         </form>
-                  </ul>   
+                  </ul>
                     <a class='menu-trigger'>
                         <span>Menu</span>
                     </a>
