@@ -14,6 +14,11 @@ use App\Http\Controllers\HomeUserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SpeakerController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Exports\UsersExport;
+use Maatwebsite\Excel\Facades\Excel;
+
+Route::get('export-users', [UserController::class, 'export'])->name('users.export');
+Route::get('/users/download-pdf', [UserController::class, 'downloadPdf'])->name('users.download-pdf');
 
 // Rute untuk halaman utama
 // Route::get('/', function () {

@@ -2,7 +2,6 @@
 
 @section('content')
 <body>
-<section class="vh-100">
     <div class="container mx-auto" style="margin-top: 120px;">
         <h1 class="my-4 text-center">Data Pengguna</h1>
 
@@ -41,8 +40,11 @@
             </table>
         </div>
         <a href="{{ route('admin_dashboard') }}" class="btn btn-primary">Kembali ke Beranda</a>
+        <a href="{{ route('users.export') }}" class="btn btn-success">Download Data User (.xls)</a>
+        <a href="{{ route('users.download-pdf') }}" class="btn btn-warning">Download Data User (PDF)</a>
+
+
     </div>
-</section>
     <script>
         function confirmDelete(button) {
             Swal.fire({
@@ -60,4 +62,5 @@
             });
         }
     </script>
+</body>
 @endsection
