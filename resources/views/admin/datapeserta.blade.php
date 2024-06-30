@@ -1,12 +1,13 @@
+<!-- datapeserta.blade -->
 @extends('layouts.appadmin')
 
 @section('content')
-<section class="vh-100">
+<body>
     <div class="container" style="margin-top: 120px;">
         <h1 class="my-4 text-center">Rekap Peserta Seminar</h1>
 
         <div class="table-container">
-            <table class="table table-striped">
+            <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
                         <th scope="col">No Identitas</th>
@@ -30,7 +31,7 @@
                         <td>{{ $registration->phone }}</td>
                         <td>{{ $registration->instansi }}</td>
                         <td>{{ $registration->info }}</td>
-                        <td>{{ $registration->seminar->topik }}</td> <!-- Pastikan menangani jika seminar tidak ada -->
+                        <td>{{ $registration->seminar->topik }}</td>
                         <td>
                             @if($registration->bukti_bayar)
                                 <a href="{{ asset($registration->bukti_bayar) }}" target="_blank">Lihat Bukti</a>
@@ -40,25 +41,30 @@
                         </td>
                         <td>{{ $registration->status }}</td>
                         <td>
-                        <div class="btn-group" role="group" aria-label="Basic example">
-                            <form action="{{ route('admin.registrations.edit', $registration->id) }}" method="GET">
-                                <button type="submit" class="btn btn-primary btn-sm">Edit</button>
-                            </form>
-                            <form action="{{ route('registrations.destroy', $registration->id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(this)">Delete</button>
-                            </form>
-                        </div>
-                    </td>
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <form action="{{ route('admin.registrations.edit', $registration->id) }}" method="GET">
+                                    <button type="submit" class="btn btn-warning btn-sm me-2">Edit</button>
+                                </form>
+                                <form action="{{ route('registrations.destroy', $registration->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(this)">Delete</button>
+                                </form>
+                            </div>
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
-        <a href="{{ route('admin_dashboard') }}" type="button" class="btn btn-danger btn-sm">Kembali ke Beranda</a>
+        <div class="d-flex justify-content-between mb-3 mt-4">
+            <a href="{{ route('admin_dashboard') }}" class="btn btn-primary btn-sm">Kembali ke Beranda</a>
+            <div>
+                <a href="{{ route('registrations.export') }}" class="btn btn-success btn-sm">Ekspor ke Excel</a>
+                <a href="{{ route('registrations.exportPdf') }}" class="btn btn-danger btn-sm">Ekspor ke PDF</a>
+            </div>
+        </div>
     </div>
-</section>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function confirmDelete(button) {
@@ -77,4 +83,5 @@
             });
         }
     </script>
+</body>
 @endsection

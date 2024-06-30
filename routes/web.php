@@ -32,6 +32,7 @@ Route::post('/daftarnya', [HomeUserController::class, 'pendaftaranseminar'])->na
 
 Route::post('register', [RegisterController::class, 'register'])->middleware('disable-session');
 
+
 // Rute untuk autentikasi
 Auth::routes();
 
@@ -58,7 +59,10 @@ Route::prefix('admin')->group(function () {
         Route::get('/edit/{id}', [AdminController::class, 'editpeserta'])->name('admin.registrations.edit');
         Route::delete('/hapus/{id}', [AdminController::class, 'hapuspeserta'])->name('registrations.destroy');
         Route::put('/registrations/{id}', [AdminController::class, 'updatepeserta'])->name('admin.registrations.update');
+        Route::get('/registrations/export', [RegistrationController::class, 'export'])->name('registrations.export');
+        Route::get('/registrations/export-pdf', [RegistrationController::class, 'exportPdf'])->name('registrations.exportPdf');
     });
+
     Route::prefix('rekap-pengguna')->group(function () {
         Route::get('', [AdminController::class, 'rekapPeserta'])->name('data_pengguna');
     });

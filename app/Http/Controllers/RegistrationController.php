@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Registration;
 use App\Models\Seminar;
-use App\Models\PaymentRecord;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use App\Exports\RegistrationExport; 
+use Maatwebsite\Excel\Facades\Excel; 
+use Mpdf\Mpdf;
 
 class RegistrationController extends Controller
 {
@@ -143,7 +145,7 @@ class RegistrationController extends Controller
             return back()->withErrors('Terjadi kesalahan saat mengambil data registrasi.');
         }
     }
-
+    
     public function update(Request $request, $id)
     {
         try {
@@ -184,6 +186,33 @@ class RegistrationController extends Controller
         } catch (\Exception $e) {
             Log::error('Error updating registration: ' . $e->getMessage());
             return back()->withErrors('Terjadi kesalahan saat menyimpan perubahan data.')->withInput();
+        }
+    }
+
+    public function export()
+    {
+        try {
+            return Excel::download(new RegistrationExport, 'registrations.xlsx');
+        } catch (\Exception $e) {
+            Log::error('Error exporting registrations: ' . $e->getMessage());
+            return back()->withErrors('Terjadi kesalahan saat mengekspor data.');
+        }
+    }
+    public function exportPdf()
+    {
+        try {
+            $registrations = Registration::with('seminar')->get();
+
+            $html = view('registrations.pdf', compact('registrations'))->render();
+
+            $mpdf = new Mpdf();
+
+            $mpdf->WriteHTML($html);
+
+            return $mpdf->Output('registrations.pdf', 'D');
+        } catch (\Exception $e) {
+            Log::error('Error exporting registrations to PDF: ' . $e->getMessage());
+            return back()->withErrors('Terjadi kesalahan saat mengekspor data ke PDF.');
         }
     }
 }

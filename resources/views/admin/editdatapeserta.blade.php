@@ -1,78 +1,80 @@
-@extends('layouts.appadmin')
+@extends('layouts.app')
 
 @section('content')
 <body style="background-color: #e9ecef;">
-    <div class="container" style="margin-top: 120px;">
-        <h1 class="my-4 text-center">Edit Data Peserta Seminar</h1>
+    <div class="container" style="margin-top: 5em;">
+        <h1 class="my-4 text-center">Rekap Peserta Seminar</h1>
 
-        <form action="{{ route('admin.registrations.update', $registration->id) }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            @method('PUT')
-
-            <div class="card shadow-sm p-4 mb-4 bg-white rounded">
-                <div class="form-group">
-                    <label for="identitas">No Identitas</label>
-                    <input type="text" class="form-control" id="identitas" name="identitas" value="{{ $registration->identitas }}" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="name">Nama</label>
-                    <input type="text" class="form-control" id="name" name="name" value="{{ $registration->name }}" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" value="{{ $registration->email }}" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="phone">No Telepon</label>
-                    <input type="text" class="form-control" id="phone" name="phone" value="{{ $registration->phone }}" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="instansi">Asal Instansi</label>
-                    <input type="text" class="form-control" id="instansi" name="instansi" value="{{ $registration->instansi }}" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="info">Info</label>
-                    <textarea class="form-control" id="info" name="info" rows="3" required>{{ $registration->info }}</textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="seminar">Topik Seminar</label>
-                    <select class="form-control" id="seminar" name="seminar" required>
-                        @foreach($seminars as $seminar)
-                            <option value="{{ $seminar->id }}" {{ $seminar->id == $registration->seminar_id ? 'selected' : '' }}>{{ $seminar->topik }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="bukti_bayar">Bukti Bayar</label>
-                    <input type="file" class="form-control-file" id="bukti_bayar" name="bukti_bayar">
-                    @if($registration->bukti_bayar)
-                        <a href="{{ Storage::url($registration->bukti_bayar) }}" target="_blank" class="btn btn-link mt-2">Lihat Bukti Bayar</a>
-                    @else
-                        <p class="text-muted mt-2">Belum ada bukti bayar</p>
-                    @endif
-                </div>
-
-                <div class="form-group">
-                    <label for="status">Status</label>
-                    <select class="form-control" id="status" name="status" required>
-                        <option value="Belum diverifikasi" {{ $registration->status == 'Belum diverifikasi' ? 'selected' : '' }}>Belum diverifikasi</option>
-                        <option value="Sudah diverifikasi" {{ $registration->status == 'Sudah diverifikasi' ? 'selected' : '' }}>Sudah diverifikasi</option>
-                    </select>
-                </div>
-
-                <div class="text-center mt-4">
-                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                    <a href="{{ route('rekap_peserta') }}" class="btn btn-secondary">Batal</a>
-                </div>
-            </div>
-        </form>
+        <div class="table-container">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">No Identitas</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">No Telepon</th>
+                        <th scope="col">Asal Instansi</th>
+                        <th scope="col">Info</th>
+                        <th scope="col">Topik Seminar</th>
+                        <th scope="col">Bukti Bayar</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($registrations as $registration)
+                    <tr>
+                        <td>{{ $registration->identitas }}</td>
+                        <td>{{ $registration->name }}</td>
+                        <td>{{ $registration->email }}</td>
+                        <td>{{ $registration->phone }}</td>
+                        <td>{{ $registration->instansi }}</td>
+                        <td>{{ $registration->info }}</td>
+                        <td>{{ $registration->seminar->topik }}</td>
+                        <td>
+                            @if($registration->bukti_bayar)
+                                <a href="{{ Storage::url($registration->bukti_bayar) }}" target="_blank">Lihat Bukti</a>
+                            @else
+                                Belum ada bukti bayar
+                            @endif
+                        </td>
+                        <td>{{ $registration->status }}</td>
+                        <td>
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <form action="{{ route('registrations.edit', $registration->id) }}" method="GET">
+                                <button type="submit" class="btn btn-primary btn-sm">Edit</button>
+                            </form>
+                            <form action="{{ route('registrations.destroy', $registration->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(this)">Delete</button>
+                            </form>
+                        </div>
+                    </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <a href="{{ route('home') }}" type="button" class="btn btn-danger btn-sm">Kembali ke Beranda</a>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmDelete(button) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Data yang dihapus tidak dapat dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    button.closest('form').submit(); // Submit form jika pengguna mengkonfirmasi
+                }
+            });
+        }
+    </script>
 </body>
 @endsection
