@@ -56,7 +56,7 @@ Route::prefix('admin')->group(function () {
     });
     Route::prefix('rekap-peserta')->group(function () {
         Route::get('', [AdminController::class, 'datapeserta'])->name('rekap_peserta');
-        Route::get('/admin/registrations/{id}/edit', [AdminController::class, 'editpeserta'])->name('admin.registrations.edit');
+        Route::get('/{id}/edit', [AdminController::class, 'editpeserta'])->name('admin.registrations.edit');
         Route::delete('/hapus/{id}', [AdminController::class, 'hapuspeserta'])->name('registrations.destroy');
         Route::put('/registrations/{id}', [AdminController::class, 'updatepeserta'])->name('admin.registrations.update');
         Route::get('/registrations/export', [RegistrationController::class, 'export'])->name('registrations.export');
