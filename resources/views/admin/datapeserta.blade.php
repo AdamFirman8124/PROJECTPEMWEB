@@ -60,8 +60,8 @@
         <div class="d-flex justify-content-between mb-3 mt-4">
             <a href="{{ route('admin_dashboard') }}" class="btn btn-primary btn-sm">Kembali ke Beranda</a>
             <div>
-                <a href="{{ route('registrations.export') }}" class="btn btn-success btn-sm">Ekspor ke Excel</a>
-                <a href="{{ route('registrations.exportPdf') }}" class="btn btn-danger btn-sm">Ekspor ke PDF</a>
+                <a href="{{ route('registrations.export') }}" class="btn btn-success btn-sm">Download Data User (.xls)</a>
+                <a href="{{ route('registrations.exportPdf') }}" class="btn btn-danger btn-sm">Download Data User (.pdf)</a>
             </div>
         </div>
     </div>

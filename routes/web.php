@@ -44,7 +44,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/tambah-seminar', [AdminController::class, 'create'])->name('tambahseminar');
         Route::post('/tambah', [AdminController::class, 'store'])->name('admin.tambahseminar');
         Route::get('/detail-seminar/{id}', [AdminController::class, 'show'])->name('detailseminar');
-      
+
     });
     Route::prefix('rekap-seminar')->group(function () {
         Route::get('', [AdminController::class, 'rekap'])->name('admin.rekap');
@@ -56,7 +56,7 @@ Route::prefix('admin')->group(function () {
     });
     Route::prefix('rekap-peserta')->group(function () {
         Route::get('', [AdminController::class, 'datapeserta'])->name('rekap_peserta');
-        Route::get('/edit/{id}', [AdminController::class, 'editpeserta'])->name('admin.registrations.edit');
+        Route::get('/admin/registrations/{id}/edit', [AdminController::class, 'editpeserta'])->name('admin.registrations.edit');
         Route::delete('/hapus/{id}', [AdminController::class, 'hapuspeserta'])->name('registrations.destroy');
         Route::put('/registrations/{id}', [AdminController::class, 'updatepeserta'])->name('admin.registrations.update');
         Route::get('/registrations/export', [RegistrationController::class, 'export'])->name('registrations.export');
@@ -77,10 +77,10 @@ Route::prefix('admin')->group(function () {
         // Rute untuk mengunggah sertifikat seminar
         Route::post('/seminars/{seminar}/uploadCertificate', [AdminController::class, 'uploadCertificate'])->name('admin.uploadCertificate');
         Route::put('/seminars/certificate/{template}', [AdminController::class, 'updateCertificate'])->name('seminar.updateCertificate');
-        
+
     });
     //Rute untuk men download sertifikat
-    Route::get('certificate/export',[AdminController::class, 'export']);  
+    Route::get('certificate/export',[AdminController::class, 'export']);
 
     //Rute untuk tambah pembicara
     Route::get('/tambah-pembicara', [AdminController::class, 'tambahPembicara'])->name('admin.tambahPembicara');
@@ -89,7 +89,7 @@ Route::prefix('admin')->group(function () {
     //Rute untuk export data pembicara
     Route::get('pembicara/export', [AdminController::class, 'export'])->name('admin.exportPembicara');
 
-    
+
 
     // Rute untuk export seminar
     Route::get('/export-seminar', [AdminController::class, 'exportSeminar'])->name('admin.exportSeminar');

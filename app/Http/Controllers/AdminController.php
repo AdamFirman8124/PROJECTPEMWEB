@@ -6,11 +6,11 @@ use App\Exports\CertificateExport;
 use App\Models\CertificateTemplate;
 use App\Models\Registration;
 use Illuminate\Http\Request;
-use App\Models\Seminar; 
+use App\Models\Seminar;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;// Pastikan menggunakan model Seminar
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Pembicara;
 use App\Exports\PembicaraExport;
@@ -26,7 +26,8 @@ class AdminController extends Controller
      *
      * @return void
      */
-    public function __construct()
+
+     public function __construct()
     {
         $this->middleware('auth');
         Log::info('AdminController instantiated.');
@@ -37,7 +38,8 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+
+     public function index()
     {
         Log::info('Loading all seminars for the admin dashboard.');
         $seminars = Seminar::all();
@@ -59,6 +61,7 @@ class AdminController extends Controller
 
         return view('admin.index', compact('seminars'));
     }
+
     public function rekap()
     {
         Log::info('Memulai pengambilan semua data seminar untuk rekap');
@@ -71,12 +74,14 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'Gagal mengambil data seminar untuk rekap: ' . $e->getMessage());
         }
     }
+
     public function create()
     {
         Log::info('Loading all speakers for creating a new seminar.');
         $pembicaras = Pembicara::all();
         return view('admin.tambahseminar', compact('pembicaras'));
     }
+
     public function store(Request $request)
     {
         Log::info('Storing new seminar data.');
@@ -90,7 +95,7 @@ class AdminController extends Controller
             'end_registration' => 'required|date|after_or_equal:start_registration',
             'pembicara_id' => 'required|exists:pembicaras,id', // Pastikan ini validasi ada
         ]);
-    
+
         try {
             $seminar = new Seminar();
             $seminar->nama_seminar = $request->input('nama_seminar');
@@ -101,18 +106,18 @@ class AdminController extends Controller
             $seminar->end_registration = $request->input('end_registration');
             $seminar->is_paid = $request->has('is_paid');
             $seminar->pembicara_id = $request->input('pembicara_id'); // Tambahkan ini
-    
+
             // Upload gambar seminar
             if ($request->hasFile('gambar_seminar')) {
                 $imageName = time() . '.' . $request->file('gambar_seminar')->extension();
                 $request->file('gambar_seminar')->move(public_path('assets/images/gambar-seminar'), $imageName);
                 $seminar->gambar_seminar = 'assets/images/gambar-seminar/' . $imageName;
             }
-    
+
             $seminar->save();
-    
+
             Log::info('Berhasil menyimpan data seminar');
-    
+
             return redirect()->route('admin_dashboard')->with('success', 'Seminar berhasil ditambahkan.');
         } catch (\Exception $e) {
             Log::error('Gagal menyimpan data seminar: ' . $e->getMessage());
@@ -165,14 +170,14 @@ class AdminController extends Controller
         try {
             $certificate = CertificateTemplate::where('seminar_id', $id)->first();
             $seminar = Seminar::with('pembicara', 'materi')->findOrFail($id);
-    
+
             return view('admin.detailseminar', compact('seminar', 'certificate'));
         } catch (\Exception $e) {
             Log::error('Gagal menampilkan detail seminar: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Gagal menampilkan detail seminar: ' . $e->getMessage());
         }
     }
-    
+
     public function hapusseminar($id)
     {
         Log::info('Memulai proses penghapusan seminar dengan ID: ' . $id);
@@ -186,6 +191,7 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'Gagal menghapus seminar: ' . $e->getMessage());
         }
     }
+
     public function detailseminar($id)
     {
         $certificate = CertificateTemplate::where('seminar_id', $id)->first();
@@ -194,13 +200,14 @@ class AdminController extends Controller
             $seminar = Seminar::with('pembicara')->findOrFail($id);
             $user_id = auth()->id();
             $isRegistered = Registration::where('user_id', $user_id)->where('seminar_id', $id)->exists();
-        
+
             return view('LP.detailseminar', compact('seminar', 'isRegistered'));
         } catch (\Exception $e) {
             Log::error('Gagal menampilkan detail seminar: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Gagal menampilkan detail seminar: ' . $e->getMessage());
         }
     }
+
     public function daftarseminar($seminar_id)
     {
         Log::info('Registering for seminar with ID: ' . $seminar_id);
@@ -213,6 +220,7 @@ class AdminController extends Controller
             return back()->withErrors('Terjadi kesalahan saat mengambil data seminar.');
         }
     }
+
     public function datapeserta()
     {
         Log::info('Fetching all participant data.');
@@ -223,12 +231,14 @@ class AdminController extends Controller
             Log::error('Error saat menampilkan registrasi: ' . $e->getMessage());
             return back()->withErrors('Terjadi kesalahan saat menampilkan data.');
         }
-    }    public function editpeserta($id)
+    }
+
+    public function editpeserta($id)
     {
         Log::info('Editing participant data for ID: ' . $id);
         try {
             $registration = Registration::findOrFail($id);
-            $seminars = Seminar::with('pembicara')->all();
+            $seminars = Seminar::with('pembicara')->get();
             return view('admin.editdatapeserta', compact('registration', 'seminars'));
         } catch (\Exception $e) {
             Log::error('Error saat mengambil data registrasi untuk edit: ' . $e->getMessage());
@@ -240,7 +250,7 @@ class AdminController extends Controller
         Log::info('Updating participant data for ID: ' . $id);
         try {
             $registration = Registration::findOrFail($id);
-    
+
             $request->validate([
                 'identitas' => 'required',
                 'name' => 'required',
@@ -252,19 +262,19 @@ class AdminController extends Controller
                 'bukti_bayar' => 'sometimes|nullable|mimes:jpeg,png,pdf|max:2048',
                 'status' => 'required|in:Belum diverifikasi,Sudah diverifikasi',
             ]);
-    
+
             if ($request->hasFile('bukti_bayar')) {
                 // Delete old file if exists
                 if ($registration->bukti_bayar) {
                     Storage::delete(public_path($registration->bukti_bayar));
                 }
-    
+
                 // Store new file
                 $buktiBayarName = time() . '_' . $request->file('bukti_bayar')->getClientOriginalName();
                 $request->file('bukti_bayar')->move(public_path('assets/images/bukti-bayar'), $buktiBayarName);
                 $registration->bukti_bayar = 'assets/images/bukti-bayar/' . $buktiBayarName;
             }
-    
+
             // Update registration details
             $registration->seminar_id = $request->seminar;
             $registration->identitas = $request->identitas;
@@ -274,16 +284,16 @@ class AdminController extends Controller
             $registration->instansi = $request->instansi;
             $registration->info = $request->info;
             $registration->status = $request->status;
-    
+
             $registration->save();
-    
+
             return redirect()->route('rekap_peserta')->with('success', 'Data registrasi berhasil diperbarui.');
         } catch (\Exception $e) {
             Log::error('Error saat menyimpan perubahan registrasi: ' . $e->getMessage());
             return back()->withErrors('Terjadi kesalahan saat menyimpan perubahan data.')->withInput();
         }
     }
-    
+
     public function rekapPeserta()
     {
         Log::info('Rekapitulating participant data.');
@@ -295,6 +305,7 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'Gagal mengambil rekap peserta: ' . $e->getMessage());
         }
     }
+
     public function hapuspeserta($id)
     {
         Log::info('Deleting participant data for ID: ' . $id);
@@ -307,6 +318,7 @@ class AdminController extends Controller
             return back()->withErrors('Terjadi kesalahan saat menghapus data.');
         }
     }
+
     public function certificate()
     {
         Log::info('Memulai pengambilan semua data seminar untuk sertifikat');
@@ -319,11 +331,11 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'Gagal mengambil data seminar untuk sertifikat: ' . $e->getMessage());
         }
     }
- public function uploadCertificate(Request $request, $seminarId)
-{
-    Log::info('Memulai validasi data untuk upload template sertifikat');
-    $request->validate([
-        'certificate_template' => 'required|file|mimes:jpeg,png,pdf|max:2048',
+    public function uploadCertificate(Request $request, $seminarId)
+    {
+        Log::info('Memulai validasi data untuk upload template sertifikat');
+        $request->validate([
+            'certificate_template' => 'required|file|mimes:jpeg,png,pdf|max:2048',
         'access_time' => 'required|date' // Validasi input tanggal
     ]);
 
@@ -358,9 +370,9 @@ class AdminController extends Controller
         }
     } catch (\Exception $e) {
         Log::error('Gagal mengupload template sertifikat: ' . $e->getMessage());
-        return back()->with('error', 'Gagal mengupload template sertifikat: ' . $e->getMessage());
+            return back()->with('error', 'Gagal mengupload template sertifikat: ' . $e->getMessage());
+        }
     }
-}
 
     public function updateCertificate(Request $request, $templateId)
     {
@@ -386,7 +398,7 @@ class AdminController extends Controller
     }
 
 
-    public function export() 
+    public function export()
     {
         return Excel::download(new PembicaraExport, 'pembicara.xlsx');
     }
@@ -431,11 +443,11 @@ class AdminController extends Controller
             'file_materi.*' => 'required|file'
         ]);
         Log::info('Validasi data materi berhasil');
-    
+
         $seminar = Seminar::find($validatedData['seminar_id']);
-    
+
         $filePaths = [];
-        
+
         if ($request->hasFile('file_materi')) {
             foreach ($request->file('file_materi') as $file) {
                 $fileName = time() . '_' . $file->getClientOriginalName();
@@ -443,7 +455,7 @@ class AdminController extends Controller
                 $filePaths[] = 'assets/images/materi-seminar/' . $fileName;
             }
         }
-    
+
         // Simpan data materi dengan file paths yang sudah disiapkan
         foreach ($filePaths as $filePath) {
             $materi = Materi::create([
@@ -451,19 +463,19 @@ class AdminController extends Controller
                 'judul_materi' => $validatedData['judul_materi'],
                 'file_path' => $filePath
             ]);
-    
+
             if ($materi) {
                 Log::info('Materi berhasil disimpan dengan ID: ' . $materi->id);
             } else {
                 Log::error('Gagal menyimpan materi');
             }
         }
-    
+
         Log::info('Proses penyimpanan materi selesai');
         return redirect()->route('admin_dashboard')->with('success', 'Materi berhasil ditambahkan');
     }
-    
-    
+
+
 
     public function exportMateri()
     {
