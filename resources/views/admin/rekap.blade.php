@@ -16,6 +16,7 @@
                     <th>Lokasi</th>
                     <th>Pembicara</th>
                     <th>Instansi</th>
+                    <th>Harga Seminar</th>
                     <th>Gambar</th>
                     <th>Aksi</th>
                 </tr>
@@ -29,6 +30,7 @@
                     <td>{{ $seminar->lokasi_seminar }}</td>
                     <td>{{ $seminar->pembicara ? $seminar->pembicara->nama_pembicara : 'Tidak ada pembicara' }}</td>
                     <td>{{ $seminar->pembicara ? $seminar->pembicara->asal_instansi : 'Tidak ada instansi' }}</td>
+                    <td>{{ $seminar->harga_seminar }}</td>
                     <td>
                         @if($seminar->gambar_seminar)
                         <img src="{{ asset($seminar->gambar_seminar) }}" alt="Gambar Seminar" class="img-thumbnail" style="width: 100px; height: 70px; background-size: contain;">

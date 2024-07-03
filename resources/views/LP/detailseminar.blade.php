@@ -127,6 +127,10 @@ https://templatemo.com/tm-586-scholar
                                         <span>Lokasi:</span>
                                         <h6>{{ $seminar->lokasi_seminar }}</h6>
                                     </li>
+                                    <li>
+                                        <span>Harga:</span>
+                                        <h6>{{ $seminar->harga_seminar ? 'Rp ' . number_format($seminar->harga_seminar, 0, ',', '.') : '-' }}</h6>
+                                    </li>
                                 </ul>
                                 <a href="#"><i class="fa fa-angle-right"></i></a>
                    

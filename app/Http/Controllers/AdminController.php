@@ -93,6 +93,7 @@ class AdminController extends Controller
             'gambar_seminar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'start_registration' => 'required|date',
             'end_registration' => 'required|date|after_or_equal:start_registration',
+            'harga_seminar' => 'nullable|integer',
             'pembicara_id' => 'required|exists:pembicaras,id', // Pastikan ini validasi ada
         ]);
 
@@ -105,6 +106,7 @@ class AdminController extends Controller
             $seminar->start_registration = $request->input('start_registration');
             $seminar->end_registration = $request->input('end_registration');
             $seminar->is_paid = $request->has('is_paid');
+            $seminar->harga_seminar = $request->input('harga_seminar');
             $seminar->pembicara_id = $request->input('pembicara_id'); // Tambahkan ini
 
             // Upload gambar seminar

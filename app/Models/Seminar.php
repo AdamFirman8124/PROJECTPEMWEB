@@ -12,9 +12,10 @@ class Seminar extends Model
     use HasFactory;
 
     protected $fillable = [
-        'tanggal_seminar', 'lokasi_seminar', 'google_map_link', 'gambar_seminar', 'is_paid',
-        'start_registration', 'end_registration', 'pembicara', 'asal_instansi', 'topik'
+        'nama_seminar', 'tanggal_seminar', 'lokasi_seminar', 'google_map_link', 'gambar_seminar',
+        'is_paid', 'start_registration', 'end_registration', 'harga_seminar', 'pembicara_id'
     ];
+    
 
     // Definisikan relasi ke CertificateTemplate
     public function certificateTemplate()
@@ -45,6 +46,7 @@ class Seminar extends Model
             $table->string('pembicara');
             $table->string('asal_instansi');
             $table->string('topik');
+            $table->integer('harga_seminar');
             $table->boolean('is_paid')->default(false);
             $table->timestamps();
         });

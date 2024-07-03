@@ -41,10 +41,10 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="seminar">Topik Seminar</label>
+                    <label for="seminar">Nama Seminar</label>
                     <select class="form-control" id="seminar" name="seminar" required>
                         @foreach($seminars as $seminar)
-                            <option value="{{ $seminar->id }}" {{ $seminar->id == $registration->seminar_id ? 'selected' : '' }}>{{ $seminar->topik }}</option>
+                            <option value="{{ $seminar->id }}" {{ $seminar->id == $registration->seminar_id ? 'selected' : '' }}>{{ $seminar->nama_seminar }}</option>
                         @endforeach
                     </select>
                 </div>

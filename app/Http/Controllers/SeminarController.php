@@ -39,6 +39,7 @@ class SeminarController extends Controller
             'start_registration' => 'required|date',
             'end_registration' => 'required|date',
             'gambar_seminar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+            'harga_seminar' => 'nullable|integer',
         ]);
         Log::info('Validasi data seminar berhasil');
 
@@ -51,6 +52,7 @@ class SeminarController extends Controller
             $seminar->is_paid = $request->input('is_paid');
             $seminar->start_registration = $request->input('start_registration');
             $seminar->end_registration = $request->input('end_registration');
+            $seminar->harga_seminar = $request->input('harga_seminar');
 
             if ($request->hasFile('gambar_seminar')) {
                 Log::info('Memulai proses penyimpanan gambar seminar');

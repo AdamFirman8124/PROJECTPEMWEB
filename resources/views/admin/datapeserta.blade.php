@@ -16,7 +16,7 @@
                         <th scope="col">No Telepon</th>
                         <th scope="col">Asal Instansi</th>
                         <th scope="col">Info</th>
-                        <th scope="col">Topik Seminar</th>
+                        <th scope="col">Nama Seminar</th>
                         <th scope="col">Bukti Bayar</th>
                         <th scope="col">Status</th>
                         <th scope="col">Aksi</th>
@@ -31,7 +31,7 @@
                         <td>{{ $registration->phone }}</td>
                         <td>{{ $registration->instansi }}</td>
                         <td>{{ $registration->info }}</td>
-                        <td>{{ $registration->seminar->topik }}</td>
+                        <td>{{ $registration->seminar->nama_seminar }}</td>
                         <td>
                             @if($registration->bukti_bayar)
                                 <a href="{{ asset($registration->bukti_bayar) }}" target="_blank">Lihat Bukti</a>
@@ -60,8 +60,8 @@
         <div class="d-flex justify-content-between mb-3 mt-4">
             <a href="{{ route('admin_dashboard') }}" class="btn btn-primary btn-sm">Kembali ke Beranda</a>
             <div>
-                <a href="{{ route('registrations.export') }}" class="btn btn-success btn-sm">Download Data User (.xls)</a>
-                <a href="{{ route('registrations.exportPdf') }}" class="btn btn-danger btn-sm">Download Data User (.pdf)</a>
+                <a href="{{ route('registrations.export') }}" class="btn btn-success btn-sm">Download Data Peserta (.xls)</a>
+                <a href="{{ route('registrations.exportPdf') }}" class="btn btn-danger btn-sm">Download Data Peserta (.pdf)</a>
             </div>
         </div>
     </div>

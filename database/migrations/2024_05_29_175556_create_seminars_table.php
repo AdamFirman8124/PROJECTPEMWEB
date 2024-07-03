@@ -28,6 +28,7 @@ return new class extends Migration
             $table->boolean('is_paid')->nullable()->default(null);
             $table->date('start_registration');
             $table->date('end_registration');
+            $table->integer('harga_seminar')->nullable();
             $table->unsignedBigInteger('pembicara_id');
             $table->foreign('pembicara_id')->references('id')->on('pembicaras');
             $table->timestamps();
