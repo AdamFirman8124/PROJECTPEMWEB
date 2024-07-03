@@ -88,6 +88,42 @@ https://templatemo.com/tm-586-scholar
         </div>
     </header>
 
+        <!-- Modal untuk menampilkan info pembayaran -->
+        <div class="modal fade" id="paymentInfoModal" tabindex="-1" role="dialog" aria-labelledby="paymentInfoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="paymentInfoModalLabel">Informasi Pembayaran</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @if ($seminar->is_paid)
+                        <!-- Tampilkan informasi rekening atau pembayaran lainnya untuk seminar berbayar -->
+                        <p>Silakan transfer ke salah satu rekening berikut:</p>
+                        <ul>
+                            <li>
+                                <strong>BCA</strong> 1984567000123 a.n. Danang Aprianto
+                            </li>
+                            <li>
+                                <strong>BRI</strong> 33880104498509 a.n. Jamilatul Muyasaroh
+                            </li>
+                            <li>
+                                <strong>MANDIRI</strong> 0700006801670 a.n. Fadhila Nur Aisyah
+                            </li>
+                        </ul>
+                    @else
+                        <p>Seminar ini gratis. Tidak ada informasi pembayaran yang diperlukan.</p>
+                    @endif
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="section events" id="events">
         <div class="container">
             <div class="row">
@@ -133,7 +169,11 @@ https://templatemo.com/tm-586-scholar
                                     </li>
                                 </ul>
                                 <a href="#"><i class="fa fa-angle-right"></i></a>
-                   
+                                <!-- Tombol untuk membuka modal info pembayaran -->
+                                @if ($seminar->is_paid)
+                                    <button type="button" class="btn btn-info mt-3" data-toggle="modal" data-target="#paymentInfoModal">Info Pembayaran</button>
+                                @endif
+                                
                             </div>
                
                         </div>

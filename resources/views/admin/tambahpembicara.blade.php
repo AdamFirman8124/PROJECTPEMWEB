@@ -18,8 +18,12 @@
                 <label for="asal_instansi">Asal Instansi:</label>
                 <input type="text" class="form-control" id="asal_instansi" name="asal_instansi" required>
             </div>
-            <button type="submit" class="btn btn-primary">Simpan</button>
-            <a href="{{ route('admin.datapembicara') }}" class="btn btn-info">Data Pembicara</a>
+            <div style="margin-top: 1em; display: inline-block; margin-right: 10px;">
+                <button type="submit" class="btn btn-primary btn-block">Simpan</button>
+            </div>
+            <div style="margin-top: 1em; display: inline-block;">
+                <a href="{{ route('admin.datapembicara') }}" class="btn btn-info btn-block">Data Pembicara</a>
+            </div>
         </form>
     </div>
 </section>

@@ -1,36 +1,46 @@
 @extends('layouts.appadmin')
 
 @section('content')
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
-<div class="modal fade" id="downloadModal" tabindex="-1" role="dialog" aria-labelledby="downloadModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="downloadModalLabel">Download Materi</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Pilih materi yang ingin diunduh:</p>
-                <ul>
-                    <!-- Iterate through $seminar->materi and generate download links -->
-                    @foreach($seminar->materi as $materi)
-                        <li>
-                            <a href="{{ asset($materi->file_path) }}" target="_blank">{{ $materi->judul_materi }}</a>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+    <!-- Modal untuk menampilkan info pembayaran -->
+    <div class="modal fade" id="paymentInfoModal" tabindex="-1" role="dialog" aria-labelledby="paymentInfoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="paymentInfoModalLabel">Informasi Pembayaran</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @if ($seminar->is_paid)
+                        <!-- Tampilkan informasi rekening atau pembayaran lainnya untuk seminar berbayar -->
+                        <p>Silakan transfer ke salah satu rekening berikut:</p>
+                        <ul>
+                            <li>
+                                <strong>BCA</strong> 1984567000123 a.n. Danang Aprianto
+                            </li>
+                            <li>
+                                <strong>BRI</strong> 33880104498509 a.n. Jamilatul Muyasaroh
+                            </li>
+                            <li>
+                                <strong>MANDIRI</strong> 0700006801670 a.n. Fadhila Nur Aisyah
+                            </li>
+                        </ul>
+                    @else
+                        <p>Seminar ini gratis. Tidak ada informasi pembayaran yang diperlukan.</p>
+                    @endif
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="section events" id="events">
+    <!-- Section untuk menampilkan detail seminar -->
+    <div class="section events" id="events">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
@@ -51,9 +61,9 @@
                                 <ul>
                                     <li>
                                         @if ($seminar->is_paid)
-                                        <span class="category">Berbayar</span>
+                                            <span class="category">Berbayar</span>
                                         @else
-                                        <span class="category">Gratis</span>
+                                            <span class="category">Gratis</span>
                                         @endif
                                         <h4>{{ $seminar->nama_seminar }}</h4>
                                     </li>
@@ -75,48 +85,51 @@
                                     </li>
                                 </ul>
                                 <a href="#"><i class="fa fa-angle-right"></i></a>
-                   
+                                <!-- Tombol untuk membuka modal info pembayaran -->
+                                @if ($seminar->is_paid)
+                                    <button type="button" class="btn btn-info mt-3" data-toggle="modal" data-target="#paymentInfoModal">Info Pembayaran</button>
+                                @endif
                             </div>
-               
                         </div>
                     </div>
                 </div>
-                <p class="card-text" id="materi_seminar">
-                @if($seminar->materi)
-                <button class="btn btn-primary" data-toggle="modal" data-target="#downloadModal">Download Materi</button>
+                <div class="col-lg-12">
+                    <p class="card-text" id="materi_seminar">
+                        @if($seminar->materi)
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#downloadModal">Download Materi</button>
+                        @else
+                            Tidak ada materi yang tersedia
+                        @endif
 
-                @else
-                    Tidak ada materi yang tersedia
-                @endif
-                
-                @if($certificate)
-                <a href="{{ asset($certificate->file_path) }}" target="_blank" class="btn btn-success">Lihat Sertifikat</a>
-    @else
-    <div class="text-center">
-        <p class="text-danger">Sertifikat belum tersedia.</p>
-    </div>
-    @endif
-            </p>
+                        @if($certificate)
+                            <a href="{{ asset($certificate->file_path) }}" target="_blank" class="btn btn-success">Lihat Sertifikat</a>
+                        @else
+                            <div class="text-center">
+                                <p class="text-danger">Sertifikat belum tersedia.</p>
+                            </div>
+                        @endif
+                    </p>
+                </div>
             </div>
         </div>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<!-- Bootstrap JS -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var showMateriBtn = document.getElementById('showMateriBtn');
-        var materiList = document.getElementById('materiList');
+        document.addEventListener('DOMContentLoaded', function() {
+            var showMateriBtn = document.getElementById('showMateriBtn');
+            var materiList = document.getElementById('materiList');
 
-        showMateriBtn.addEventListener('click', function() {
-            if (materiList.style.display === 'none') {
-                materiList.style.display = 'block';
-            } else {
-                materiList.style.display = 'none';
-            }
+            showMateriBtn.addEventListener('click', function() {
+                if (materiList.style.display === 'none') {
+                    materiList.style.display = 'block';
+                } else {
+                    materiList.style.display = 'none';
+                }
+            });
         });
-    });
-</script>
+    </script>
+
 @endsection
