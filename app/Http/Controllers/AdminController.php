@@ -27,7 +27,7 @@ class AdminController extends Controller
      * @return void
      */
 
-     public function __construct()
+    public function __construct()
     {
         $this->middleware('auth');
         Log::info('AdminController instantiated.');
@@ -39,7 +39,7 @@ class AdminController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
 
-     public function index()
+    public function index()
     {
         Log::info('Loading all seminars for the admin dashboard.');
         $seminars = Seminar::all();
@@ -336,40 +336,40 @@ class AdminController extends Controller
         Log::info('Memulai validasi data untuk upload template sertifikat');
         $request->validate([
             'certificate_template' => 'required|file|mimes:jpeg,png,pdf|max:2048',
-        'access_time' => 'required|date' // Validasi input tanggal
-    ]);
+            'access_time' => 'required|date' // Validasi input tanggal
+        ]);
 
-    Log::info('Validasi selesai, mencari template sertifikat yang ada');
-    try {
-        // Cek apakah sudah ada template sertifikat untuk seminar ini
-        $existingTemplate = CertificateTemplate::where('seminar_id', $seminarId)->first();
-        if ($existingTemplate) {
-            Log::warning('Template sertifikat sudah ada untuk seminar ini');
-            return back()->with('error', 'Template sertifikat sudah diupload untuk seminar ini.');
-        }
+        Log::info('Validasi selesai, mencari template sertifikat yang ada');
+        try {
+            // Cek apakah sudah ada template sertifikat untuk seminar ini
+            $existingTemplate = CertificateTemplate::where('seminar_id', $seminarId)->first();
+            if ($existingTemplate) {
+                Log::warning('Template sertifikat sudah ada untuk seminar ini');
+                return back()->with('error', 'Template sertifikat sudah diupload untuk seminar ini.');
+            }
 
-        Log::info('Tidak ada template yang ada, memproses file upload');
-        if ($request->hasFile('certificate_template')) {
-            $certificateName = time() . '_' . $request->file('certificate_template')->getClientOriginalName();
-            $request->file('certificate_template')->move(public_path('assets/images/sertif-seminar'), $certificateName);
-            $path = 'assets/images/sertif-seminar/' . $certificateName;
+            Log::info('Tidak ada template yang ada, memproses file upload');
+            if ($request->hasFile('certificate_template')) {
+                $certificateName = time() . '_' . $request->file('certificate_template')->getClientOriginalName();
+                $request->file('certificate_template')->move(public_path('assets/images/sertif-seminar'), $certificateName);
+                $path = 'assets/images/sertif-seminar/' . $certificateName;
 
-            Log::info('File berhasil diupload, menyimpan data template baru');
-            $template = new CertificateTemplate();
-            $template->name = $certificateName;
-            $template->file_path = $path;
-            $template->seminar_id = $seminarId;
-            $template->access_time = $request->input('access_time');
-            $template->save();
+                Log::info('File berhasil diupload, menyimpan data template baru');
+                $template = new CertificateTemplate();
+                $template->name = $certificateName;
+                $template->file_path = $path;
+                $template->seminar_id = $seminarId;
+                $template->access_time = $request->input('access_time');
+                $template->save();
 
-            Log::info('Template sertifikat baru berhasil disimpan');
-            return back()->with('success', 'Template sertifikat berhasil diupload.');
-        } else {
-            Log::warning('Tidak ada file yang diupload');
-            return back()->with('error', 'Tidak ada file yang diupload.');
-        }
-    } catch (\Exception $e) {
-        Log::error('Gagal mengupload template sertifikat: ' . $e->getMessage());
+                Log::info('Template sertifikat baru berhasil disimpan');
+                return back()->with('success', 'Template sertifikat berhasil diupload.');
+            } else {
+                Log::warning('Tidak ada file yang diupload');
+                return back()->with('error', 'Tidak ada file yang diupload.');
+            }
+        } catch (\Exception $e) {
+            Log::error('Gagal mengupload template sertifikat: ' . $e->getMessage());
             return back()->with('error', 'Gagal mengupload template sertifikat: ' . $e->getMessage());
         }
     }
@@ -397,10 +397,45 @@ class AdminController extends Controller
         }
     }
 
-
-    public function export()
+    public function dataPembicara()
     {
-        return Excel::download(new PembicaraExport, 'pembicara.xlsx');
+        $pembicaras = Pembicara::all();
+        return view('admin.datapembicara', compact('pembicaras'));
+    }
+
+    public function deletePembicara($id)
+    {
+        $pembicara = Pembicara::findOrFail($id);
+        $pembicara->delete();
+        return redirect()->route('admin.datapembicara')->with('success', 'Pembicara berhasil dihapus.');
+    }
+
+    public function editPembicara($id)
+    {
+        $pembicara = Pembicara::findOrFail($id);
+        return view('admin.editpembicara', compact('pembicara'));
+    }
+
+    public function updatePembicara(Request $request, $id)
+    {
+        $request->validate([
+            'nama_pembicara' => 'required|string|max:255',
+            'topik' => 'required|string|max:255',
+            'asal_instansi' => 'required|string|max:255',
+        ]);
+
+        $pembicara = Pembicara::findOrFail($id);
+        $pembicara->nama_pembicara = $request->nama_pembicara;
+        $pembicara->topik = $request->topik;
+        $pembicara->asal_instansi = $request->asal_instansi;
+        $pembicara->save();
+
+        return redirect()->route('admin.datapembicara')->with('success', 'Pembicara berhasil diperbarui.');
+    }
+
+    public function exportPembicara()
+    {
+        return Excel::download(new PembicaraExport, 'data_pembicara.xlsx');
     }
 
     public function tambahPembicara()

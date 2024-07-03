@@ -44,7 +44,6 @@ Route::prefix('admin')->group(function () {
         Route::get('/tambah-seminar', [AdminController::class, 'create'])->name('tambahseminar');
         Route::post('/tambah', [AdminController::class, 'store'])->name('admin.tambahseminar');
         Route::get('/detail-seminar/{id}', [AdminController::class, 'show'])->name('detailseminar');
-
     });
     Route::prefix('rekap-seminar')->group(function () {
         Route::get('', [AdminController::class, 'rekap'])->name('admin.rekap');
@@ -67,9 +66,9 @@ Route::prefix('admin')->group(function () {
         Route::get('', [AdminController::class, 'rekapPeserta'])->name('data_pengguna');
     });
     Route::prefix('tambah-materi')->group(function () {
-    //Rute untuk tambah materi
-    Route::get('', [AdminController::class, 'tambahMateri'])->name('admin.tambahMateri');
-    Route::post('/admin/simpan-materi', [AdminController::class, 'simpanMateri'])->name('admin.simpanMateri');
+        //Rute untuk tambah materi
+        Route::get('', [AdminController::class, 'tambahMateri'])->name('admin.tambahMateri');
+        Route::post('/admin/simpan-materi', [AdminController::class, 'simpanMateri'])->name('admin.simpanMateri');
     });
     Route::prefix('upload-sertifikat')->group(function () {
         // Rute untuk sertifikat seminar
@@ -77,17 +76,23 @@ Route::prefix('admin')->group(function () {
         // Rute untuk mengunggah sertifikat seminar
         Route::post('/seminars/{seminar}/uploadCertificate', [AdminController::class, 'uploadCertificate'])->name('admin.uploadCertificate');
         Route::put('/seminars/certificate/{template}', [AdminController::class, 'updateCertificate'])->name('seminar.updateCertificate');
-
     });
     //Rute untuk men download sertifikat
-    Route::get('certificate/export',[AdminController::class, 'export']);
+    Route::get('certificate/export', [AdminController::class, 'export']);
 
     //Rute untuk tambah pembicara
     Route::get('/tambah-pembicara', [AdminController::class, 'tambahPembicara'])->name('admin.tambahPembicara');
     Route::post('/simpan-pembicara', [AdminController::class, 'simpanPembicara'])->name('admin.simpanPembicara');
 
+    Route::get('/datapembicara', [AdminController::class, 'dataPembicara'])->name('admin.datapembicara');
+    Route::delete('/pembicara/{id}', [AdminController::class, 'deletePembicara'])->name('admin.deletePembicara');
+    Route::get('/pembicara/{id}/edit', [AdminController::class, 'editPembicara'])->name('admin.editPembicara');
+    Route::put('/pembicara/{id}', [AdminController::class, 'updatePembicara'])->name('admin.updatePembicara');
+    Route::get('/exportPembicara', [AdminController::class, 'exportPembicara'])->name('admin.exportPembicara');
+
+
     //Rute untuk export data pembicara
-    Route::get('pembicara/export', [AdminController::class, 'export'])->name('admin.exportPembicara');
+    // Route::get('pembicara/export', [AdminController::class, 'export'])->name('admin.exportPembicara');
 
 
 
@@ -116,9 +121,9 @@ Route::get('/admin/tambahpembicara', 'AdminController@index');
 Route::get('/download-certificate/{seminarId}', [DownloadSertifController::class, 'downloadCertificate'])
     ->name('downloadCertificate');
 
-    Route::get('/refresh', function () {
-        Artisan::call('config:clear');
-        Artisan::call('cache:clear');
-        Artisan::call('route:clear');
-        return 'Done bg';
-    });
+Route::get('/refresh', function () {
+    Artisan::call('config:clear');
+    Artisan::call('cache:clear');
+    Artisan::call('route:clear');
+    return 'Done bg';
+});
