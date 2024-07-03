@@ -32,7 +32,11 @@ class Seminar extends Model
     {
         return $this->hasMany(Materi::class, 'seminar_id');
     }
-
+    public function registrations()
+    {
+        return $this->hasMany(Registration::class);
+    }
+    
     public function up()
     {
         Schema::create('seminars', function (Blueprint $table) {

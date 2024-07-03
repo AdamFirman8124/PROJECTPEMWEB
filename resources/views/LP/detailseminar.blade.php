@@ -179,21 +179,59 @@ https://templatemo.com/tm-586-scholar
                         </div>
                     </div>
                 </div>
-                <p class="card-text" id="materi_seminar">
-                @if($seminar->materi)
-                <button class="btn btn-primary" data-toggle="modal" data-target="#downloadModal">Download Materi</button>
+                <div class="col-lg-12">
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5>Status Registrasi</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Nama Peserta</th>
+                                    <th>Email</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Mengambil hanya data registrasi user yang sedang login -->
+                                @foreach($registrations as $registration)
+                                    @if($registration->user_id === auth()->user()->id)
+                                        <tr>
+                                            <td>{{ $registration->name }}</td>
+                                            <td>{{ $registration->email }}</td>
+                                            <td>{{ $registration->status }}</td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
 
+            <p class="card-text" id="materi_seminar">
+                @if($seminar->materi)
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#downloadModal">Download Materi</button>
                 @else
                     Tidak ada materi yang tersedia
                 @endif
-                
+
                 @if($certificate)
-    <a href="{{ route('downloadCertificate', $seminar->id) }}" class="btn btn-success">Unduh Sertifikat</a>
-@else
-    <div class="text-center">
-        <p class="text-danger">Sertifikat belum tersedia.</p>
+                    <a href="{{ route('downloadCertificate', $seminar->id) }}" class="btn btn-success">Unduh Sertifikat</a>
+                @else
+                    <div class="text-center">
+                        <p class="text-danger">Sertifikat belum tersedia, pastikan anda sudah mengisi kuis untuk mendapatkan sertifikat</p>
+                    </div>
+                @endif
+            </p>
+
+            <div class="d-flex justify-content-end">
+                <a href="{{ route('homeuser', $seminar->id) }}" class="btn btn-primary mt-3">Kembali</a>
+            </div>
+        </div>
     </div>
-@endif
+</div>
 
             </p>
                 <!-- <div class="map-container">

@@ -215,4 +215,13 @@ class RegistrationController extends Controller
             return back()->withErrors('Terjadi kesalahan saat mengekspor data ke PDF.');
         }
     }
+
+    public function show($id)
+    {
+        $seminar = Seminar::with('materi')->find($id);
+        $registrations = Registration::where('seminar_id', $id)->get();
+
+        return view('seminar.detail', compact('seminar', 'registrations'));
+    }
+
 }

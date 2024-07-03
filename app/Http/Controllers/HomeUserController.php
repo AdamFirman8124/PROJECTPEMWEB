@@ -45,21 +45,17 @@ class HomeUserController extends Controller
 
         return view('admin.index', compact('seminars'));
     }
+    
     public function show($id)
     {
-        try {
-            $seminar = Seminar::findOrFail($id);
-            $user_id = Auth::id();
-            $isRegistered = Registration::where('user_id', $user_id)->where('seminar_id', $id)->exists();
+        $seminar = Seminar::with('registrations')->find($id);
+        $registrations = $seminar->registrations;
+        $certificate = CertificateTemplate::where('seminar_id', $id)->first();
+        $isRegistered = Registration::where('user_id', auth()->id())->where('seminar_id', $id)->exists();
     
-            $certificate = CertificateTemplate::where('seminar_id', $id)->first();
-    
-            return view('LP.detailseminar', compact('seminar', 'isRegistered', 'certificate'));
-        } catch (\Exception $e) {
-            Log::error('Gagal menampilkan detail seminar: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Gagal menampilkan detail seminar: ' . $e->getMessage());
-        }
+        return view('LP.detailseminar', compact('seminar', 'registrations', 'certificate', 'isRegistered'));
     }
+    
     public function daftarseminar($seminar_id)
     {
         try {
