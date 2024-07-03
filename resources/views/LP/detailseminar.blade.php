@@ -221,7 +221,7 @@ https://templatemo.com/tm-586-scholar
                     <a href="{{ route('downloadCertificate', $seminar->id) }}" class="btn btn-success">Unduh Sertifikat</a>
                 @else
                     <div class="text-center">
-                        <p class="text-danger">Sertifikat belum tersedia, pastikan anda sudah mengisi kuis untuk mendapatkan sertifikat</p>
+                        <p class="text-danger">Sertifikat belum tersedia</p>
                     </div>
                 @endif
             </p>
